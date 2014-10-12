@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AVTLab1", "AVTLab1\AVTLab1.vcxproj", "{B8C7F253-52F4-48C4-B688-7B22D5A0AB9C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lab1AVT", "Lab1AVT\Lab1AVT.vcxproj", "{58F3FF0D-3F6B-4282-B20C-E4438F9CAD8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B8C7F253-52F4-48C4-B688-7B22D5A0AB9C}.Debug|Win32.ActiveCfg = Debug|Win32
-		{B8C7F253-52F4-48C4-B688-7B22D5A0AB9C}.Debug|Win32.Build.0 = Debug|Win32
-		{B8C7F253-52F4-48C4-B688-7B22D5A0AB9C}.Release|Win32.ActiveCfg = Release|Win32
-		{B8C7F253-52F4-48C4-B688-7B22D5A0AB9C}.Release|Win32.Build.0 = Release|Win32
+		{58F3FF0D-3F6B-4282-B20C-E4438F9CAD8E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{58F3FF0D-3F6B-4282-B20C-E4438F9CAD8E}.Debug|Win32.Build.0 = Debug|Win32
+		{58F3FF0D-3F6B-4282-B20C-E4438F9CAD8E}.Release|Win32.ActiveCfg = Release|Win32
+		{58F3FF0D-3F6B-4282-B20C-E4438F9CAD8E}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
