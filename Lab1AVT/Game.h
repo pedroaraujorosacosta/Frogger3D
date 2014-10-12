@@ -3,6 +3,7 @@
 
 #include "IComponent.h"
 #include "Stack.h"
+#include "Frog.h"
 
 
 #include <iostream>
@@ -29,6 +30,7 @@ class Game : IComponent {
 	unsigned int frameCount = 0;
 	unsigned int totalFrames = 0;
 	std::vector<Object*> objects;
+	Frog *frog;
 
 	double FOV;
 	double n;
@@ -68,6 +70,7 @@ public:
 	void cleanup();
 	void timer(int value);
 	void keyboard(unsigned char key, int x, int y);
+	void keyboardUp(unsigned char key, int x, int y);
 
 	Matrix getPVM();
 	GLuint getPVMid();

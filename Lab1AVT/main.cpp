@@ -43,6 +43,11 @@ void keyboardFunc(unsigned char key, int x, int y)
 	game.keyboard(key, x, y);
 }
 
+void keyboardUpFunc(unsigned char key, int x, int y)
+{
+	game.keyboardUp(key, x, y);
+}
+
 /////////////////////////////////////////////////////////////////////// CALLBACKS
 
 void display()
@@ -60,10 +65,18 @@ void reshape(int w, int h)
 	game.reshape(w, h);
 }
 
+void update(int value) {
+	game.update();
+	glutTimerFunc(20, update, 0);
+}
+
+
+
 void timer(int value)
 {
 	game.timer(value);
 	glutTimerFunc(1000, timer, 0);
+	
 }
 
 void frameTimer(int value)
@@ -85,8 +98,10 @@ void setupCallbacks()
 	glutIdleFunc(idle);
 	glutReshapeFunc(reshape);
 	glutTimerFunc(0, timer, 0);
+	glutTimerFunc(20, update, 0);
 	glutTimerFunc(TIME_PER_FRAME, frameTimer, 0);
 	glutKeyboardFunc(keyboardFunc);
+	glutKeyboardUpFunc(keyboardUpFunc);
 }
 
 void init(int argc, char* argv[])

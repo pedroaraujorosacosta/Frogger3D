@@ -4,7 +4,9 @@
 #include "Cube.h"
 #include "River.h"
 #include "Road.h"
+#include "Car.h"
 #include "Sphere.h"
+#include "Frog.h"
 
 #define CAPTION "Assignment 1"
 
@@ -18,7 +20,7 @@ Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * 
 
 Game::~Game() 
 {
-
+	//delete frog;
 }
 
 void Game::init(int argc, char* argv[])
@@ -31,12 +33,14 @@ void Game::init(int argc, char* argv[])
 	//x esquerda - direita
 	//y cima - baixo
 	//z near - far -> nao afecta sem perspective
+	float posCar[] = { 0.0, 0.0, 0.0 };
 	float posriver[] = { 0.0, 3.0, -3.0};
-	objects.push_back(new River(posriver, this));
-	float posroad[] = { 0.0, -3.0, -3.0 };
-	objects.push_back(new Road(posroad, this));
-
-	objects.push_back(new Sphere(posroad, this, 3, 100));
+	//objects.push_back(new River(posriver, this));
+	//float posroad[] = { 0.0, -3.0, -3.0 };
+	//objects.push_back(new Road(posroad, this));
+	//objects.push_back(new Sphere(posroad, this, 3, 100));
+	float direction[3] = { 0.0, 1.0, 0.0 };
+	frog = new Frog(posCar, this, 0.0, direction);
 }
 
 void Game::draw(GLuint programID) {
@@ -65,6 +69,7 @@ void Game::draw(GLuint programID) {
 
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->draw(this->ProgramId);
+	frog->draw(this->ProgramId);
 
 	projectionStack.pop();
 	modelViewStack.pop();
@@ -73,7 +78,13 @@ void Game::draw(GLuint programID) {
 }
 
 void Game::reset() {}
-void Game::update() {}
+void Game::update() {
+
+	for (int i = 0; i < objects.size(); i++)
+		objects[i]->update();
+	frog->update();
+
+}
 
 void Game::reshape(int w, int h)
 {
@@ -295,24 +306,49 @@ GLuint Game::getPVMid()
 	return UniformId;
 }
 
+void Game::keyboardUp(unsigned char key, int x, int y) 
+{
+
+	switch (key) {
+	case 'q':
+	case 'Q':
+	case 'a':
+	case 'A':
+	case 'o':
+	case 'O':
+	case 'p':
+	case 'P':
+		frog->stop();
+		break;
+
+	}
+
+}
 void Game::keyboard(unsigned char key, int x, int y)
 {
+	float front[3] = { 0.0, 1.0, 0.0 };
+	float back[3] = { 0.0, -1.0, 0.0 }; 
+	float left[3] = { -1.0, 0.0, 0.0 };
+	float right[3] = { 1.0, 0.0, 0.0 };
+	
 	switch (key) {
 		case 'q':
-			f += 0.1;
-		break;
+		case 'Q':
+			frog->move(front);
+			break;
 		case 'a':
-			f -= 0.1;
-		break;
-		case 'w':
-			n += 0.1;
+		case 'A':
+			frog->move(back);
 			break;
-		case 's':
-			n -= 0.1;
+		case 'o':
+		case 'O':
+			frog->move(left);
 			break;
-		case 'e':
-			FOV += 0.1;
+		case 'p':
+		case 'P':
+			frog->move(right);
 			break;
+	
 	}
 }
 

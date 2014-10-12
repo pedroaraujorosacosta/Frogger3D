@@ -36,7 +36,7 @@ public:
 	~Object();
 	virtual void draw(GLuint programID);
 	virtual void reset();
-	virtual void update();
+	virtual void update(); 
 
 	float * circularProfile(float minAngle, float maxAngle, float radius, int divisions, float transX = 0.0f, float transY = 0.0f);
 	int revSmoothNormal2(float *p, float *nx, float *ny, float smoothCos, int beginEnd);
