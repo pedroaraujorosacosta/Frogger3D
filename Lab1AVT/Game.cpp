@@ -7,6 +7,7 @@
 #include "Car.h"
 #include "Sphere.h"
 #include "Frog.h"
+#include "Camera.h"
 
 #define CAPTION "Assignment 1"
 
@@ -356,3 +357,14 @@ Stack* Game::getModelViewStack()
 {
 	return &modelViewStack;
 }
+
+Stack* Game::getProjectionStack()
+{
+	return &projectionStack;
+}
+
+Frog* Game::getFrog()
+{
+	return frog;
+}
+ 

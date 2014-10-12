@@ -14,7 +14,7 @@
 #define MY_VERTEX_COORD_ATTRIB 0
 #define MY_NORMAL_ATTRIB 1
 #define MY_TEXTURE_COORD_ATTRIB 2
-#define M_PI atan(1)*4
+//#define M_PI atan(1)*4
 
 class Object;
 
@@ -75,6 +75,8 @@ public:
 	Matrix getPVM();
 	GLuint getPVMid();
 	Stack* getModelViewStack();
+	Stack* getProjectionStack();
+	Frog* getFrog();
 };
 
 #endif
