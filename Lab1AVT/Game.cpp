@@ -14,7 +14,6 @@ Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * 
 {
 	winX = WinX;
 	winY = WinY;
-
 }
 
 Game::~Game() 
@@ -38,9 +37,6 @@ void Game::init(int argc, char* argv[])
 	objects.push_back(new Road(posroad, this));
 
 	objects.push_back(new Sphere(posroad, this, 3, 100));
-
-	
-
 }
 
 void Game::draw(GLuint programID) {
@@ -56,19 +52,16 @@ void Game::draw(GLuint programID) {
 	GLfloat up[4] = { 0.0f, 1.0f, 0.0f, 0.0f }; //n
 	GLfloat lookPoint[4] = { 0.0f, 0.0f, -1.0f, 1.0f };
 
-	//modelViewStack.loadIdentity();
 	modelViewStack.push();
 
-	//modelViewStack.translateMatrix(-0.5, -0.5, 0.0);
-	//projectionStack.loadIdentity();
 	projectionStack.push();
 	
 	projectionStack.orthogonal(-10, 10, -7, 7, 0.1, 10);
 	//projectionStack.perspective(l, r, b, t, n, f);
-	modelViewStack.lookAt(right, up, eye, lookPoint);
-	/*modelViewStack.lookAt(eye[0], eye[1], eye[2],
+	//modelViewStack.lookAt(right, up, eye, lookPoint);
+	modelViewStack.lookAt(eye[0], eye[1], eye[2],
 		lookPoint[0], lookPoint[1], lookPoint[2],
-		up[0], up[1], up[2]);*/
+		up[0], up[1], up[2]);
 
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->draw(this->ProgramId);

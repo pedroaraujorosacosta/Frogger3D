@@ -200,7 +200,7 @@ void Stack::lookAt(float eyex, float eyey, float eyez,
 	normalize(lookAt, 3);
 
 	for (int i = 0; i < 3; i++)
-		minuslookAt[i] = lookAt[i];
+		minuslookAt[i] = -lookAt[i];
 
 	float up[3] = { upx, upy, upz };
 	float eye[3] = {eyex, eyey, eyez};
@@ -235,7 +235,6 @@ void Stack::lookAt(float eyex, float eyey, float eyez,
 	view[15] = 1.0f;
 
 	Matrix* vMatrix = new Matrix(view, 4);
-
 
 	Matrix* nova = new Matrix(4);
 	(*nova) = *s.top() * *vMatrix;
@@ -272,7 +271,6 @@ void Stack::lookAt(float *right, float *up, float *eye, float *lookPoint)
 	view[15] = 1.0f;
 
 	Matrix* vMatrix = new Matrix(view, 4);
-
 
 	Matrix* nova = new Matrix(4);
 	(*nova)= *s.top() * *vMatrix;
