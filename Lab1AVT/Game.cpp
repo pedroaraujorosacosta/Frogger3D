@@ -379,9 +379,9 @@ void Game::passiveMouseFunc(int x, int y)
 	int dx = newX - oldX;
 	int dy = newY - oldY;
 
-	std::cout << "x: " << x << " y: " << y << std::endl;
-	std::cout << "dx: " << dx << " dy: " << dy << std::endl;
-	std::cout << "oldX: " << oldX << " oldY: " << oldY << std::endl;
+	//std::cout << "x: " << x << " y: " << y << std::endl;
+	//std::cout << "dx: " << dx << " dy: " << dy << std::endl;
+	//std::cout << "oldX: " << oldX << " oldY: " << oldY << std::endl;
 	cam->updateDirection(dx, dy);
 
 	oldX = newX;

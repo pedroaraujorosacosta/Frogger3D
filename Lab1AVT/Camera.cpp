@@ -78,9 +78,9 @@ void Camera::setCamera() {
 	case Camera::FPS:
 
 		setEye(frog->getX(), frog->getY() - 2, frog->getZ() + 1);
-		setAt(frog->getX() + cos(theta + M_PI / 2) * cos(phi), 
-			  frog->getY() + -2 + sin(theta + M_PI / 2) * cos(phi),
-			  frog->getZ() + 1 + sin(phi));
+		setAt(frog->getX() + cos(theta*M_PI / 180 + M_PI / 2) * cos(phi*M_PI / 180),
+			frog->getY() + -2 + sin(theta*M_PI / 180 + M_PI / 2) * cos(phi*M_PI / 180),
+			frog->getZ() + 1 + sin(phi*M_PI / 180));
 		setUp(0.0f, 0.0f, 1.0f);
 
 		game->getProjectionStack()->perspective(l, r, b, t, n, f); //TODO
@@ -129,10 +129,12 @@ void Camera::updateDirection(int dx, int dy)
 	if (mode == FPS)
 	{
 		theta -= dx / 10;
-		if (theta > M_PI / 2 || theta < M_PI / 2)
+		if (theta > 90 || theta < -90)
 			theta += dx / 10;
 		phi -= dy / 10;
-		if (phi > M_PI / 2 || phi < M_PI / 2)
+		if (phi > 90 || phi < -90)
 			phi += dy / 10;
+		std::cout << "theta: " << theta << " phi: " << phi << std::endl;
+		std::cout << "dx: " << dx << " dy: " << dy << std::endl;
 	}
 }
