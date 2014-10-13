@@ -48,6 +48,15 @@ void keyboardUpFunc(unsigned char key, int x, int y)
 	game.keyboardUp(key, x, y);
 }
 
+void passiveMouseFunc(int x, int y)
+{
+	game.passiveMouseFunc(x, y);
+}
+
+void mouseFunc(int button, int state, int x, int y)
+{
+	game.mouseFunc(button, state, x, y);
+}
 /////////////////////////////////////////////////////////////////////// CALLBACKS
 
 void display()
@@ -102,6 +111,8 @@ void setupCallbacks()
 	glutTimerFunc(TIME_PER_FRAME, frameTimer, 0);
 	glutKeyboardFunc(keyboardFunc);
 	glutKeyboardUpFunc(keyboardUpFunc);
+	glutMouseFunc(mouseFunc);
+	glutPassiveMotionFunc(passiveMouseFunc);
 }
 
 void init(int argc, char* argv[])

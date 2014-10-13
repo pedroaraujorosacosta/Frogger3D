@@ -20,5 +20,8 @@ public:
 	void update();
 	void move(float *direction);
 	void stop();
+	float getX();
+	float getY();
+	float getZ();
 };
 #endif

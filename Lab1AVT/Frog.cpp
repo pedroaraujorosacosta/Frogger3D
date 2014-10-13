@@ -69,3 +69,18 @@ void Frog::init() {
 	body = new Sphere(o, game, 0.6, 8);
 	eyes = new Sphere(o, game, 0.2, 8);
 }
+
+float Frog::getX()
+{
+	return position[0];
+}
+
+float Frog::getY()
+{
+	return position[1];
+}
+
+float Frog::getZ()
+{
+	return position[2];
+}

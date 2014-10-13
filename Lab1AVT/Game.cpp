@@ -13,7 +13,7 @@
 
 
 
-Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(10.0)
+Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(20.0)
 {
 	winX = WinX;
 	winY = WinY;
@@ -42,15 +42,17 @@ void Game::init(int argc, char* argv[])
 	//objects.push_back(new Sphere(posroad, this, 3, 100));
 	float direction[3] = { 0.0, 1.0, 0.0 };
 	frog = new Frog(posCar, this, 0.0, direction);
+
+	// setup camera
+	S = tan(FOV*0.5*(M_PI / 180)) * n;
+	r = aspectRatio * S, l = -r;
+	t = S, b = -t;
+	cam = new Camera(this, t, b, n, f, l, r, FOV, S);
 }
 
 void Game::draw(GLuint programID) {
 	++frameCount;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	S = tan(FOV*0.5*(M_PI / 180)) * n;
-	r = aspectRatio * S, l = -r;
-	t = S, b = -t;
 
 	GLfloat eye[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
 	GLfloat right[4] = { 1.0f, 0.0f, 0.0f, 0.0f }; //u 
@@ -61,12 +63,13 @@ void Game::draw(GLuint programID) {
 
 	projectionStack.push();
 	
-	projectionStack.orthogonal(-10, 10, -7, 7, 0.1, 10);
+	cam->setCamera();
+	//projectionStack.orthogonal(-10, 10, -7, 7, 0.1, 10);
 	//projectionStack.perspective(l, r, b, t, n, f);
 	//modelViewStack.lookAt(right, up, eye, lookPoint);
-	modelViewStack.lookAt(eye[0], eye[1], eye[2],
+	/*modelViewStack.lookAt(eye[0], eye[1], eye[2],
 		lookPoint[0], lookPoint[1], lookPoint[2],
-		up[0], up[1], up[2]);
+		up[0], up[1], up[2]);*/
 
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->draw(this->ProgramId);
@@ -92,7 +95,7 @@ void Game::reshape(int w, int h)
 	winX = w;
 	winY = h;
 	aspectRatio = (double)winX / winY;
-	glViewport(0, 0, winX, winY);
+	cam->reshape(w, h);
 }
 
 void Game::setupGLUT(int argc, char* argv[])
@@ -349,8 +352,40 @@ void Game::keyboard(unsigned char key, int x, int y)
 		case 'P':
 			frog->move(right);
 			break;
-	
+		case '1':
+			cam->topCameraMode();
+			break;
+		case '2':
+			cam->topCameraPerspectiveMode();
+			break;
+		case '3':
+			cam->FPSCameraMode();
+			break;
 	}
+}
+
+void Game::mouseFunc(int button, int state, int x, int y)
+{
+
+}
+
+void Game::passiveMouseFunc(int x, int y)
+{
+	static int oldX = x;
+	static int oldY = y;
+	int newX = x;
+	int newY = y;
+
+	int dx = newX - oldX;
+	int dy = newY - oldY;
+
+	std::cout << "x: " << x << " y: " << y << std::endl;
+	std::cout << "dx: " << dx << " dy: " << dy << std::endl;
+	std::cout << "oldX: " << oldX << " oldY: " << oldY << std::endl;
+	cam->updateDirection(dx, dy);
+
+	oldX = newX;
+	oldY = newY;
 }
 
 Stack* Game::getModelViewStack() 

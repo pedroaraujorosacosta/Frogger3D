@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "Stack.h"
 #include "Game.h"
+#include "Frog.h"
 
 #include <gl\glew.h>
 #include <GL/freeglut.h>
@@ -18,6 +19,14 @@ Camera::Camera(Game *game, float top, float  bot, float n, float f, float left, 
 	this->FOV = FOV;
 	this->S = S;
 	this->game = game;
+	this->theta = 0;
+	this->phi = 0;
+	mode = TOP;
+}
+
+void Camera::init()
+{
+
 }
 
 void Camera::topCameraMode() 
@@ -36,7 +45,9 @@ void Camera::FPSCameraMode()
 }
 
 void Camera::setCamera() {
+	Frog *frog = game->getFrog();
 
+	// actualiza o aspect ratio
 	S = tan(FOV*0.5*(M_PI / 180)) * n;
 	r = aspectRatio * S, l = -r;
 	t = S, b = -t;
@@ -45,7 +56,6 @@ void Camera::setCamera() {
 	GLfloat right[4] = { 1.0f, 0.0f, 0.0f, 0.0f }; //u 
 	GLfloat up[4] = { 0.0f, 1.0f, 0.0f, 0.0f }; //n
 	GLfloat lookPoint[4] = { 0.0f, 0.0f, -1.0f, 1.0f };*/
-
 
 	switch (mode)
 	{
@@ -59,7 +69,7 @@ void Camera::setCamera() {
 		break;
 	case Camera::PERSPECTIVE:
 
-		setEye(0.0f, 0.0f, 1.0f);
+		setEye(0.0f, 0.0f, 10.0f);
 		setAt(0.0f, 0.0f, -1.0f);
 		setUp(0.0f, 1.0f, 0.0f);
 
@@ -67,9 +77,11 @@ void Camera::setCamera() {
 		break;
 	case Camera::FPS:
 
-		setEye(0.0f, 0.0f, 1.0f);
-		setAt(0.0f, 0.0f, -1.0f);
-		setUp(0.0f, 1.0f, 0.0f);
+		setEye(frog->getX(), frog->getY() - 2, frog->getZ() + 1);
+		setAt(frog->getX() + cos(theta + M_PI / 2) * cos(phi), 
+			  frog->getY() + -2 + sin(theta + M_PI / 2) * cos(phi),
+			  frog->getZ() + 1 + sin(phi));
+		setUp(0.0f, 0.0f, 1.0f);
 
 		game->getProjectionStack()->perspective(l, r, b, t, n, f); //TODO
 		break;
@@ -110,4 +122,17 @@ void Camera::setUp(float upx, float upy, float upz)
 	up[1] = upy;
 	up[2] = upz;
 	up[3] = 0.0;
+}
+
+void Camera::updateDirection(int dx, int dy)
+{
+	if (mode == FPS)
+	{
+		theta -= dx / 10;
+		if (theta > M_PI / 2 || theta < M_PI / 2)
+			theta += dx / 10;
+		phi -= dy / 10;
+		if (phi > M_PI / 2 || phi < M_PI / 2)
+			phi += dy / 10;
+	}
 }

@@ -17,6 +17,7 @@
 //#define M_PI atan(1)*4
 
 class Object;
+class Camera;
 
 class Game : IComponent {
 
@@ -31,6 +32,7 @@ class Game : IComponent {
 	unsigned int totalFrames = 0;
 	std::vector<Object*> objects;
 	Frog *frog;
+	Camera *cam;
 
 	double FOV;
 	double n;
@@ -71,6 +73,8 @@ public:
 	void timer(int value);
 	void keyboard(unsigned char key, int x, int y);
 	void keyboardUp(unsigned char key, int x, int y);
+	void mouseFunc(int button, int state, int x, int y);
+	void passiveMouseFunc(int x, int y);
 
 	Matrix getPVM();
 	GLuint getPVMid();

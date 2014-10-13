@@ -289,11 +289,11 @@ void Stack::orthogonal(float left, float right, float bottom, float top, float n
 			projection[j + 4 * i] = 0.0f;
 
 	projection[0] = 2 / (right - left);
-	projection[3] = (right + left) / (right - left);
+	projection[3] = -(right + left) / (right - left);
 	projection[5] = 2 / (top - bottom);
-	projection[7] = (top + bottom) / (top - bottom);
-	projection[10] = -2 / (nearPlane - farPlane);
-	projection[11] = (farPlane + nearPlane) / (farPlane - nearPlane);
+	projection[7] = -(top + bottom) / (top - bottom);
+	projection[10] = 2 / (nearPlane - farPlane);
+	projection[11] = -(farPlane + nearPlane) / (farPlane - nearPlane);
 	projection[15] = 1.0f;
 
 	Matrix* sMatrix = new Matrix(projection, 4);

@@ -16,6 +16,8 @@ protected:
 	float eye[4];
 	float up[4];
 	float at[4];
+	float theta;
+	float phi;
 
 	float aspectRatio;
 	float t;
@@ -39,6 +41,6 @@ public:
 	void setEye(float eyex, float eyey, float eyez); 
 	void setAt(float atx, float aty, float atz);
 	void setUp(float upx, float upy, float upz);
-
+	void updateDirection(int dx, int dy);
 };
 #endif
