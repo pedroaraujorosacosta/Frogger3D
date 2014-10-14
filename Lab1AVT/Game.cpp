@@ -1,11 +1,14 @@
 #include "Game.h"
 #include "Matrix.h"
 #include "Object.h"
-#include "Cube.h"
+
 #include "River.h"
 #include "Road.h"
+#include "Turtle.h"
+#include "FloatingLog.h"
+#include "Bus.h"
 #include "Car.h"
-#include "Sphere.h"
+
 #include "Frog.h"
 #include "Camera.h"
 
@@ -34,9 +37,21 @@ void Game::init(int argc, char* argv[])
 	//x esquerda - direita
 	//y cima - baixo
 	//z near - far -> nao afecta sem perspective
-	float posCar[] = { 0.0, 0.0, 0.0 };
-	float posriver[] = { 0.0, 3.0, -3.0};
-	//objects.push_back(new River(posriver, this));
+	float posCar[] = { -10.0, 2.5, 0.0 };
+	float dirCar[] = { 0.05, 0.0, 0.0 };
+	float velCar = 1.0;
+
+	float posBus[] = { -10.0, 2.5, 0.0 };
+	float dirBus[] = { 0.05, 0.0, 0.0 };
+	float velBus = 1.0;
+
+	//float posTurtle[] = { 0.0, 0.0, 0.0 };
+	//float posFloatingLog[] = { 0.0, 0.0, 0.0 };
+	float posRiver[] = { 0.0, 3.0, -3.0};
+
+	objects.push_back(new River(posRiver, this));
+	//objects.push_back(new Car(posCar, this, velCar, dirCar));
+	objects.push_back(new Bus(posBus, this, velBus, dirBus));
 	//float posroad[] = { 0.0, -3.0, -3.0 };
 	//objects.push_back(new Road(posroad, this));
 	//objects.push_back(new Sphere(posroad, this, 3, 100));
