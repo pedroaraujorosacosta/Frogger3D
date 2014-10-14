@@ -353,12 +353,15 @@ void Game::keyboard(unsigned char key, int x, int y)
 			frog->move(right);
 			break;
 		case '1':
+			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
 			cam->topCameraMode();
 			break;
 		case '2':
+			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
 			cam->topCameraPerspectiveMode();
 			break;
 		case '3':
+			glutSetCursor(GLUT_CURSOR_NONE);
 			cam->FPSCameraMode();
 			break;
 	}
@@ -373,15 +376,27 @@ void Game::passiveMouseFunc(int x, int y)
 {
 	static int oldX = x;
 	static int oldY = y;
+	static bool warped = false;
 	int newX = x;
 	int newY = y;
 
-	int dx = newX - oldX;
-	int dy = newY - oldY;
+	const int MIDDLE_X = winX / 2;
+	const int MIDDLE_Y = winY / 2;
 
-	//std::cout << "x: " << x << " y: " << y << std::endl;
-	//std::cout << "dx: " << dx << " dy: " << dy << std::endl;
-	//std::cout << "oldX: " << oldX << " oldY: " << oldY << std::endl;
+	int dx = newX - MIDDLE_X;
+	int dy = newY - MIDDLE_Y;
+
+	if (cam->isInFPSMode())
+	{
+		if (!warped)
+		{
+			glutWarpPointer(MIDDLE_X, MIDDLE_Y);
+			warped = true;
+		}
+		else
+			warped = false;
+	}
+	
 	cam->updateDirection(dx, dy);
 
 	oldX = newX;

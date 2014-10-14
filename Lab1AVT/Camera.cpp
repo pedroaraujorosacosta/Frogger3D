@@ -8,6 +8,8 @@
 
 #include <math.h>
 
+#define degToRad(x) ((x/180) * M_PI)
+
 Camera::Camera(Game *game, float top, float  bot, float n, float f, float left, float right, float FOV, float S) 
 {
 	this->t = top;
@@ -52,10 +54,24 @@ void Camera::setCamera() {
 	r = aspectRatio * S, l = -r;
 	t = S, b = -t;
 
-	/*GLfloat eye[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
-	GLfloat right[4] = { 1.0f, 0.0f, 0.0f, 0.0f }; //u 
-	GLfloat up[4] = { 0.0f, 1.0f, 0.0f, 0.0f }; //n
-	GLfloat lookPoint[4] = { 0.0f, 0.0f, -1.0f, 1.0f };*/
+	// direccao da camara ditada pelo sist. coord. do sapo e angulos de visao theta e phi.
+	float frogBasis1[3] = { frog->getDirX(), frog->getDirY(), frog->getDirZ() };
+	float frogBasis2[3] = { frog->getDirY(), -frog->getDirX(), frog->getDirZ() };
+	float frogBasis3[3] = { 0.0f, 0.0f, 1.0f };
+
+	float xx = -cos(degToRad(phi)) * sin(degToRad(theta));
+	float yy = cos(degToRad(phi)) * cos(degToRad(theta));
+	float zz = sin(degToRad(phi));
+	float dirX = xx * frogBasis2[0] + yy * frogBasis1[0] + zz * frogBasis3[0];
+	float dirY = xx * frogBasis2[1] + yy * frogBasis1[1] + zz * frogBasis3[1];
+	float dirZ = xx * frogBasis2[2] + yy * frogBasis1[2] + zz * frogBasis3[2];
+	
+	float eyePosX = frog->getX() - 2 * frog->getDirX();
+	float eyePosY = frog->getY() - 2 * frog->getDirY();
+	float eyePosZ = frog->getZ() - 2 * frog->getDirZ();
+	float atX = eyePosX + dirX;
+	float atY = eyePosY + dirY;
+	float atZ = eyePosZ + dirZ;
 
 	switch (mode)
 	{
@@ -77,10 +93,8 @@ void Camera::setCamera() {
 		break;
 	case Camera::FPS:
 
-		setEye(frog->getX(), frog->getY() - 2, frog->getZ() + 1);
-		setAt(frog->getX() + cos(theta*M_PI / 180 + M_PI / 2) * cos(phi*M_PI / 180),
-			frog->getY() + -2 + sin(theta*M_PI / 180 + M_PI / 2) * cos(phi*M_PI / 180),
-			frog->getZ() + 1 + sin(phi*M_PI / 180));
+		setEye(eyePosX, eyePosY, eyePosZ);
+		setAt(atX, atY, atZ);
 		setUp(0.0f, 0.0f, 1.0f);
 
 		game->getProjectionStack()->perspective(l, r, b, t, n, f); //TODO
@@ -124,6 +138,11 @@ void Camera::setUp(float upx, float upy, float upz)
 	up[3] = 0.0;
 }
 
+bool Camera::isInFPSMode()
+{
+	return mode == FPS;
+}
+
 void Camera::updateDirection(int dx, int dy)
 {
 	if (mode == FPS)
@@ -131,10 +150,8 @@ void Camera::updateDirection(int dx, int dy)
 		theta -= dx / 10;
 		if (theta > 90 || theta < -90)
 			theta += dx / 10;
-		phi -= dy / 10;
+		phi += dy / 10;
 		if (phi > 90 || phi < -90)
-			phi += dy / 10;
-		std::cout << "theta: " << theta << " phi: " << phi << std::endl;
-		std::cout << "dx: " << dx << " dy: " << dy << std::endl;
+			phi -= dy / 10;
 	}
 }
