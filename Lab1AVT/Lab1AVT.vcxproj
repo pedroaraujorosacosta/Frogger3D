@@ -72,6 +72,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="FloatingLog.cpp" />
     <ClCompile Include="Frog.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -88,6 +89,7 @@
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Stack.cpp" />
     <ClCompile Include="Surface.cpp" />
+    <ClCompile Include="Torus.cpp" />
     <ClCompile Include="Turtle.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +101,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Car.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="Cylinder.h" />
     <ClInclude Include="FloatingLog.h" />
     <ClInclude Include="Frog.h" />
     <ClInclude Include="Game.h" />
@@ -114,6 +117,7 @@
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="Surface.h" />
+    <ClInclude Include="Torus.h" />
     <ClInclude Include="Turtle.h" />
   </ItemGroup>
   <ItemGroup>

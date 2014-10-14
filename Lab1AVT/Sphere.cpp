@@ -8,6 +8,7 @@ Sphere::Sphere(float* position, Game *game, float radius, int divisions): Object
 
 	float *p = circularProfile(-3.14159f / 2.0f, 3.14159f / 2.0f, radius, divisions);
 	computeVAO(divisions + 1, p + 2, p, divisions * 2, 0.0f);
+	free(p);
 }
 
 

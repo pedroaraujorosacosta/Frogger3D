@@ -35,12 +35,12 @@ void River::draw(GLuint programID){
 	modelview->scaleMatrix(20.0, 1.0, 1.0);
 
 	modelview->push();
-		modelview->translateMatrix(0.0, 2.5, 0.0);
+		modelview->translateMatrix(0.0, 3.0, 0.0);
 		bankTop->draw(programID);
 	modelview->pop();
 
 	modelview->push();
-	modelview->translateMatrix(0.0, -2.5, 0.0);
+	modelview->translateMatrix(0.0, -3.0, 0.0);
 		bankBot->draw(programID);
 	modelview->pop();
 	

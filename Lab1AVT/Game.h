@@ -23,7 +23,7 @@ class Game : IComponent {
 
 	int winX;
 	int winY;
-	double aspectRatio = (double)winX / winY;
+	double aspectRatio;
 	Stack modelViewStack;
 	Stack projectionStack;
 	double startTime; 

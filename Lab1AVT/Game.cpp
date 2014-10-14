@@ -68,22 +68,11 @@ void Game::draw(GLuint programID) {
 	++frameCount;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	GLfloat eye[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
-	GLfloat right[4] = { 1.0f, 0.0f, 0.0f, 0.0f }; //u 
-	GLfloat up[4] = { 0.0f, 1.0f, 0.0f, 0.0f }; //n
-	GLfloat lookPoint[4] = { 0.0f, 0.0f, -1.0f, 1.0f };
-
 	modelViewStack.push();
 
 	projectionStack.push();
 	
 	cam->setCamera();
-	//projectionStack.orthogonal(-10, 10, -7, 7, 0.1, 10);
-	//projectionStack.perspective(l, r, b, t, n, f);
-	//modelViewStack.lookAt(right, up, eye, lookPoint);
-	/*modelViewStack.lookAt(eye[0], eye[1], eye[2],
-		lookPoint[0], lookPoint[1], lookPoint[2],
-		up[0], up[1], up[2]);*/
 
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->draw(this->ProgramId);
@@ -320,7 +309,6 @@ GLuint Game::getPVMid()
 
 void Game::keyboardUp(unsigned char key, int x, int y) 
 {
-
 	switch (key) {
 	case 'q':
 	case 'Q':
@@ -334,7 +322,6 @@ void Game::keyboardUp(unsigned char key, int x, int y)
 		break;
 
 	}
-
 }
 
 void Game::keyboard(unsigned char key, int x, int y)
