@@ -53,6 +53,11 @@ void passiveMouseFunc(int x, int y)
 	game.passiveMouseFunc(x, y);
 }
 
+void mouseMotionFunc(int x, int y)
+{
+	game.mouseMotionFun(x, y);
+}
+
 void mouseFunc(int button, int state, int x, int y)
 {
 	game.mouseFunc(button, state, x, y);
@@ -112,6 +117,7 @@ void setupCallbacks()
 	glutKeyboardFunc(keyboardFunc);
 	glutKeyboardUpFunc(keyboardUpFunc);
 	glutMouseFunc(mouseFunc);
+	glutMotionFunc(mouseMotionFunc);
 	glutPassiveMotionFunc(passiveMouseFunc);
 }
 

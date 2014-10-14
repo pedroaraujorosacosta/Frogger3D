@@ -14,9 +14,8 @@
 
 #define CAPTION "Assignment 1"
 
-
-
-Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(20.0)
+Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(20.0),
+	isLeftButtonDown(false), isRightButtonDown(false), frameCount(0), totalFrames(0), startTime(0.0), windowHandle(0)
 {
 	winX = WinX;
 	winY = WinY;
@@ -217,8 +216,6 @@ unsigned int Game::getStreamSize(std::ifstream &ifs)
 	return (unsigned int)(end - beg);
 }
 
-
-
 void Game::checkShaderCompilation(GLuint shaderId)
 {
 	GLint isCompiled = 0;
@@ -271,8 +268,6 @@ void Game::checkProgramLinkage(GLuint programId, GLuint vertexShaderId, GLuint f
 	}
 }
 
-
-
 void Game::destroyShaderProgram()
 {
 	glUseProgram(0);
@@ -313,8 +308,6 @@ void Game::timer(int value) {
 	frameCount = 0;
 }
 
-
-
 Matrix Game::getPVM()
 {
 	return *projectionStack.getTop() * *modelViewStack.getTop();
@@ -343,6 +336,7 @@ void Game::keyboardUp(unsigned char key, int x, int y)
 	}
 
 }
+
 void Game::keyboard(unsigned char key, int x, int y)
 {
 	float front[3] = { 0.0, 1.0, 0.0 };
@@ -384,10 +378,19 @@ void Game::keyboard(unsigned char key, int x, int y)
 
 void Game::mouseFunc(int button, int state, int x, int y)
 {
+	if (button == GLUT_LEFT_BUTTON)
+		isLeftButtonDown = !isLeftButtonDown;
 
+	if (button == GLUT_RIGHT_BUTTON)
+		isRightButtonDown = !isRightButtonDown;
+
+	if (button == GLUT_RIGHT_BUTTON && isRightButtonDown)
+		frog->move();
+	else if (button == GLUT_RIGHT_BUTTON && !isRightButtonDown)
+		frog->stop();
 }
 
-void Game::passiveMouseFunc(int x, int y)
+void Game::mouseMotionFun(int x, int y)
 {
 	static int oldX = x;
 	static int oldY = y;
@@ -411,11 +414,17 @@ void Game::passiveMouseFunc(int x, int y)
 		else
 			warped = false;
 	}
-	
-	cam->updateDirection(dx, dy);
+
+	if (isLeftButtonDown)
+		cam->updateDirection(dx, dy);
 
 	oldX = newX;
 	oldY = newY;
+}
+
+void Game::passiveMouseFunc(int x, int y)
+{
+	
 }
 
 Stack* Game::getModelViewStack() 

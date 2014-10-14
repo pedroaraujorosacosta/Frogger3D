@@ -19,6 +19,7 @@ public:
 	void draw(GLuint programID);
 	void update();
 	void move(float *direction);
+	void move();
 	void stop();
 	float getX();
 	float getY();

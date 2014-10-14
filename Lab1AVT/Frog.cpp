@@ -15,15 +15,21 @@ Frog::~Frog()
 	delete eyes;
 }
 
-void Frog::update(){
-
+void Frog::update()
+{
 	for (int i = 0; i < 3; i++)
 		position[i] += direction[i] * velocity;
 }
 
-void Frog::move(float *direction){
+void Frog::move(float *direction)
+{
 	for (int i = 0; i < 3; i++)
 		this->direction[i] = direction[i];
+	velocity = 0.08;
+}
+
+void Frog::move()
+{
 	velocity = 0.08;
 }
 

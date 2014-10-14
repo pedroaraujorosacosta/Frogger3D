@@ -26,10 +26,10 @@ class Game : IComponent {
 	double aspectRatio = (double)winX / winY;
 	Stack modelViewStack;
 	Stack projectionStack;
-	double startTime = 0.0; 
-	int windowHandle = 0;
-	unsigned int frameCount = 0;
-	unsigned int totalFrames = 0;
+	double startTime; 
+	int windowHandle;
+	unsigned int frameCount;
+	unsigned int totalFrames;
 	std::vector<Object*> objects;
 	Frog *frog;
 	Camera *cam;
@@ -46,6 +46,8 @@ class Game : IComponent {
 	char *VtxShader;
 	char *FragShader;
 	
+	bool isLeftButtonDown;
+	bool isRightButtonDown;
 	
 	void setupGLUT(int argc, char* argv[]);
 	void setupGLEW();
@@ -75,6 +77,7 @@ public:
 	void keyboardUp(unsigned char key, int x, int y);
 	void mouseFunc(int button, int state, int x, int y);
 	void passiveMouseFunc(int x, int y);
+	void mouseMotionFun(int x, int y);
 
 	Matrix getPVM();
 	GLuint getPVMid();

@@ -155,3 +155,27 @@ void Camera::updateDirection(int dx, int dy)
 			phi -= dy / 10;
 	}
 }
+
+bool Camera::isFacingLeft()
+{
+	float left[] = { -1.0f, 0.0f, 0.0f }; 
+	return true;
+}
+
+bool Camera::isFacingRight()
+{
+	float right[] = { 1.0f, 0.0f, 0.0f };
+	return true;
+}
+
+bool Camera::isFacingFront()
+{
+	float front[] = { 0.0f, 1.0f, 0.0f };
+	return true;
+}
+
+bool Camera::isFacingBack()
+{
+	float back[] = { 0.0f, -1.0f, 0.0f };
+	return true;
+}
