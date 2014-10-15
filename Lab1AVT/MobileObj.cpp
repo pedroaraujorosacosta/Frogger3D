@@ -30,3 +30,18 @@ void MobileObj::init() {
 
 
 }
+
+float MobileObj::getDirX()
+{
+	return direction[0];
+}
+
+float MobileObj::getDirY()
+{
+	return direction[1];
+}
+
+float MobileObj::getDirZ()
+{
+	return direction[2];
+}

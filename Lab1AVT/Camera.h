@@ -42,5 +42,10 @@ public:
 	void setAt(float atx, float aty, float atz);
 	void setUp(float upx, float upy, float upz);
 	void updateDirection(int dx, int dy);
+	bool isInFPSMode();
+	bool isFacingLeft();
+	bool isFacingRight();
+	bool isFacingFront();
+	bool isFacingBack();
 };
 #endif

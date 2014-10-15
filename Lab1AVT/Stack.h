@@ -8,7 +8,7 @@ class Matrix;
 class Stack 
 {
 	std::stack<Matrix*> s;
-	float dotProduct(float *u, float *v, int size);
+	static float dotProduct(float *u, float *v, int size);
 	float norm(float *vector, int size);
 	void normalize(float *vector, int size);
 	void crossProduct(float *a, float*b, float* r);

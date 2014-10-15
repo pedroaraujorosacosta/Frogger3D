@@ -68,14 +68,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Blocker.cpp" />
+    <ClCompile Include="Bus.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Cylinder.cpp" />
+    <ClCompile Include="FloatingLog.cpp" />
     <ClCompile Include="Frog.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="IComponent.cpp" />
-    <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Manager.cpp" />
+    <ClCompile Include="ManagerLight.cpp" />
+    <ClCompile Include="ManagerObj.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="MobileObj.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -84,29 +89,36 @@
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Stack.cpp" />
     <ClCompile Include="Surface.cpp" />
-    <ClCompile Include="Vector.cpp" />
+    <ClCompile Include="Torus.cpp" />
+    <ClCompile Include="Turtle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Blocker.h" />
+    <ClInclude Include="Bus.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Car.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="Cylinder.h" />
+    <ClInclude Include="FloatingLog.h" />
     <ClInclude Include="Frog.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="IComponent.h" />
-    <ClInclude Include="Light.h" />
+    <ClInclude Include="ManagerLight.h" />
+    <ClInclude Include="Manager.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MobileObj.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="ManagerObj.h" />
     <ClInclude Include="River.h" />
     <ClInclude Include="Road.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="Surface.h" />
-    <ClInclude Include="Vector.h" />
+    <ClInclude Include="Torus.h" />
+    <ClInclude Include="Turtle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragShader.fsh" />

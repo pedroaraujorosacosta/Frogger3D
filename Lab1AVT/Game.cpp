@@ -1,11 +1,14 @@
 #include "Game.h"
 #include "Matrix.h"
 #include "Object.h"
-#include "Cube.h"
+
 #include "River.h"
 #include "Road.h"
+#include "Turtle.h"
+#include "FloatingLog.h"
+#include "Bus.h"
 #include "Car.h"
-#include "Sphere.h"
+
 #include "Frog.h"
 #include "Camera.h"
 #include "Vector.h"
@@ -13,9 +16,8 @@
 
 #define CAPTION "Assignment 1"
 
-
-
-Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(20.0)
+Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(20.0),
+	isLeftButtonDown(false), isRightButtonDown(false), frameCount(0), totalFrames(0), startTime(0.0), windowHandle(0)
 {
 	winX = WinX;
 	winY = WinY;
@@ -36,9 +38,21 @@ void Game::init(int argc, char* argv[])
 	//x esquerda - direita
 	//y cima - baixo
 	//z near - far -> nao afecta sem perspective
-	float posCar[] = { 0.0, 0.0, 0.0 };
-	float posriver[] = { 0.0, 3.0, -3.0};
-	//objects.push_back(new River(posriver, this));
+	float posCar[] = { -10.0, 2.5, 0.0 };
+	float dirCar[] = { 0.05, 0.0, 0.0 };
+	float velCar = 1.0;
+
+	float posBus[] = { -10.0, 2.5, 0.0 };
+	float dirBus[] = { 0.05, 0.0, 0.0 };
+	float velBus = 1.0;
+
+	//float posTurtle[] = { 0.0, 0.0, 0.0 };
+	//float posFloatingLog[] = { 0.0, 0.0, 0.0 };
+	float posRiver[] = { 0.0, 3.0, -3.0};
+
+	objects.push_back(new River(posRiver, this));
+	//objects.push_back(new Car(posCar, this, velCar, dirCar));
+	objects.push_back(new Bus(posBus, this, velBus, dirBus));
 	//float posroad[] = { 0.0, -3.0, -3.0 };
 	//objects.push_back(new Road(posroad, this));
 	//objects.push_back(new Sphere(posroad, this, 3, 100));
@@ -65,22 +79,11 @@ void Game::draw(GLuint programID) {
 	++frameCount;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	GLfloat eye[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
-	GLfloat right[4] = { 1.0f, 0.0f, 0.0f, 0.0f }; //u 
-	GLfloat up[4] = { 0.0f, 1.0f, 0.0f, 0.0f }; //n
-	GLfloat lookPoint[4] = { 0.0f, 0.0f, -1.0f, 1.0f };
-
 	modelViewStack.push();
 
 	projectionStack.push();
 	
 	cam->setCamera();
-	//projectionStack.orthogonal(-10, 10, -7, 7, 0.1, 10);
-	//projectionStack.perspective(l, r, b, t, n, f);
-	//modelViewStack.lookAt(right, up, eye, lookPoint);
-	/*modelViewStack.lookAt(eye[0], eye[1], eye[2],
-		lookPoint[0], lookPoint[1], lookPoint[2],
-		up[0], up[1], up[2]);*/
 
 
 	Vector res(4);
@@ -229,8 +232,6 @@ unsigned int Game::getStreamSize(std::ifstream &ifs)
 	return (unsigned int)(end - beg);
 }
 
-
-
 void Game::checkShaderCompilation(GLuint shaderId)
 {
 	GLint isCompiled = 0;
@@ -283,8 +284,6 @@ void Game::checkProgramLinkage(GLuint programId, GLuint vertexShaderId, GLuint f
 	}
 }
 
-
-
 void Game::destroyShaderProgram()
 {
 	glUseProgram(0);
@@ -325,8 +324,6 @@ void Game::timer(int value) {
 	frameCount = 0;
 }
 
-
-
 Matrix Game::getPVM()
 {
 	return *projectionStack.getTop() * *modelViewStack.getTop();
@@ -339,7 +336,6 @@ GLuint Game::getPVMid()
 
 void Game::keyboardUp(unsigned char key, int x, int y) 
 {
-
 	switch (key) {
 	case 'q':
 	case 'Q':
@@ -353,8 +349,8 @@ void Game::keyboardUp(unsigned char key, int x, int y)
 		break;
 
 	}
-
 }
+
 void Game::keyboard(unsigned char key, int x, int y)
 {
 	float front[3] = { 0.0, 1.0, 0.0 };
@@ -380,12 +376,15 @@ void Game::keyboard(unsigned char key, int x, int y)
 			frog->move(right);
 			break;
 		case '1':
+			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
 			cam->topCameraMode();
 			break;
 		case '2':
+			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
 			cam->topCameraPerspectiveMode();
 			break;
 		case '3':
+			glutSetCursor(GLUT_CURSOR_NONE);
 			cam->FPSCameraMode();
 			break;
 	}
@@ -393,26 +392,53 @@ void Game::keyboard(unsigned char key, int x, int y)
 
 void Game::mouseFunc(int button, int state, int x, int y)
 {
+	if (button == GLUT_LEFT_BUTTON)
+		isLeftButtonDown = !isLeftButtonDown;
 
+	if (button == GLUT_RIGHT_BUTTON)
+		isRightButtonDown = !isRightButtonDown;
+
+	if (button == GLUT_RIGHT_BUTTON && isRightButtonDown)
+		frog->move();
+	else if (button == GLUT_RIGHT_BUTTON && !isRightButtonDown)
+		frog->stop();
+}
+
+void Game::mouseMotionFun(int x, int y)
+{
+	static int oldX = x;
+	static int oldY = y;
+	static bool warped = false;
+	int newX = x;
+	int newY = y;
+
+	const int MIDDLE_X = winX / 2;
+	const int MIDDLE_Y = winY / 2;
+
+	int dx = newX - MIDDLE_X;
+	int dy = newY - MIDDLE_Y;
+
+	if (cam->isInFPSMode())
+	{
+		if (!warped)
+		{
+			glutWarpPointer(MIDDLE_X, MIDDLE_Y);
+			warped = true;
+		}
+		else
+			warped = false;
+	}
+
+	if (isLeftButtonDown)
+		cam->updateDirection(dx, dy);
+
+	oldX = newX;
+	oldY = newY;
 }
 
 void Game::passiveMouseFunc(int x, int y)
 {
-	static int oldX = x;
-	static int oldY = y;
-	int newX = x;
-	int newY = y;
-
-	int dx = newX - oldX;
-	int dy = newY - oldY;
-
-	//std::cout << "x: " << x << " y: " << y << std::endl;
-	//std::cout << "dx: " << dx << " dy: " << dy << std::endl;
-	//std::cout << "oldX: " << oldX << " oldY: " << oldY << std::endl;
-	cam->updateDirection(dx, dy);
-
-	oldX = newX;
-	oldY = newY;
+	
 }
 
 Stack* Game::getModelViewStack() 
