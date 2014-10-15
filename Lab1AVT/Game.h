@@ -16,7 +16,7 @@
 #define MY_TEXTURE_COORD_ATTRIB 2
 //#define M_PI atan(1)*4
 
-class Object;
+class ManagerObj;
 class Camera;
 
 class Game : IComponent {
@@ -33,6 +33,7 @@ class Game : IComponent {
 	std::vector<Object*> objects;
 	Frog *frog;
 	Camera *cam;
+	ManagerObj *managerObj;
 
 	double FOV;
 	double n;
@@ -81,6 +82,7 @@ public:
 
 	Matrix getPVM();
 	GLuint getPVMid();
+	GLuint getProgramID();
 	Stack* getModelViewStack();
 	Stack* getProjectionStack();
 	Frog* getFrog();
