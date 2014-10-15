@@ -8,6 +8,15 @@
 #define MY_NORMAL_ATTRIB 1
 #define MY_TEXTURE_COORD_ATTRIB 2
 
+struct Material{
+	float diffuse[4];
+	float ambient[4];
+	float specular[4];
+	float emissive[4];
+	float shininess;
+	int texCount;
+};
+
 class Game;
 
 class Object : public IComponent
@@ -25,8 +34,7 @@ protected:
 	GLuint VaoId;
 	GLuint VboId[4];
 	Game *game;
-
-
+	struct Material mat;
 	virtual void init();
 
 	void sendDataToShader(GLuint programID);

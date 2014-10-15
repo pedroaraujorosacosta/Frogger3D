@@ -93,6 +93,7 @@
     <ClCompile Include="Torus.cpp" />
     <ClCompile Include="Turtle.cpp" />
     <ClCompile Include="Vector.cpp" />
+    <ClCompile Include="vsShaderLib.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -123,9 +124,12 @@
     <ClInclude Include="Torus.h" />
     <ClInclude Include="Turtle.h" />
     <ClInclude Include="Vector.h" />
+    <ClInclude Include="vsShaderLib.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragShader.fsh" />
+    <None Include="pointlight.frag" />
+    <None Include="pointlight.vert" />
     <None Include="vtxShader.vsh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

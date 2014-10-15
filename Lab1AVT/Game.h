@@ -30,7 +30,6 @@ class Game : IComponent {
 	int windowHandle;
 	unsigned int frameCount;
 	unsigned int totalFrames;
-	std::vector<Object*> objects;
 	Frog *frog;
 	Camera *cam;
 	VSShaderLib *shader;

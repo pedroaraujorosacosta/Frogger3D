@@ -43,7 +43,7 @@ void Game::init(int argc, char* argv[])
 	//y cima - baixo
 	//z near - far -> nao afecta sem perspective
 
-	managerObj = new ManagerObj(this);
+	//managerObj = new ManagerObj(this);
 
 	float posFrog[] = { 0.0, -7.0, 0.0 };
 	float directionFrog[3] = { 0.0, 1.0, 0.0 };
@@ -57,7 +57,7 @@ void Game::init(int argc, char* argv[])
 }
 
 // light direction
-float ldir[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+float ldir[4] = { 1.0f, 1.0f, 1.0f, 0.0f };
 Vector lightDir(ldir, 4);
 float lpos[4] = { 4.0f, 6.0f, 2.0f, 1.0f };
 Vector lightPos(lpos, 4);
@@ -77,20 +77,20 @@ void Game::draw(GLuint programID) {
 
 	// transform light to camera space and send it to GLSL
 	Vector res(4);
-	res = *modelViewStack.getTop() * lightDir;
+	res = *modelViewStack.getTop() * lightPos;
 	res.normalize();
 	shader->setUniform("l_pos", res.v);
 
 	// So usado para luzes direccionais
-	//shader->setBlockUniform("Lights", "l_dir", res);
+	/*shader->setBlockUniform("Lights", "l_dir", res.v);
 
-	//res = *modelViewStack.getTop() * lightPos;
-	//shader.setBlockUniform("Lights", "l_pos", res);
+	res = *modelViewStack.getTop() * lightPos;
+	shader->setBlockUniform("Lights", "l_pos", res.v);
 
-	//res = *modelViewStack.getTop() * spotDir;
-	//shader.setBlockUniform("Lights", "l_spotDir", res);
+	res = *modelViewStack.getTop() * spotDir;
+	shader->setBlockUniform("Lights", "l_spotDir", res.v);*/
 	
-	managerObj->draw();
+	//managerObj->draw();
 
 	frog->draw(this->ProgramId);
 
@@ -103,7 +103,7 @@ void Game::draw(GLuint programID) {
 void Game::reset() {}
 void Game::update() {
 
-	managerObj->update();
+	//managerObj->update();
 	frog->update();
 
 }
@@ -176,6 +176,7 @@ void Game::createShaderProgram() {
 	shader->setVertexAttribName(VSShaderLib::NORMAL_ATTRIB, "normal");
 	shader->setVertexAttribName(VSShaderLib::TEXTURE_COORD_ATTRIB, "texCoord");*/
 
+	ProgramId = shader->getProgramIndex();
 	glBindFragDataLocation(shader->getProgramIndex(), 0, "colorOut");
 	glBindAttribLocation(shader->getProgramIndex(), VSShaderLib::VERTEX_COORD_ATTRIB, "position");
 	glBindAttribLocation(shader->getProgramIndex(), VSShaderLib::NORMAL_ATTRIB, "normal");
