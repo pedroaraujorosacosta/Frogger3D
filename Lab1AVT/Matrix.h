@@ -1,7 +1,9 @@
 #ifndef __MATRIX_H__
 #define __MATRIX_H__
 
+#include "Vector.h"
 #include <vector>
+
 
 // class Matrix - so funciona p matrizes quadradas.
 
@@ -15,6 +17,7 @@ public:
 
 	Matrix& operator*=(const Matrix &m1);
 	Matrix& operator=(const Matrix &m1);
+	Vector operator*(const Vector &v1);
 	friend Matrix operator*(Matrix lhs, const Matrix &rhs);
 	void transposeMatrix();
 	void invertMatrix();

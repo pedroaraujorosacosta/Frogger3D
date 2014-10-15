@@ -35,6 +35,25 @@ Matrix::Matrix(Matrix &other)
 		m.push_back(other.m[i]);
 }
 
+
+Vector Matrix::operator*(const Vector &v1)
+{
+
+	int size1 = sqrt(m.size());
+	int size2 = sqrt(m.size());
+	Matrix copy(*this);
+	Vector v2(v1.size);
+
+	for (int i = 0; i < size1; i++)
+	{
+		for (int j = 0; j < size2; j++)
+		{
+			v2.v[i] += copy.m[j + size1 * i] * v1.v[j];
+		}
+	}
+	return v2;
+}
+
 Matrix& Matrix::operator*=(const Matrix &m1)
 {
 	int size1 = sqrt(m.size());

@@ -8,6 +8,8 @@
 #include "Sphere.h"
 #include "Frog.h"
 #include "Camera.h"
+#include "Vector.h"
+
 
 #define CAPTION "Assignment 1"
 
@@ -50,6 +52,15 @@ void Game::init(int argc, char* argv[])
 	cam = new Camera(this, t, b, n, f, l, r, FOV, S);
 }
 
+// light direction
+float ldir[4] = { 1.0f, 1.0f, 1.0f, 0.0f };
+Vector lightDir(ldir, 4);
+float lpos[4] = { 4.0f, 6.0f, 2.0f, 1.0f };
+Vector lightPos(lpos, 4);
+float sdir[4] = { -4.0f, -6.0f, -2.0f, 0.0f };
+Vector spotDir(sdir, 4);
+
+
 void Game::draw(GLuint programID) {
 	++frameCount;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -70,6 +81,22 @@ void Game::draw(GLuint programID) {
 	/*modelViewStack.lookAt(eye[0], eye[1], eye[2],
 		lookPoint[0], lookPoint[1], lookPoint[2],
 		up[0], up[1], up[2]);*/
+
+
+	Vector res(4);
+	res = *modelViewStack.getTop() * lightDir;
+	
+	// transform light to camera space and send it to GLSL
+	res.normalize();
+
+	//shader.setBlockUniform("Lights", "l_dir", res);
+
+	res = *modelViewStack.getTop() * lightPos;
+	//shader.setBlockUniform("Lights", "l_pos", res);
+
+	res = *modelViewStack.getTop() * spotDir;
+	//shader.setBlockUniform("Lights", "l_spotDir", res);
+	
 
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->draw(this->ProgramId);
