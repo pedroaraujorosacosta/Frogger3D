@@ -14,7 +14,7 @@
 #define MY_TEXTURE_COORD_ATTRIB 2
 //#define M_PI atan(1)*4
 
-class Object;
+class ManagerObj;
 class Camera;
 class Frog;
 class VSShaderLib;
@@ -34,6 +34,7 @@ class Game : IComponent {
 	Frog *frog;
 	Camera *cam;
 	VSShaderLib *shader;
+	ManagerObj *managerObj;
 
 	double FOV;
 	double n;
@@ -88,6 +89,7 @@ public:
 	GLuint getPVMid();
 	Matrix getVM();
 	GLuint getVMid();
+	GLuint getProgramID();
 	Stack* getModelViewStack();
 	Stack* getProjectionStack();
 	Frog* getFrog();

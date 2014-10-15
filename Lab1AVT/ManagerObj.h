@@ -2,29 +2,45 @@
 #define __MANAGEROBJ_H__
 
 #include "Manager.h"
-#include <GL\freeglut.h>
 
-#define MY_VERTEX_COORD_ATTRIB 0
-#define MY_NORMAL_ATTRIB 1
-#define MY_TEXTURE_COORD_ATTRIB 2
 
-class Game;
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <vector>
+
+class Object;
+class MobileObj;
 
 class ManagerObj : public Manager
 {
 
+	float dificuldade;
+	float lateralEsquerda;
+	float lateralDireita;
+
+	std::vector<Object*> objects;
+	std::vector<MobileObj*> objectsMobile;
+
 protected:
 
-	virtual void init();
+	void init();
 
-	void sendDataToShader(GLuint programID);
-	void createBufferObjects();
 public:
 	ManagerObj(Game *game);
 	~ManagerObj();
-	virtual void draw(GLuint programID);
-	virtual void reset();
-	virtual void update();
+	void draw();
+	void reset();
+	void update();
+
+	void setDificuldade(float _dificuldade);
+	void setLateralEsquerda(float _lateralEsquerda);
+	void setLateralDireita(float _lateralDireita);
+
+	float getBusVelocity();
+	float getCarVelocity();
+	float getFloatingLogVelocity();
+	float getTurtleVelocity();
 };
 
 #endif

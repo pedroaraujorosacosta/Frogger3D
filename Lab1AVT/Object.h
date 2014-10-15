@@ -41,6 +41,13 @@ public:
 	float * circularProfile(float minAngle, float maxAngle, float radius, int divisions, float transX = 0.0f, float transY = 0.0f);
 	int revSmoothNormal2(float *p, float *nx, float *ny, float smoothCos, int beginEnd);
 	void computeVAO(int numP, float *p, float *points, int sides, float smoothCos);
+
+	float getPositionXXs(){
+		return position[0];
+	}
+	void setPositionXXs(float positionXXs){
+		position[0] = positionXXs;
+	}
 };
 
 #endif

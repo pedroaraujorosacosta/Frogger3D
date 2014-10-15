@@ -2,6 +2,8 @@
 #include "Matrix.h"
 #include "Object.h"
 
+#include "ManagerObj.h"
+
 #include "River.h"
 #include "Road.h"
 #include "Turtle.h"
@@ -40,26 +42,12 @@ void Game::init(int argc, char* argv[])
 	//x esquerda - direita
 	//y cima - baixo
 	//z near - far -> nao afecta sem perspective
-	float posCar[] = { -10.0, 2.5, 0.0 };
-	float dirCar[] = { 0.05, 0.0, 0.0 };
-	float velCar = 1.0;
 
-	float posBus[] = { -10.0, 2.5, 0.0 };
-	float dirBus[] = { 0.05, 0.0, 0.0 };
-	float velBus = 1.0;
+	managerObj = new ManagerObj(this);
 
-	//float posTurtle[] = { 0.0, 0.0, 0.0 };
-	//float posFloatingLog[] = { 0.0, 0.0, 0.0 };
-	float posRiver[] = { 0.0, 3.0, -3.0};
-
-	objects.push_back(new River(posRiver, this));
-	//objects.push_back(new Car(posCar, this, velCar, dirCar));
-	objects.push_back(new Bus(posBus, this, velBus, dirBus));
-	//float posroad[] = { 0.0, -3.0, -3.0 };
-	//objects.push_back(new Road(posroad, this));
-	//objects.push_back(new Sphere(posroad, this, 3, 100));
-	float direction[3] = { 0.0, 1.0, 0.0 };
-	frog = new Frog(posCar, this, 0.0, direction);
+	float posFrog[] = { 0.0, -7.0, 0.0 };
+	float directionFrog[3] = { 0.0, 1.0, 0.0 };
+	frog = new Frog(posFrog, this, 0.0, directionFrog);
 
 	// setup camera
 	S = tan(FOV*0.5*(M_PI / 180)) * n;
@@ -102,9 +90,9 @@ void Game::draw(GLuint programID) {
 	//res = *modelViewStack.getTop() * spotDir;
 	//shader.setBlockUniform("Lights", "l_spotDir", res);
 	
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->draw(shader->getProgramIndex());
-	frog->draw(shader->getProgramIndex());
+	managerObj->draw();
+
+	frog->draw(this->ProgramId);
 
 	projectionStack.pop();
 	modelViewStack.pop();
@@ -115,8 +103,7 @@ void Game::draw(GLuint programID) {
 void Game::reset() {}
 void Game::update() {
 
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->update();
+	managerObj->update();
 	frog->update();
 
 }
@@ -381,6 +368,11 @@ GLuint Game::getVMid()
 VSShaderLib* Game::getShader()
 {
 	return shader;
+}
+
+GLuint Game::getProgramID()
+{
+	return ProgramId;
 }
 
 void Game::keyboardUp(unsigned char key, int x, int y) 
