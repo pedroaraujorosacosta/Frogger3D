@@ -20,7 +20,7 @@ public:
 	Vector operator*(const Vector &v1);
 	friend Matrix operator*(Matrix lhs, const Matrix &rhs);
 	void transposeMatrix();
-	void invertMatrix();
+	Matrix invertMatrix();
 	//Matrix multMatrix(Matrix &m1, Matrix &m2);
 	int sizeofMatrix();
 };

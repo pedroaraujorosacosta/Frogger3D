@@ -8,6 +8,7 @@
 
 #include <gl\glew.h>
 #include <GL\freeglut.h>
+#include "vsShaderLib.h"
 
 Object::Object(float *position, Game *game) {
 	for (int i = 0; i < 3; i++)
@@ -38,19 +39,41 @@ void Object::draw(GLuint programID) {
 
 void Object::sendDataToShader(GLuint programID)
 {
-	Matrix top;
+	/*Matrix top;
 	top = game->getPVM();
 
 	GLfloat PVM[16];
 
 	for (int i = 0; i < top.sizeofMatrix(); i++)
-		PVM[i] = top.m[i];
+		PVM[i] = top.m[i];*/
 
 	glBindVertexArray(VaoId);
 	glUseProgram(programID);
-	GLuint matID = game->getPVMid();
+	//GLuint pvmID = game->getPVMid();
 
-	glUniformMatrix4fv(matID, 1, GL_TRUE, PVM);
+	// send the VM matrix
+	Matrix vm = game->getVM();
+	float vmFloat[16];
+	for (int i = 0; i < 16; i++)
+		vmFloat[i] = vm.m[i];
+	VSShaderLib *shader = game->getShader();
+	shader->setUniform("m_viewModel", vmFloat);
+
+	// compute and send the normal matrix
+	Matrix iVm = vm.invertMatrix();
+	float iVmFloat[9];
+	for (int i = 0; i < 9; i++)
+		iVmFloat[i] = iVm.m[i];
+	shader->setUniform("m_normal", iVmFloat);
+
+	// send the PVM matrix
+	Matrix pvmM = game->getPVM();
+	float pvmFloat[16];
+	for (int i = 0; i < 16; i++)
+		pvmFloat[i] = pvmM.m[i];
+	shader->setUniform("m_pvm", pvmFloat);
+
+	//glUniformMatrix4fv(matID, 1, GL_TRUE, PVM);
 	glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_INT, (GLvoid*)0);
 
 	glUseProgram(0);

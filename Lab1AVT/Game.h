@@ -3,8 +3,6 @@
 
 #include "IComponent.h"
 #include "Stack.h"
-#include "Frog.h"
-
 
 #include <iostream>
 #include <sstream>
@@ -18,6 +16,8 @@
 
 class Object;
 class Camera;
+class Frog;
+class VSShaderLib;
 
 class Game : IComponent {
 
@@ -33,6 +33,7 @@ class Game : IComponent {
 	std::vector<Object*> objects;
 	Frog *frog;
 	Camera *cam;
+	VSShaderLib *shader;
 
 	double FOV;
 	double n;
@@ -42,7 +43,11 @@ class Game : IComponent {
 	double f;
 
 	GLuint VertexShaderId, FragmentShaderId, ProgramId;
-	GLuint UniformId;
+	//GLuint UniformId;
+	GLint pvm_uniformId;
+	GLint vm_uniformId;
+	GLint normal_uniformId;
+	GLint lPos_uniformId;
 	char *VtxShader;
 	char *FragShader;
 	
@@ -81,9 +86,12 @@ public:
 
 	Matrix getPVM();
 	GLuint getPVMid();
+	Matrix getVM();
+	GLuint getVMid();
 	Stack* getModelViewStack();
 	Stack* getProjectionStack();
 	Frog* getFrog();
+	VSShaderLib* getShader();
 };
 
 #endif
