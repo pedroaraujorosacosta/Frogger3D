@@ -45,7 +45,7 @@ void Frog::draw(GLuint programID){
 	modelview->push();
 	//puts the frog on the right position
 	modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
-	modelview->scaleMatrix(2.0, 2.0, 1.0);  
+	modelview->scaleMatrix(1.2, 1.0, 0.6);  
 	
 	if (direction[0] < 0.0)
 		modelview->rotateMatrix(0.0, 0.0, 1.0, -90);

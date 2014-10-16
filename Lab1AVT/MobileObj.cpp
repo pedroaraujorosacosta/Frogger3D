@@ -46,10 +46,3 @@ float MobileObj::getDirZ()
 	return direction[2];
 
 }
-
-bool MobileObj::goesLeft()
-{
-	if (getDirX() < 0)
-		return true;
-	return false;
-}

@@ -2,13 +2,11 @@
 #define __FLOATINGLOG_H__
 
 #include "Surface.h"
-#include "Cube.h"
-#include "Sphere.h"
+#include "Cylinder.h"
 
 class FloatingLog : public Surface {
 
-	Cube *body;
-	Sphere *wheels;
+	Cylinder *body;
 
 
 protected:

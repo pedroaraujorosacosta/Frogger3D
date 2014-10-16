@@ -16,6 +16,5 @@ public:
 	float getDirX();
 	float getDirY();
 	float getDirZ();
-	bool goesLeft();
 };
 #endif

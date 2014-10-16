@@ -20,7 +20,12 @@ class ManagerObj : public Manager
 	float lateralDireita;
 
 	std::vector<Object*> objects;
-	std::vector<MobileObj*> objectsMobile;
+	std::vector<MobileObj*> objectsMobileLane1;
+	std::vector<MobileObj*> objectsMobileLane2;
+	std::vector<MobileObj*> objectsMobileLane3;
+	std::vector<MobileObj*> objectsMobileLane4;
+	std::vector<MobileObj*> objectsMobileLane5;
+	std::vector<MobileObj*> objectsMobileLane6;
 
 protected:
 
@@ -37,10 +42,12 @@ public:
 	void setLateralEsquerda(float _lateralEsquerda);
 	void setLateralDireita(float _lateralDireita);
 
-	float getBusVelocity();
-	float getCarVelocity();
-	float getFloatingLogVelocity();
-	float getTurtleVelocity();
+	float getLane1Velocity();
+	float getLane2Velocity();
+	float getLane3Velocity();
+	float getLane4Velocity();
+	float getLane5Velocity();
+	float getLane6Velocity();
 };
 
 #endif

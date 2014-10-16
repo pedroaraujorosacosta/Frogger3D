@@ -28,7 +28,7 @@ void Bus::draw(GLuint programID){
 	modelview->push();
 	//puts the car on the right position
 	modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
-	modelview->scaleMatrix(2.0, 2.0, 1.0);
+	modelview->scaleMatrix(1.3, 1.0, 1.0);
 
 	if (direction[0] != 0.0)
 		modelview->rotateMatrix(0.0, 0.0, 1.0, 90);
@@ -39,22 +39,22 @@ void Bus::draw(GLuint programID){
 	modelview->pop();
 
 	modelview->push();
-	modelview->translateMatrix(0.6, 0.6, 0.0);
+	modelview->translateMatrix(0.5, 0.6, -0.5);
 	wheels->draw(programID);
 	modelview->pop();
 
 	modelview->push();
-	modelview->translateMatrix(0.6, -0.6, 0.0);
+	modelview->translateMatrix(0.5, -0.6, -0.5);
 	wheels->draw(programID);
 	modelview->pop();
 
 	modelview->push();
-	modelview->translateMatrix(-0.6, -0.6, 0.0);
+	modelview->translateMatrix(-0.5, -0.6, -0.5);
 	wheels->draw(programID);
 	modelview->pop();
 
 	modelview->push();
-	modelview->translateMatrix(-0.6, 0.6, 0.0);
+	modelview->translateMatrix(-0.5, 0.6, -0.5);
 	wheels->draw(programID);
 	modelview->pop();
 

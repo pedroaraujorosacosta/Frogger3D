@@ -2,13 +2,14 @@
 #define __TURTLE_H__
 
 #include "Surface.h"
-#include "Cube.h"
+#include "Torus.h"
 #include "Sphere.h"
 
 class Turtle : public Surface {
 
-	Cube *body;
-	Sphere *wheels;
+	Sphere *head;
+	Torus *body;
+	Sphere *shell;
 
 
 protected:
