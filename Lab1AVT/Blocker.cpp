@@ -2,6 +2,7 @@
 #include "Stack.h"
 #include "Game.h"
 
+
 Blocker::Blocker(float *position, Game *game, float velocity, float *direction) : MobileObj(position, game, velocity, direction)
 {
 	init();
