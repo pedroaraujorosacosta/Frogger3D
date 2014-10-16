@@ -51,6 +51,13 @@ public:
 	int revSmoothNormal2(float *p, float *nx, float *ny, float smoothCos, int beginEnd);
 	void computeVAO(int numP, float *p, float *points, int sides, float smoothCos);
 
+	void setAmbient(float *amb);
+	void setDiffuse(float *diff);
+	void setSpecular(float *spec);
+	void setEmissive(float *emissive);
+	void setShininess(float shininess);
+	void setTexCount(int texCount);
+
 	float getPositionXXs(){
 		return position[0];
 	}

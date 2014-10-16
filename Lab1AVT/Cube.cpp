@@ -12,6 +12,8 @@ void Cube::draw(GLuint programID){
 
 	Stack* modelview = game->getModelViewStack();
 
+	sendMaterials();
+
 	modelview->push(); 
 	//then, puts the unitary cube in the right position
 	modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);

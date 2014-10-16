@@ -74,6 +74,35 @@ void Frog::init() {
 	float o[3] = { 0.0, 0.0, 0.0 };
 	body = new Sphere(o, game, 0.6, 8);
 	eyes = new Sphere(o, game, 0.2, 8);
+
+	// set materials
+	float ambBody[] = { 0.2f, 0.15f, 0.1f, 1.0f };
+	float diffBody[] = { 0.8f, 0.1f, 0.1f, 1.0f };
+	float specBody[] = { 0.8f, 0.8f, 0.8f, 1.0f };
+	float emissiveBody[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float shininessBody = 100.0f;
+	int texcountBody = 0;
+
+	body->setAmbient(ambBody);
+	body->setDiffuse(diffBody);
+	body->setSpecular(specBody);
+	body->setEmissive(emissiveBody);
+	body->setShininess(shininessBody);
+	body->setTexCount(texcountBody);
+
+	float ambEyes[] = { 0.1f, 0.2f, 0.1f, 1.0f };
+	float diffEyes[] = { 0.1f, 0.9f, 0.1f, 1.0f };
+	float specEyes[] = { 0.8f, 0.8f, 0.8f, 1.0f };
+	float emissiveEyes[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float shininessEyes = 100.0f;
+	int texcountEyes = 0;
+
+	eyes->setAmbient(ambEyes);
+	eyes->setDiffuse(diffEyes);
+	eyes->setSpecular(specEyes);
+	eyes->setEmissive(emissiveEyes);
+	eyes->setShininess(shininessEyes);
+	eyes->setTexCount(texcountEyes);
 }
 
 float Frog::getX()

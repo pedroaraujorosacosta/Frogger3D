@@ -56,4 +56,40 @@ void River::init() {
 	bankTop = new Cube(o, this->game);
 	river = new Cube(o, this->game);
 	bankBot = new Cube(o, this->game);
+
+	// set materials
+	float ambRiver[] = { 0.1f, 0.1f, 0.2f, 1.0f };
+	float diffRiver[] = { 0.1f, 0.1f, 0.8f, 1.0f };
+	float specRiver[] = { 0.1f, 0.1f, 0.8f, 1.0f };
+	float emissiveRiver[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float shininessRiver = 100.0f;
+	int texcountRiver = 0;
+
+	river->setAmbient(ambRiver);
+	river->setDiffuse(diffRiver);
+	river->setSpecular(specRiver);
+	river->setEmissive(emissiveRiver);
+	river->setShininess(shininessRiver);
+	river->setTexCount(texcountRiver);
+
+	float ambBank[] = { 0.1f, 0.2f, 0.1f, 1.0f };
+	float diffBank[] = { 0.1f, 0.9f, 0.1f, 1.0f };
+	float specBank[] = { 0.1f, 0.1f, 0.1f, 1.0f };
+	float emissiveBank[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float shininessBank = 100.0f;
+	int texcountBank = 0;
+
+	bankTop->setAmbient(ambBank);
+	bankTop->setDiffuse(diffBank);
+	bankTop->setSpecular(specBank);
+	bankTop->setEmissive(emissiveBank);
+	bankTop->setShininess(shininessBank);
+	bankTop->setTexCount(texcountBank);
+
+	bankBot->setAmbient(ambBank);
+	bankBot->setDiffuse(diffBank);
+	bankBot->setSpecular(specBank);
+	bankBot->setEmissive(emissiveBank);
+	bankBot->setShininess(shininessBank);
+	bankBot->setTexCount(texcountBank);
 }

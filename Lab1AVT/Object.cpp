@@ -368,3 +368,33 @@ Object::computeVAO(int numP, float *p, float *points, int sides, float smoothCos
 	glDisableVertexAttribArray(MY_TEXTURE_COORD_ATTRIB);
 
 }
+
+void Object::setAmbient(float *amb)
+{
+	memcpy(mat.ambient, amb, 4 * sizeof(float));
+}
+
+void Object::setDiffuse(float *diff)
+{
+	memcpy(mat.diffuse, diff, 4 * sizeof(float));
+}
+
+void Object::setSpecular(float *spec)
+{
+	memcpy(mat.specular, spec, 4 * sizeof(float));
+}
+
+void Object::setEmissive(float *emissive)
+{
+	memcpy(mat.emissive, emissive, 4 * sizeof(float));
+}
+
+void Object::setShininess(float shininess)
+{
+	mat.shininess = shininess;
+}
+
+void Object::setTexCount(int texCount)
+{
+	mat.texCount = texCount;
+}

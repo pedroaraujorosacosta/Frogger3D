@@ -43,7 +43,7 @@ void Game::init(int argc, char* argv[])
 	//y cima - baixo
 	//z near - far -> nao afecta sem perspective
 
-	//managerObj = new ManagerObj(this);
+	managerObj = new ManagerObj(this);
 
 	float posFrog[] = { 0.0, -7.0, 0.0 };
 	float directionFrog[3] = { 0.0, 1.0, 0.0 };
@@ -59,7 +59,7 @@ void Game::init(int argc, char* argv[])
 // light direction
 float ldir[4] = { 1.0f, 1.0f, 1.0f, 0.0f };
 Vector lightDir(ldir, 4);
-float lpos[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+float lpos[4] = { 0.0f, 0.0f, 14.0f, 1.0f };
 Vector lightPos(lpos, 4);
 float sdir[4] = { -4.0f, -6.0f, -2.0f, 0.0f };
 Vector spotDir(sdir, 4);
@@ -93,7 +93,7 @@ void Game::draw(GLuint programID) {
 	res = *modelViewStack.getTop() * spotDir;
 	shader->setBlockUniform("Lights", "l_spotDir", res.v);*/
 	
-	//managerObj->draw();
+	managerObj->draw();
 
 	frog->draw(ProgramId);
 
@@ -106,11 +106,11 @@ void Game::draw(GLuint programID) {
 }
 
 void Game::reset() {}
-void Game::update() {
 
-	//managerObj->update();
+void Game::update() 
+{
+	managerObj->update();
 	frog->update();
-
 }
 
 void Game::reshape(int w, int h)
