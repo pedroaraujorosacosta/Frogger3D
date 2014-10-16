@@ -58,4 +58,19 @@ void Turtle::init() {
 	head = new Sphere(o, game, 0.2 , 8);
 	shell = new Sphere(o, game, 0.2, 8);
 	body = new Torus(o, game, 0.1, 0.4, 10, 10);
+
+	// set materials
+	float ambHead[] = { 0.1f, 0.1f, 0.2f, 1.0f };
+	float diffHead[] = { 0.8f, 0.5f, 0.8f, 1.0f };
+	float specHead[] = { 0.1f, 0.1f, 0.8f, 1.0f };
+	float emissiveHead[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float shininessHead = 100.0f;
+	int texcountHead = 0;
+
+	head->setAmbient(ambHead);
+	head->setDiffuse(diffHead);
+	head->setSpecular(specHead);
+	head->setEmissive(emissiveHead);
+	head->setShininess(shininessHead);
+	head->setTexCount(texcountHead);
 }

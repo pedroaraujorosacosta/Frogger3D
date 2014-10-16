@@ -115,7 +115,34 @@ void Matrix::transposeMatrix()
 
 }
 
-void Matrix::invertMatrix()
+Matrix Matrix::invertMatrix()
 { 
+	float det, invDet;
+	float mMat3x3[9];
 
+	for (int i = 0; i < 3; i ++)
+		mMat3x3[i] = m[i];
+	for (int i = 4; i < 7; i++)
+		mMat3x3[i-1] = m[i];
+	for (int i = 8; i < 11; i++)
+		mMat3x3[i-2] = m[i];
+
+	m.resize(9);
+
+	det = mMat3x3[0] * (mMat3x3[4] * mMat3x3[8] - mMat3x3[5] * mMat3x3[7]) +
+		mMat3x3[1] * (mMat3x3[5] * mMat3x3[6] - mMat3x3[8] * mMat3x3[3]) +
+		mMat3x3[2] * (mMat3x3[3] * mMat3x3[7] - mMat3x3[4] * mMat3x3[6]);
+	invDet = 1.0f / det;
+
+	m[0] = (mMat3x3[4] * mMat3x3[8] - mMat3x3[5] * mMat3x3[7]) * invDet;
+	m[1] = (mMat3x3[5] * mMat3x3[6] - mMat3x3[8] * mMat3x3[3]) * invDet;
+	m[2] = (mMat3x3[3] * mMat3x3[7] - mMat3x3[4] * mMat3x3[6]) * invDet;
+	m[3] = (mMat3x3[2] * mMat3x3[7] - mMat3x3[1] * mMat3x3[8]) * invDet;
+	m[4] = (mMat3x3[0] * mMat3x3[8] - mMat3x3[2] * mMat3x3[6]) * invDet;
+	m[5] = (mMat3x3[1] * mMat3x3[6] - mMat3x3[7] * mMat3x3[0]) * invDet;
+	m[6] = (mMat3x3[1] * mMat3x3[5] - mMat3x3[4] * mMat3x3[2]) * invDet;
+	m[7] = (mMat3x3[2] * mMat3x3[3] - mMat3x3[0] * mMat3x3[5]) * invDet;
+	m[8] = (mMat3x3[0] * mMat3x3[4] - mMat3x3[3] * mMat3x3[1]) * invDet;
+
+	return *this;
 }

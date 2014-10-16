@@ -2,7 +2,7 @@
 #define __RIVER_H__
 
 #include "Object.h"
-
+class Cube;
 class River : public Object {
 
 	Cube *bankTop;

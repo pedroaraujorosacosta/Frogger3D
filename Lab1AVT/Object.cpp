@@ -8,6 +8,7 @@
 
 #include <gl\glew.h>
 #include <GL\freeglut.h>
+#include "vsShaderLib.h"
 
 Object::Object(float *position, Game *game) {
 	for (int i = 0; i < 3; i++)
@@ -36,24 +37,72 @@ void Object::draw(GLuint programID) {
 	
 }
 
+void Object::sendMaterials()
+{
+	GLint loc;
+	VSShaderLib *shader = game->getShader();
+	
+	//glUseProgram(shader->getProgramIndex());
+	loc = glGetUniformLocation(shader->getProgramIndex(), "mat.ambient");
+	glUniform4fv(loc, 1, mat.ambient);
+	loc = glGetUniformLocation(shader->getProgramIndex(), "mat.diffuse");
+	glUniform4fv(loc, 1, mat.diffuse);
+	loc = glGetUniformLocation(shader->getProgramIndex(), "mat.specular");
+	glUniform4fv(loc, 1, mat.specular);
+	loc = glGetUniformLocation(shader->getProgramIndex(), "mat.shininess");
+	glUniform1f(loc, mat.shininess);
+	//glUseProgram(0);
+}
+
 void Object::sendDataToShader(GLuint programID)
 {
-	Matrix top;
+	/*Matrix top;
 	top = game->getPVM();
 
 	GLfloat PVM[16];
 
 	for (int i = 0; i < top.sizeofMatrix(); i++)
-		PVM[i] = top.m[i];
-
+		PVM[i] = top.m[i];*/
+	
 	glBindVertexArray(VaoId);
-	glUseProgram(programID);
-	GLuint matID = game->getPVMid();
+	//glUseProgram(programID);
+	GLuint pvmID = game->getPVMid();
+	GLuint vmID = game->getVMid();
+	GLuint iVmID = game->getIVMid();
 
-	glUniformMatrix4fv(matID, 1, GL_TRUE, PVM);
+	// send the VM matrix
+	Matrix vm = game->getVM();
+	float vmFloat[16];
+	for (int i = 0; i < 16; i++)
+		vmFloat[i] = vm.m[i];
+	VSShaderLib *shader = game->getShader();
+	//shader->setUniform("m_viewModel", vmFloat);
+	glUniformMatrix4fv(vmID, 1, GL_TRUE, vmFloat);
+
+	checkOpenGLError("ERROR: Could not draw scene.");
+
+	// compute and send the normal matrix
+	Matrix iVm = vm.invertMatrix();
+	float iVmFloat[9];
+	for (int i = 0; i < 9; i++)
+		iVmFloat[i] = iVm.m[i];
+	glUniformMatrix3fv(iVmID, 1, GL_TRUE, iVmFloat);
+	//shader->setUniform("m_normal", iVmFloat);
+
+
+	// send the PVM matrix
+	Matrix pvmM = game->getPVM();
+	float pvmFloat[16];
+	for (int i = 0; i < 16; i++)
+		pvmFloat[i] = pvmM.m[i];
+	glUniformMatrix4fv(pvmID, 1, GL_TRUE, pvmFloat);
+	//shader->setUniform("m_pvm", pvmFloat);
+
+
+	//glUniformMatrix4fv(matID, 1, GL_TRUE, PVM);
 	glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_INT, (GLvoid*)0);
 
-	glUseProgram(0);
+	//glUseProgram(0);
 	glBindVertexArray(0);
 
 	checkOpenGLError("ERROR: Could not draw scene.");
@@ -318,4 +367,34 @@ Object::computeVAO(int numP, float *p, float *points, int sides, float smoothCos
 	glDisableVertexAttribArray(MY_NORMAL_ATTRIB);
 	glDisableVertexAttribArray(MY_TEXTURE_COORD_ATTRIB);
 
+}
+
+void Object::setAmbient(float *amb)
+{
+	memcpy(mat.ambient, amb, 4 * sizeof(float));
+}
+
+void Object::setDiffuse(float *diff)
+{
+	memcpy(mat.diffuse, diff, 4 * sizeof(float));
+}
+
+void Object::setSpecular(float *spec)
+{
+	memcpy(mat.specular, spec, 4 * sizeof(float));
+}
+
+void Object::setEmissive(float *emissive)
+{
+	memcpy(mat.emissive, emissive, 4 * sizeof(float));
+}
+
+void Object::setShininess(float shininess)
+{
+	mat.shininess = shininess;
+}
+
+void Object::setTexCount(int texCount)
+{
+	mat.texCount = texCount;
 }

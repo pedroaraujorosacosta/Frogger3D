@@ -8,6 +8,15 @@
 #define MY_NORMAL_ATTRIB 1
 #define MY_TEXTURE_COORD_ATTRIB 2
 
+struct Material{
+	float diffuse[4];
+	float ambient[4];
+	float specular[4];
+	float emissive[4];
+	float shininess;
+	int texCount;
+};
+
 class Game;
 
 class Object : public IComponent
@@ -25,10 +34,10 @@ protected:
 	GLuint VaoId;
 	GLuint VboId[4];
 	Game *game;
-
-
+	struct Material mat;
 	virtual void init();
 
+	void sendMaterials();
 	void sendDataToShader(GLuint programID);
 	void createBufferObjects();
 public:
@@ -41,6 +50,13 @@ public:
 	float * circularProfile(float minAngle, float maxAngle, float radius, int divisions, float transX = 0.0f, float transY = 0.0f);
 	int revSmoothNormal2(float *p, float *nx, float *ny, float smoothCos, int beginEnd);
 	void computeVAO(int numP, float *p, float *points, int sides, float smoothCos);
+
+	void setAmbient(float *amb);
+	void setDiffuse(float *diff);
+	void setSpecular(float *spec);
+	void setEmissive(float *emissive);
+	void setShininess(float shininess);
+	void setTexCount(int texCount);
 
 	float getPositionXXs(){
 		return position[0];

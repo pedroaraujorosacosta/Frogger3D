@@ -40,5 +40,20 @@ void FloatingLog::draw(GLuint programID){
 
 void FloatingLog::init() {
 	float o[3] = { 0.0, 0.0, 0.0 };
-	body = new  Cylinder(o, game, 2.0, 0.5, 10);
+	body = new Cylinder(o, game, 2.0 ,0.5, 10);
+
+	// set materials
+	float ambBody[] = { 0.1f, 0.1f, 0.1f, 1.0f };
+	float diffBody[] = { 0.7f, 0.3f, 0.1f, 1.0f };
+	float specBody[] = { 0.1f, 0.1f, 0.1f, 1.0f };
+	float emissiveBody[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float shininessBody = 100.0f;
+	int texcountBody = 0;
+
+	body->setAmbient(ambBody);
+	body->setDiffuse(diffBody);
+	body->setSpecular(specBody);
+	body->setEmissive(emissiveBody);
+	body->setShininess(shininessBody);
+	body->setTexCount(texcountBody);
 }
