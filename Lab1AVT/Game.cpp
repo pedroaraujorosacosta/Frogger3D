@@ -75,12 +75,13 @@ void Game::draw(GLuint programID) {
 	
 	cam->setCamera();
 
-	glUseProgram(programID);
+	glUseProgram(ProgramId);
 	// transform light to camera space and send it to GLSL
 	Vector res(4);
 	res = *modelViewStack.getTop() * lightPos;
-	res.normalize();
-	//glUniform4fv(lPos_uniformId, 1, res.v);
+	//res.normalize();
+
+	glUniform4fv(lPos_uniformId, 1, res.v);
 	//shader->setUniform("l_pos", res.v);
 
 	// So usado para luzes direccionais
@@ -94,7 +95,9 @@ void Game::draw(GLuint programID) {
 	
 	//managerObj->draw();
 
-	frog->draw(this->ProgramId);
+	frog->draw(ProgramId);
+
+	glUseProgram(0);
 
 	projectionStack.pop();
 	modelViewStack.pop();

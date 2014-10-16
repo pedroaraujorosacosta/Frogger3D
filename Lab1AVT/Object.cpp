@@ -41,7 +41,8 @@ void Object::sendMaterials()
 {
 	GLint loc;
 	VSShaderLib *shader = game->getShader();
-	glUseProgram(shader->getProgramIndex());
+	
+	//glUseProgram(shader->getProgramIndex());
 	loc = glGetUniformLocation(shader->getProgramIndex(), "mat.ambient");
 	glUniform4fv(loc, 1, mat.ambient);
 	loc = glGetUniformLocation(shader->getProgramIndex(), "mat.diffuse");
@@ -62,9 +63,9 @@ void Object::sendDataToShader(GLuint programID)
 
 	for (int i = 0; i < top.sizeofMatrix(); i++)
 		PVM[i] = top.m[i];*/
-
+	
 	glBindVertexArray(VaoId);
-	glUseProgram(programID);
+	//glUseProgram(programID);
 	GLuint pvmID = game->getPVMid();
 	GLuint vmID = game->getVMid();
 	GLuint iVmID = game->getIVMid();
@@ -78,6 +79,8 @@ void Object::sendDataToShader(GLuint programID)
 	//shader->setUniform("m_viewModel", vmFloat);
 	glUniformMatrix4fv(vmID, 1, GL_TRUE, vmFloat);
 
+	checkOpenGLError("ERROR: Could not draw scene.");
+
 	// compute and send the normal matrix
 	Matrix iVm = vm.invertMatrix();
 	float iVmFloat[9];
@@ -85,6 +88,7 @@ void Object::sendDataToShader(GLuint programID)
 		iVmFloat[i] = iVm.m[i];
 	glUniformMatrix3fv(iVmID, 1, GL_TRUE, iVmFloat);
 	//shader->setUniform("m_normal", iVmFloat);
+
 
 	// send the PVM matrix
 	Matrix pvmM = game->getPVM();
@@ -94,10 +98,11 @@ void Object::sendDataToShader(GLuint programID)
 	glUniformMatrix4fv(pvmID, 1, GL_TRUE, pvmFloat);
 	//shader->setUniform("m_pvm", pvmFloat);
 
+
 	//glUniformMatrix4fv(matID, 1, GL_TRUE, PVM);
 	glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_INT, (GLvoid*)0);
 
-	glUseProgram(0);
+	//glUseProgram(0);
 	glBindVertexArray(0);
 
 	checkOpenGLError("ERROR: Could not draw scene.");

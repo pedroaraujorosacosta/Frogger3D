@@ -1,5 +1,5 @@
-#ifndef __IOBJECT_H__
-#define __IOBJECT_H__
+#ifndef __ICOMPONENT_H__
+#define __ICOMPONENT_H__
 
 #include <iostream>
 #include <gl\glew.h>

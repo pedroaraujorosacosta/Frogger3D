@@ -15,13 +15,13 @@ Sphere::Sphere(float* position, Game *game, float radius, int divisions): Object
 void Sphere::draw(GLuint programID){
 
 	Stack* modelview = game->getModelViewStack();
-
+	
 	sendMaterials();
 
 	modelview->push();
 	//then, puts the sphere in the right position
 	modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
-
+	
 	sendDataToShader(programID);
 	modelview->pop();
 }
