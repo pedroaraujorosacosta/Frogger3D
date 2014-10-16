@@ -61,7 +61,7 @@ void Turtle::init() {
 
 	// set materials
 	float ambHead[] = { 0.1f, 0.1f, 0.2f, 1.0f };
-	float diffHead[] = { 0.8f, 0.5f, 0.8f, 1.0f };
+	float diffHead[] = { 0.8f, 0.5f, 0.1f, 1.0f };
 	float specHead[] = { 0.1f, 0.1f, 0.8f, 1.0f };
 	float emissiveHead[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float shininessHead = 100.0f;
@@ -73,4 +73,32 @@ void Turtle::init() {
 	head->setEmissive(emissiveHead);
 	head->setShininess(shininessHead);
 	head->setTexCount(texcountHead);
+
+	float ambShell[] = { 0.1f, 0.1f, 0.2f, 1.0f };
+	float diffShell[] = { 0.8f, 0.5f, 0.8f, 1.0f };
+	float specShell[] = { 0.1f, 0.1f, 0.8f, 1.0f };
+	float emissiveShell[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float shininessShell = 100.0f;
+	int texcountShell = 0;
+
+	shell->setAmbient(ambShell);
+	shell->setDiffuse(diffShell);
+	shell->setSpecular(specShell);
+	shell->setEmissive(emissiveShell);
+	shell->setShininess(shininessShell);
+	shell->setTexCount(texcountShell);
+
+	float ambBody[] = { 0.1f, 0.1f, 0.2f, 1.0f };
+	float diffBody[] = { 0.8f, 0.5f, 0.8f, 1.0f };
+	float specBody[] = { 0.1f, 0.1f, 0.8f, 1.0f };
+	float emissiveBody[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float shininessBody = 100.0f;
+	int texcountBody = 0;
+
+	body->setAmbient(ambShell);
+	body->setDiffuse(diffShell);
+	body->setSpecular(specShell);
+	body->setEmissive(emissiveShell);
+	body->setShininess(shininessShell);
+	body->setTexCount(texcountShell);
 }

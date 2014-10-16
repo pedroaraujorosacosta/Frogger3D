@@ -8,6 +8,7 @@ class MobileObj : public Object {
 protected:
 	float direction[3];
 	float velocity;
+	float initVelocity;
 
 	virtual void init();
 public:
@@ -16,5 +17,6 @@ public:
 	float getDirX();
 	float getDirY();
 	float getDirZ();
+	void multiplyVelocity(float dificulty);
 };
 #endif

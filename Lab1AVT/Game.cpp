@@ -45,7 +45,7 @@ void Game::init(int argc, char* argv[])
 
 	managerObj = new ManagerObj(this);
 
-	float posFrog[] = { 0.0, -7.0, 0.0 };
+	float posFrog[] = { 0.0, -7.0, -2.0 };
 	float directionFrog[3] = { 0.0, 1.0, 0.0 };
 	frog = new Frog(posFrog, this, 0.0, directionFrog);
 

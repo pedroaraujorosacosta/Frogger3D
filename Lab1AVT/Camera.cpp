@@ -66,17 +66,18 @@ void Camera::setCamera() {
 	float dirY = xx * frogBasis2[1] + yy * frogBasis1[1] + zz * frogBasis3[1];
 	float dirZ = xx * frogBasis2[2] + yy * frogBasis1[2] + zz * frogBasis3[2];
 	
-	float eyePosX = frog->getX() - 2 * frog->getDirX();
-	float eyePosY = frog->getY() - 2 * frog->getDirY();
-	float eyePosZ = frog->getZ() - 2 * frog->getDirZ();
-	float atX = eyePosX + dirX;
-	float atY = eyePosY + dirY;
-	float atZ = eyePosZ + dirZ;
+	float eyePosX = frog->getX() - 2*xx;/*frog->getX() - 2 * frog->getDirX();*/
+	float eyePosY = frog->getY() - 2*yy;/*frog->getY() - frog->getDirY();*/
+	float eyePosZ = frog->getZ() - 2*zz;/*frog->getZ()+1 - 2 * frog->getDirZ();*/
+	float atX = frog->getX(); /*eyePosX + dirX;*/
+	float atY = frog->getY(); /*eyePosY + dirY;*/
+	float atZ = frog->getZ(); /*eyePosZ + dirZ;*/
 
 	switch (mode)
 	{
 	case Camera::TOP:
 
+		setFOV(90);
 		setEye(0.0f, 0.0f, 1.0f);
 		setAt(0.0f, 0.0f, -1.0f);
 		setUp(0.0f, 1.0f, 0.0f);
@@ -85,6 +86,7 @@ void Camera::setCamera() {
 		break;
 	case Camera::PERSPECTIVE:
 
+		setFOV(60);
 		setEye(0.0f, 0.0f, 10.0f);
 		setAt(0.0f, 0.0f, -1.0f);
 		setUp(0.0f, 1.0f, 0.0f);
@@ -93,6 +95,7 @@ void Camera::setCamera() {
 		break;
 	case Camera::FPS:
 
+		setFOV(90);
 		setEye(eyePosX, eyePosY, eyePosZ);
 		setAt(atX, atY, atZ);
 		setUp(0.0f, 0.0f, 1.0f);
@@ -112,6 +115,11 @@ void Camera::reshape(int w, int h)
 {
 	aspectRatio = (double)w / h;
 	glViewport(0, 0, w, h);
+}
+
+void Camera::setFOV(float fov)
+{
+	FOV = fov;
 }
 
 void Camera::setEye(float eyex, float eyey, float eyez)
@@ -148,8 +156,8 @@ void Camera::updateDirection(int dx, int dy)
 	if (mode == FPS)
 	{
 		theta -= dx / 10;
-		if (theta > 90 || theta < -90)
-			theta += dx / 10;
+		/*if (theta > 90 || theta < -90)
+			theta += dx / 10;*/
 		phi += dy / 10;
 		if (phi > 90 || phi < -90)
 			phi -= dy / 10;

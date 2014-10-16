@@ -45,7 +45,7 @@ void Frog::draw(GLuint programID){
 	modelview->push();
 	//puts the frog on the right position
 	modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
-	modelview->scaleMatrix(1.2, 1.0, 0.6);  
+	modelview->scaleMatrix(0.9, 0.8, 0.6);  
 	
 	if (direction[0] < 0.0)
 		modelview->rotateMatrix(0.0, 0.0, 1.0, -90);
@@ -77,7 +77,7 @@ void Frog::init() {
 
 	// set materials
 	float ambBody[] = { 0.2f, 0.15f, 0.1f, 1.0f };
-	float diffBody[] = { 0.8f, 0.1f, 0.1f, 1.0f };
+	float diffBody[] = { 0.1f, 0.6f, 0.1f, 1.0f };
 	float specBody[] = { 0.8f, 0.8f, 0.8f, 1.0f };
 	float emissiveBody[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float shininessBody = 100.0f;

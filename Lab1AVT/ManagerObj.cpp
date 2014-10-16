@@ -16,7 +16,7 @@
 
 ManagerObj::ManagerObj(Game *game) : Manager(game) {
 
-	setDificuldade(2);
+	setDificuldade(1);
 	setLateralEsquerda(-10.0);
 	setLateralDireita(10.0);
 
@@ -118,9 +118,6 @@ void ManagerObj::draw() {
 	for (MobileObj* o : objectsMobileLane3)
 		o->draw(game->getProgramID());
 	for (MobileObj* o : objectsMobileLane4)
-
-
-
 		o->draw(game->getProgramID());
 	for (MobileObj* o : objectsMobileLane5)
 		o->draw(game->getProgramID());
@@ -140,37 +137,47 @@ void ManagerObj::reset() {
 
 void ManagerObj::update() {
 
+	int currentTime = glutGet(GLUT_ELAPSED_TIME);
+	std::cout << currentTime << std::endl;
+	dificuldade = currentTime / 500000 + 1;
+
 	for (Object* o : objects){
 		o->update();
 	}
 
 	for (MobileObj* o : objectsMobileLane1){
 		o->update();
+		o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() > (lateralDireita + 4))
 			o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
 	}
 	for (MobileObj* o : objectsMobileLane2){
 		o->update();
+		o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() < (lateralEsquerda - 4))
 			o->setPositionXXs(lateralDireita + 4 + (rand() % 10));
 	}
 	for (MobileObj* o : objectsMobileLane3){
 		o->update();
+		o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() > (lateralDireita + 4))
 			o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
 	}
 	for (MobileObj* o : objectsMobileLane4){
 		o->update();
+		o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() > (lateralDireita + 4))
 			o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
 	}
 	for (MobileObj* o : objectsMobileLane5){
 		o->update();
+		o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() < (lateralEsquerda - 4))
 			o->setPositionXXs(lateralDireita + 4 + (rand() % 10));
 	}
 	for (MobileObj* o : objectsMobileLane6){
 		o->update();
+		o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() > (lateralDireita + 4))
 			o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
 	}
@@ -193,15 +200,15 @@ void ManagerObj::setLateralDireita(float lateralDireita){
 
 float ManagerObj::getLane1Velocity() {
 
-	return 1.5 * dificuldade;
+	return 1.0 * dificuldade;
 }
 float ManagerObj::getLane2Velocity() {
 
-	return 0.5 * dificuldade;
+	return 0.4 * dificuldade;
 }
 float ManagerObj::getLane3Velocity() {
 
-	return 1.5 * dificuldade;
+	return 1.0 * dificuldade;
 }
 float ManagerObj::getLane4Velocity() {
 

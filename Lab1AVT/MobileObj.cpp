@@ -4,7 +4,7 @@
 
 MobileObj::MobileObj(float *position, Game *game, float velocity, float *direction) : Object(position, game)
 {
-	this->velocity = velocity;
+	initVelocity = this->velocity = velocity;
 	for (int i = 0; i < 3; i++)
 		this->direction[i] = direction[i];
 
@@ -45,4 +45,9 @@ float MobileObj::getDirZ()
 {
 	return direction[2];
 
+}
+
+void MobileObj::multiplyVelocity(float dificulty)
+{
+	velocity = velocity + dificulty*initVelocity/200;
 }

@@ -41,6 +41,7 @@ public:
 	void setEye(float eyex, float eyey, float eyez); 
 	void setAt(float atx, float aty, float atz);
 	void setUp(float upx, float upy, float upz);
+	void setFOV(float fov);
 	void updateDirection(int dx, int dy);
 	bool isInFPSMode();
 	bool isFacingLeft();
