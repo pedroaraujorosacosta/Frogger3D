@@ -88,6 +88,7 @@ public:
 	GLuint getPVMid();
 	Matrix getVM();
 	GLuint getVMid();
+	GLuint getIVMid();
 	GLuint getProgramID();
 	Stack* getModelViewStack();
 	Stack* getProjectionStack();

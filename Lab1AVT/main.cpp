@@ -9,6 +9,9 @@
 
 #include "Game.h"
 
+#include <glm.hpp>
+#include <gtc\matrix_transform.hpp>
+
 int WinX = 640, WinY = 480;
 Game game(WinX, WinY);
 

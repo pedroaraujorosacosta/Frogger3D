@@ -59,7 +59,7 @@ void Game::init(int argc, char* argv[])
 // light direction
 float ldir[4] = { 1.0f, 1.0f, 1.0f, 0.0f };
 Vector lightDir(ldir, 4);
-float lpos[4] = { 4.0f, 6.0f, 2.0f, 1.0f };
+float lpos[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 Vector lightPos(lpos, 4);
 float sdir[4] = { -4.0f, -6.0f, -2.0f, 0.0f };
 Vector spotDir(sdir, 4);
@@ -75,11 +75,13 @@ void Game::draw(GLuint programID) {
 	
 	cam->setCamera();
 
+	glUseProgram(programID);
 	// transform light to camera space and send it to GLSL
 	Vector res(4);
 	res = *modelViewStack.getTop() * lightPos;
 	res.normalize();
-	shader->setUniform("l_pos", res.v);
+	//glUniform4fv(lPos_uniformId, 1, res.v);
+	//shader->setUniform("l_pos", res.v);
 
 	// So usado para luzes direccionais
 	/*shader->setBlockUniform("Lights", "l_dir", res.v);
@@ -177,19 +179,19 @@ void Game::createShaderProgram() {
 	shader->setVertexAttribName(VSShaderLib::TEXTURE_COORD_ATTRIB, "texCoord");*/
 
 	ProgramId = shader->getProgramIndex();
-	glBindFragDataLocation(shader->getProgramIndex(), 0, "colorOut");
-	glBindAttribLocation(shader->getProgramIndex(), VSShaderLib::VERTEX_COORD_ATTRIB, "position");
-	glBindAttribLocation(shader->getProgramIndex(), VSShaderLib::NORMAL_ATTRIB, "normal");
-	glBindAttribLocation(shader->getProgramIndex(), VSShaderLib::TEXTURE_COORD_ATTRIB, "texCoord");
+	glBindFragDataLocation(ProgramId, 0, "colorOut");
+	glBindAttribLocation(ProgramId, VSShaderLib::VERTEX_COORD_ATTRIB, "position");
+	glBindAttribLocation(ProgramId, VSShaderLib::NORMAL_ATTRIB, "normal");
+	glBindAttribLocation(ProgramId, VSShaderLib::TEXTURE_COORD_ATTRIB, "texCoord");
 	
 	//shader->prepareProgram();
 
-	glLinkProgram(shader->getProgramIndex());
+	glLinkProgram(ProgramId);
 
-	pvm_uniformId = glGetUniformLocation(shader->getProgramIndex(), "m_pvm");
-	vm_uniformId = glGetUniformLocation(shader->getProgramIndex(), "m_viewModel");
-	normal_uniformId = glGetUniformLocation(shader->getProgramIndex(), "m_normal");
-	lPos_uniformId = glGetUniformLocation(shader->getProgramIndex(), "l_pos");
+	pvm_uniformId = glGetUniformLocation(ProgramId, "m_pvm");
+	vm_uniformId = glGetUniformLocation(ProgramId, "m_viewModel");
+	normal_uniformId = glGetUniformLocation(ProgramId, "m_normal");
+	lPos_uniformId = glGetUniformLocation(ProgramId, "l_pos");
 
     printf("InfoLog for Hello World Shader\n%s\n\n", shader->getAllInfoLogs().c_str());
 
@@ -364,6 +366,11 @@ Matrix Game::getVM()
 GLuint Game::getVMid()
 {
 	return vm_uniformId;
+}
+
+GLuint Game::getIVMid()
+{
+	return normal_uniformId;
 }
 
 VSShaderLib* Game::getShader()

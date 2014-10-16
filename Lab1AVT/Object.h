@@ -37,6 +37,7 @@ protected:
 	struct Material mat;
 	virtual void init();
 
+	void sendMaterials();
 	void sendDataToShader(GLuint programID);
 	void createBufferObjects();
 public:

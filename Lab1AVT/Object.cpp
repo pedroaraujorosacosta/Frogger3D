@@ -37,6 +37,22 @@ void Object::draw(GLuint programID) {
 	
 }
 
+void Object::sendMaterials()
+{
+	GLint loc;
+	VSShaderLib *shader = game->getShader();
+	glUseProgram(shader->getProgramIndex());
+	loc = glGetUniformLocation(shader->getProgramIndex(), "mat.ambient");
+	glUniform4fv(loc, 1, mat.ambient);
+	loc = glGetUniformLocation(shader->getProgramIndex(), "mat.diffuse");
+	glUniform4fv(loc, 1, mat.diffuse);
+	loc = glGetUniformLocation(shader->getProgramIndex(), "mat.specular");
+	glUniform4fv(loc, 1, mat.specular);
+	loc = glGetUniformLocation(shader->getProgramIndex(), "mat.shininess");
+	glUniform1f(loc, mat.shininess);
+	//glUseProgram(0);
+}
+
 void Object::sendDataToShader(GLuint programID)
 {
 	/*Matrix top;
@@ -49,7 +65,9 @@ void Object::sendDataToShader(GLuint programID)
 
 	glBindVertexArray(VaoId);
 	glUseProgram(programID);
-	//GLuint pvmID = game->getPVMid();
+	GLuint pvmID = game->getPVMid();
+	GLuint vmID = game->getVMid();
+	GLuint iVmID = game->getIVMid();
 
 	// send the VM matrix
 	Matrix vm = game->getVM();
@@ -57,21 +75,24 @@ void Object::sendDataToShader(GLuint programID)
 	for (int i = 0; i < 16; i++)
 		vmFloat[i] = vm.m[i];
 	VSShaderLib *shader = game->getShader();
-	shader->setUniform("m_viewModel", vmFloat);
+	//shader->setUniform("m_viewModel", vmFloat);
+	glUniformMatrix4fv(vmID, 1, GL_TRUE, vmFloat);
 
 	// compute and send the normal matrix
 	Matrix iVm = vm.invertMatrix();
 	float iVmFloat[9];
 	for (int i = 0; i < 9; i++)
 		iVmFloat[i] = iVm.m[i];
-	shader->setUniform("m_normal", iVmFloat);
+	glUniformMatrix3fv(iVmID, 1, GL_TRUE, iVmFloat);
+	//shader->setUniform("m_normal", iVmFloat);
 
 	// send the PVM matrix
 	Matrix pvmM = game->getPVM();
 	float pvmFloat[16];
 	for (int i = 0; i < 16; i++)
 		pvmFloat[i] = pvmM.m[i];
-	shader->setUniform("m_pvm", pvmFloat);
+	glUniformMatrix4fv(pvmID, 1, GL_TRUE, pvmFloat);
+	//shader->setUniform("m_pvm", pvmFloat);
 
 	//glUniformMatrix4fv(matID, 1, GL_TRUE, PVM);
 	glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_INT, (GLvoid*)0);

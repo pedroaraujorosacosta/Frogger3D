@@ -77,6 +77,8 @@ public:
 	*/
 	void init();
 
+	bool isOpenGLError();
+	void checkOpenGLError(std::string error);
 	void checkShaderCompilation(GLuint shaderId);
 	void checkProgramLinkage(GLuint programId, GLuint vertexShaderId, GLuint fragmentShaderId);
 

@@ -173,8 +173,30 @@ VSShaderLib::prepareProgram() {
 
 	glLinkProgram(pProgram);
 	checkProgramLinkage(pProgram, pShader[VSShaderLib::VERTEX_SHADER], pShader[VSShaderLib::FRAGMENT_SHADER]);
+	checkOpenGLError("ERROR: Could not create shaders.");
 	addUniforms();
+	checkOpenGLError("ERROR: Could not create shaders.");
 	addBlocks();
+}
+
+bool VSShaderLib::isOpenGLError() {
+	bool isError = false;
+	GLenum errCode;
+	const GLubyte *errString;
+	while ((errCode = glGetError()) != GL_NO_ERROR) {
+		isError = true;
+		errString = gluErrorString(errCode);
+		std::cerr << "OpenGL ERROR [" << errString << "]." << std::endl;
+	}
+	return isError;
+}
+
+void VSShaderLib::checkOpenGLError(std::string error)
+{
+	if (isOpenGLError()) {
+		std::cerr << error << std::endl;
+		exit(EXIT_FAILURE);
+	}
 }
 
 
@@ -414,10 +436,10 @@ VSShaderLib::setUniform(std::string name, void *value) {
 		glProgramUniformMatrix2fv(pProgram, u.location, u.size, false, (const GLfloat *)value);
 		break;
 	case GL_FLOAT_MAT3:
-		glProgramUniformMatrix3fv(pProgram, u.location, u.size, false, (const GLfloat *)value);
+		glProgramUniformMatrix3fv(pProgram, u.location, u.size, GL_TRUE, (const GLfloat *)value);
 		break;
 	case GL_FLOAT_MAT4:
-		glProgramUniformMatrix4fv(pProgram, u.location, u.size, false, (const GLfloat *)value);
+		glProgramUniformMatrix4fv(pProgram, u.location, u.size, GL_TRUE, (const GLfloat *)value);
 		break;
 	case GL_FLOAT_MAT2x3:
 		glProgramUniformMatrix2x3fv(pProgram, u.location, u.size, false, (const GLfloat *)value);
