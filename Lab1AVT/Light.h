@@ -7,7 +7,7 @@
 class Light
 {
 	int numLight;
-	vector amb(4);
+	Vector amb(4);
 	Vector dif(4);
 	Vector spec(4);
 
