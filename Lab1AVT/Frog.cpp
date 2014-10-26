@@ -91,7 +91,7 @@ void Frog::init() {
 	body->setTexCount(texcountBody);
 
 	float ambEyes[] = { 0.1f, 0.2f, 0.1f, 1.0f };
-	float diffEyes[] = { 0.1f, 0.9f, 0.1f, 1.0f };
+	float diffEyes[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	float specEyes[] = { 0.8f, 0.8f, 0.8f, 1.0f };
 	float emissiveEyes[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float shininessEyes = 100.0f;

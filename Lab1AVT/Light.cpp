@@ -1,3 +1,6 @@
+#include "Light.h"
+
+
 struct Material{
 
 	float diffuse[4];
@@ -17,6 +20,45 @@ enum MaterialSemantics {
 	SHININESS,
 	TEX_COUNT
 } MaterialComponent;
+
+
+
+void Light::setAmbient(Vector amb)
+{
+	this->amb = amb;
+}
+
+void Light::setDiffuse(Vector dif)
+{
+	this->dif = dif;
+}
+
+void Light::setSpecular(Vector spec)
+{
+	this->spec = spec;
+}
+
+void Light::setPosition(Vector pos)
+{
+	this->pos = pos;
+}
+
+void Light::setDirection(Vector dir)
+{
+	this->dir = dir;
+}
+
+void Light::setCutoff(float cutOff)
+{
+	this->cutOff = cutOff;
+}
+
+void Light::setExponent(float exp)
+{
+	this->exp = exp;
+}
+*/
+
 
 
 /*
@@ -76,4 +118,4 @@ void VSResSurfRevLib::setColor(VSResourceLib::MaterialSemantics m, float *values
 		break;
 	}
 }
-*/
+*

@@ -58,8 +58,8 @@ void River::init() {
 	bankBot = new Cube(o, this->game);
 
 	// set materials
-	float ambRiver[] = { 0.1f, 0.1f, 0.8f, 1.0f };
-	float diffRiver[] = { 0.1f, 0.1f, 0.8f, 1.0f };
+	float ambRiver[] = { 0.1f, 0.1f, 0.2f, 1.0f };
+	float diffRiver[] = { 0.3f, 0.3f, 0.8f, 1.0f };
 	float specRiver[] = { 0.1f, 0.1f, 0.8f, 1.0f };
 	float emissiveRiver[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float shininessRiver = 100.0f;
@@ -73,7 +73,7 @@ void River::init() {
 	river->setTexCount(texcountRiver);
 
 	float ambBank[] = { 0.1f, 0.2f, 0.1f, 1.0f };
-	float diffBank[] = { 0.1f, 0.9f, 0.1f, 1.0f };
+	float diffBank[] = { 0.1f, 0.7f, 0.1f, 1.0f };
 	float specBank[] = { 0.1f, 0.1f, 0.1f, 1.0f };
 	float emissiveBank[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float shininessBank = 100.0f;
