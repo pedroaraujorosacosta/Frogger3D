@@ -22,10 +22,7 @@ const double TIME_PER_FRAME = 1000 / TARGET_FPS;
 //GLuint VaoId, VboId[4];
 float angle = 0;
 GLuint rotation = 0;
-
-
-
-
+long int CurrentTime;
 
 /////////////////////////////////////////////////////////////////////// SCENE
 
@@ -66,7 +63,15 @@ void mouseFunc(int button, int state, int x, int y)
 
 void display()
 {
-	game.draw(0);
+	static long int oldTime = glutGet(GLUT_ELAPSED_TIME);
+	CurrentTime = glutGet(GLUT_ELAPSED_TIME);
+
+	long int dt = CurrentTime - oldTime;
+
+	game.update(dt/1000.0f);
+	game.draw();
+
+	oldTime = CurrentTime;
 }
 
 void idle()
@@ -78,13 +83,6 @@ void reshape(int w, int h)
 {
 	game.reshape(w, h);
 }
-
-void update(int value) {
-	game.update();
-	glutTimerFunc(20, update, 0);
-}
-
-
 
 void timer(int value)
 {
@@ -112,7 +110,6 @@ void setupCallbacks()
 	glutIdleFunc(idle);
 	glutReshapeFunc(reshape);
 	glutTimerFunc(0, timer, 0);
-	glutTimerFunc(20, update, 0);
 	glutTimerFunc(TIME_PER_FRAME, frameTimer, 0);
 	glutKeyboardFunc(keyboardFunc);
 	glutKeyboardUpFunc(keyboardUpFunc);

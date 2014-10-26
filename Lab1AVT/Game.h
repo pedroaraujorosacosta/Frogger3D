@@ -42,12 +42,14 @@ class Game : IComponent {
 	double t, b;
 	double f;
 
-	GLuint VertexShaderId, FragmentShaderId, ProgramId;
+	int pIndex;
+	GLuint programId[3];
+	GLuint VertexShaderId, FragmentShaderId;
 	//GLuint UniformId;
-	GLint pvm_uniformId;
-	GLint vm_uniformId;
-	GLint normal_uniformId;
-	GLint lPos_uniformId;
+	GLint pvm_uniformId[3];
+	GLint vm_uniformId[3];
+	GLint normal_uniformId[3];
+	GLint lPos_uniformId[3];
 	char *VtxShader;
 	char *FragShader;
 	
@@ -65,15 +67,18 @@ class Game : IComponent {
 	unsigned int getStreamSize(std::ifstream &ifs);
 	void createBufferObjects();
 	void destroyBufferObjects();
+	void setProgramIndex(int pIndex);
+	void resetProgram();
+	void buildShader(int pIndex);
 
 public:
 	Game(int WinX, int WinY);
 	~Game();
 	void init(int argc, char* argv[]);
 
-	void draw(GLuint programID);
+	void draw();
 	void reset();
-	void update();
+	void update(float dt);
 
 	void reshape(int w, int h);
 	void cleanup();
@@ -89,7 +94,6 @@ public:
 	Matrix getVM();
 	GLuint getVMid();
 	GLuint getIVMid();
-	GLuint getProgramID();
 	Stack* getModelViewStack();
 	Stack* getProjectionStack();
 	Frog* getFrog();

@@ -8,6 +8,6 @@ protected:
 	void init();
 public:
 	Torus(float* position, Game *game, float innerRadius, float outerRadius, int rings, int sides);
-	void draw(GLuint programID);
+	void draw();
 };
 #endif

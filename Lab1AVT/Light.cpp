@@ -1,5 +1,5 @@
 #include "Light.h"
-
+#include "Vector.h"
 
 struct Material{
 
@@ -21,29 +21,41 @@ enum MaterialSemantics {
 	TEX_COUNT
 } MaterialComponent;
 
+Light::Light(int num)
+{
+	this->numLight = num;
+	this->amb = new Vector(4);
+	this->dif = new Vector(4);
+	this->spec = new Vector(4);
 
+	this->pos = new Vector(4);
+	this->dir = new Vector(3);
 
-void Light::setAmbient(Vector amb)
+	
+	bool state;
+}
+
+void Light::setAmbient(Vector *amb)
 {
 	this->amb = amb;
 }
 
-void Light::setDiffuse(Vector dif)
+void Light::setDiffuse(Vector *dif)
 {
 	this->dif = dif;
 }
 
-void Light::setSpecular(Vector spec)
+void Light::setSpecular(Vector *spec)
 {
 	this->spec = spec;
 }
 
-void Light::setPosition(Vector pos)
+void Light::setPosition(Vector *pos)
 {
 	this->pos = pos;
 }
 
-void Light::setDirection(Vector dir)
+void Light::setDirection(Vector *dir)
 {
 	this->dir = dir;
 }
@@ -57,7 +69,6 @@ void Light::setExponent(float exp)
 {
 	this->exp = exp;
 }
-*/
 
 
 
@@ -118,4 +129,4 @@ void VSResSurfRevLib::setColor(VSResourceLib::MaterialSemantics m, float *values
 		break;
 	}
 }
-*
+*/

@@ -15,22 +15,22 @@ Frog::~Frog()
 	delete eyes;
 }
 
-void Frog::update()
+void Frog::update(float dt)
 {
 	for (int i = 0; i < 3; i++)
-		position[i] += direction[i] * velocity;
+		position[i] += direction[i] * velocity * dt;
 }
 
 void Frog::move(float *direction)
 {
 	for (int i = 0; i < 3; i++)
 		this->direction[i] = direction[i];
-	velocity = 0.08;
+	velocity = 1;
 }
 
 void Frog::move()
 {
-	velocity = 0.08;
+	velocity = 1;
 }
 
 void Frog::stop() 
@@ -38,7 +38,7 @@ void Frog::stop()
 	velocity = 0.0;
 }
 
-void Frog::draw(GLuint programID){
+void Frog::draw(){
 
 	Stack* modelview = game->getModelViewStack();
 
@@ -54,19 +54,19 @@ void Frog::draw(GLuint programID){
 	else if (direction[1] < 0.0)
 		modelview->rotateMatrix(0.0, 0.0, 1.0, 180);
 
-	body->draw(programID);
+	body->draw();
 	
 	modelview->push();
 	modelview->translateMatrix(0.3, 0.6, 0.0);
-	eyes->draw(programID);
+	eyes->draw();
 	modelview->pop();
 	
 	modelview->push();
 	modelview->translateMatrix(-0.3, 0.6, 0.0);
-	eyes->draw(programID);
+	eyes->draw();
 	modelview->pop();
 
-	sendDataToShader(programID);
+	sendDataToShader();
 	modelview->pop();
 }
 

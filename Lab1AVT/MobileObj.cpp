@@ -12,7 +12,7 @@ MobileObj::MobileObj(float *position, Game *game, float velocity, float *directi
 	createBufferObjects();
 }
 
-void MobileObj::draw(GLuint programID){
+void MobileObj::draw(){
 
 	Stack* modelview = game->getModelViewStack();
 
@@ -22,7 +22,7 @@ void MobileObj::draw(GLuint programID){
 	//puts the unitary cube in the origin of the referencial
 	modelview->translateMatrix(-0.5, -0.5, -0.5);
 
-	sendDataToShader(programID);
+	sendDataToShader();
 	modelview->pop();
 }
 
@@ -49,5 +49,5 @@ float MobileObj::getDirZ()
 
 void MobileObj::multiplyVelocity(float dificulty)
 {
-	velocity = velocity + dificulty*initVelocity/200;
+	velocity = velocity + dificulty * initVelocity / 500;
 }

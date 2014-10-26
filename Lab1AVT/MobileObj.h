@@ -13,7 +13,7 @@ protected:
 	virtual void init();
 public:
 	MobileObj(float* position, Game *game, float velocity, float *direction);
-	virtual void draw(GLuint programID);
+	virtual void draw();
 	float getDirX();
 	float getDirY();
 	float getDirZ();

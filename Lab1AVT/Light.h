@@ -2,17 +2,17 @@
 #define __LIGHT_H__
 
 
-#include "Vector.h"
+class Vector;
 
 class Light
 {
 	int numLight;
-	vector amb(4);
-	Vector dif(4);
-	Vector spec(4);
+	Vector *amb;
+	Vector *dif;
+	Vector *spec;
 
-	Vector pos(4);
-	Vector dir(3);
+	Vector *pos;
+	Vector *dir;
 
 	float cutOff;
 	float exp;
@@ -23,11 +23,11 @@ class Light
 public:
 	Light(int num);
 
-	void setDiffuse(Vector dif);
-	void setAmbient(Vector amb);
-	void setSpecular(Vector spec);
-	void setPosition(Vector pos);
-	void setDirection(Vector dir);
+	void setDiffuse(Vector *dif);
+	void setAmbient(Vector *amb);
+	void setSpecular(Vector *spec);
+	void setPosition(Vector *pos);
+	void setDirection(Vector *dir);
 	void setCutoff(float cutOff);
 	void setExponent(float exp);
 };

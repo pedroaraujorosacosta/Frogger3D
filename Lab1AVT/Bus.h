@@ -16,7 +16,7 @@ protected:
 public:
 	Bus(float* position, Game *game, float velocity, float *direction);
 	~Bus();
-	void draw(GLuint programID);
-	void update();
+	void draw();
+	void update(float dt);
 };
 #endif

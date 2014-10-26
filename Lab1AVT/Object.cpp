@@ -33,7 +33,7 @@ Object::~Object() {
 
 }
 
-void Object::draw(GLuint programID) {
+void Object::draw() {
 	
 }
 
@@ -54,7 +54,7 @@ void Object::sendMaterials()
 	//glUseProgram(0);
 }
 
-void Object::sendDataToShader(GLuint programID)
+void Object::sendDataToShader()
 {
 	/*Matrix top;
 	top = game->getPVM();
@@ -120,7 +120,7 @@ void Object::reset() {
 
 }
 
-void Object::update() {
+void Object::update(float dt) {
 
 
 }

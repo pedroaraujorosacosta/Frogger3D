@@ -11,7 +11,7 @@ Torus::Torus(float* position, Game *game, float innerRadius, float outerRadius, 
 }
 
 
-void Torus::draw(GLuint programID)
+void Torus::draw()
 {
 	Stack* modelview = game->getModelViewStack();
 
@@ -21,7 +21,7 @@ void Torus::draw(GLuint programID)
 	//then, puts the sphere in the right position
 	modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
 
-	sendDataToShader(programID);
+	sendDataToShader();
 	modelview->pop();
 }
 

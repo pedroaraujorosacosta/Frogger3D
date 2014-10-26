@@ -20,7 +20,8 @@
 #define CAPTION "Assignment 1"
 
 Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(20.0),
-	isLeftButtonDown(false), isRightButtonDown(false), frameCount(0), totalFrames(0), startTime(0.0), windowHandle(0)
+	isLeftButtonDown(false), isRightButtonDown(false), frameCount(0), totalFrames(0), startTime(0.0), windowHandle(0),
+	pIndex(0)
 {
 	winX = WinX;
 	winY = WinY;
@@ -65,7 +66,18 @@ float sdir[4] = { -4.0f, -6.0f, -2.0f, 0.0f };
 Vector spotDir(sdir, 4);
 
 
-void Game::draw(GLuint programID) {
+void Game::setProgramIndex(int pIndex)
+{
+	glUseProgram(programId[pIndex]);
+	this->pIndex = pIndex;
+}
+
+void Game::resetProgram()
+{
+	glUseProgram(0);
+}
+
+void Game::draw() {
 	++frameCount;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -75,13 +87,13 @@ void Game::draw(GLuint programID) {
 	
 	cam->setCamera();
 
-	glUseProgram(ProgramId);
+	setProgramIndex(0);
 	// transform light to camera space and send it to GLSL
 	Vector res(4);
 	res = *modelViewStack.getTop() * lightPos;
 	//res.normalize();
 
-	glUniform4fv(lPos_uniformId, 1, res.v);
+	glUniform4fv(lPos_uniformId[0], 1, res.v);
 	//shader->setUniform("l_pos", res.v);
 
 	// So usado para luzes direccionais
@@ -95,9 +107,9 @@ void Game::draw(GLuint programID) {
 	
 	managerObj->draw();
 
-	frog->draw(ProgramId);
+	frog->draw();
 
-	glUseProgram(0);
+	resetProgram();
 
 	projectionStack.pop();
 	modelViewStack.pop();
@@ -107,10 +119,10 @@ void Game::draw(GLuint programID) {
 
 void Game::reset() {}
 
-void Game::update() 
+void Game::update(float dt) 
 {
-	managerObj->update();
-	frog->update();
+	managerObj->update(dt);
+	frog->update(dt);
 }
 
 void Game::reshape(int w, int h)
@@ -170,63 +182,49 @@ void Game::setupOpenGL() {
 }
 
 void Game::createShaderProgram() {
-
 	shader->init();
-	shader->loadShader(VSShaderLib::VERTEX_SHADER, "pointlight.vert");
-	shader->loadShader(VSShaderLib::FRAGMENT_SHADER, "pointlight.frag");
-
-	// set semantics for the shader variables
-	/*shader->setProgramOutput(0, "colorOut");
-	shader->setVertexAttribName(VSShaderLib::VERTEX_COORD_ATTRIB, "position");
-	shader->setVertexAttribName(VSShaderLib::NORMAL_ATTRIB, "normal");
-	shader->setVertexAttribName(VSShaderLib::TEXTURE_COORD_ATTRIB, "texCoord");*/
-
-	ProgramId = shader->getProgramIndex();
-	glBindFragDataLocation(ProgramId, 0, "colorOut");
-	glBindAttribLocation(ProgramId, VSShaderLib::VERTEX_COORD_ATTRIB, "position");
-	glBindAttribLocation(ProgramId, VSShaderLib::NORMAL_ATTRIB, "normal");
-	glBindAttribLocation(ProgramId, VSShaderLib::TEXTURE_COORD_ATTRIB, "texCoord");
-	
-	//shader->prepareProgram();
-
-	glLinkProgram(ProgramId);
-
-	pvm_uniformId = glGetUniformLocation(ProgramId, "m_pvm");
-	vm_uniformId = glGetUniformLocation(ProgramId, "m_viewModel");
-	normal_uniformId = glGetUniformLocation(ProgramId, "m_normal");
-	lPos_uniformId = glGetUniformLocation(ProgramId, "l_pos");
-
-    printf("InfoLog for Hello World Shader\n%s\n\n", shader->getAllInfoLogs().c_str());
-
-	
-	/*if (readShaderProgram("vtxShader.vsh", &VtxShader))
-	{
-		VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(VertexShaderId, 1, &VtxShader, 0);
-		glCompileShader(VertexShaderId);
-		checkShaderCompilation(VertexShaderId);
-	}
-
-	if (readShaderProgram("fragShader.fsh", &FragShader))
-	{
-		FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(FragmentShaderId, 1, &FragShader, 0);
-		glCompileShader(FragmentShaderId);
-		checkShaderCompilation(VertexShaderId);
-	}
-
-	ProgramId = glCreateProgram();
-	glAttachShader(ProgramId, VertexShaderId);
-	glAttachShader(ProgramId, FragmentShaderId);
-
-	glBindAttribLocation(ProgramId, MY_VERTEX_COORD_ATTRIB, "in_Position");
-
-	glLinkProgram(ProgramId);
-	checkProgramLinkage(ProgramId, VertexShaderId, FragmentShaderId);
-	UniformId = glGetUniformLocation(ProgramId, "Matrix");*/
+	buildShader(0);
+	buildShader(1);
+	//buildShader(2);
 
 	checkOpenGLError("ERROR: Could not create shaders.");
 }
+
+
+void Game::buildShader(int pIndex)
+{
+	
+	switch (pIndex) {
+	case 0:
+		shader->loadShader(VSShaderLib::VERTEX_SHADER, "pointlight.vert");
+		shader->loadShader(VSShaderLib::FRAGMENT_SHADER, "pointlight.frag");
+		break;
+	case 1:
+		shader->loadShader(VSShaderLib::VERTEX_SHADER, "dirdifambspec.vert");
+		shader->loadShader(VSShaderLib::FRAGMENT_SHADER, "dirdifambspec.frag");
+		break;
+	case 2:
+		shader->loadShader(VSShaderLib::VERTEX_SHADER, "spotlight.vert");
+		shader->loadShader(VSShaderLib::FRAGMENT_SHADER, "spotlight.frag");
+		break;
+	}
+
+	programId[pIndex] = shader->getProgramIndex();
+	glBindFragDataLocation(programId[pIndex], 0, "colorOut");
+	glBindAttribLocation(programId[pIndex], VSShaderLib::VERTEX_COORD_ATTRIB, "position");
+	glBindAttribLocation(programId[pIndex], VSShaderLib::NORMAL_ATTRIB, "normal");
+	glBindAttribLocation(programId[pIndex], VSShaderLib::TEXTURE_COORD_ATTRIB, "texCoord");
+
+	glLinkProgram(programId[pIndex]);
+
+	pvm_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_pvm");
+	vm_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_viewModel");
+	normal_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_normal");
+	lPos_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "l_pos");
+
+	printf("InfoLog for Hello World Shader\n%s\n\n", shader->getAllInfoLogs().c_str());
+}
+
 
 bool Game::readShaderProgram(const char *filename, char **output) {
 	std::ifstream ifs(filename, std::ifstream::in | std::ifstream::binary);
@@ -309,12 +307,12 @@ void Game::checkProgramLinkage(GLuint programId, GLuint vertexShaderId, GLuint f
 void Game::destroyShaderProgram()
 {
 	glUseProgram(0);
-	glDetachShader(ProgramId, VertexShaderId);
-	glDetachShader(ProgramId, FragmentShaderId);
+	glDetachShader(programId[0], VertexShaderId);
+	glDetachShader(programId[0], FragmentShaderId);
 
 	glDeleteShader(FragmentShaderId);
 	glDeleteShader(VertexShaderId);
-	glDeleteProgram(ProgramId);
+	glDeleteProgram(programId[0]);
 
 	checkOpenGLError("ERROR: Could not destroy shaders.");
 }
@@ -358,7 +356,7 @@ Matrix Game::getPVM()
 
 GLuint Game::getPVMid() 
 {
-	return pvm_uniformId;
+	return pvm_uniformId[pIndex];
 }
 
 Matrix Game::getVM()
@@ -368,12 +366,12 @@ Matrix Game::getVM()
 
 GLuint Game::getVMid()
 {
-	return vm_uniformId;
+	return vm_uniformId[pIndex];
 }
 
 GLuint Game::getIVMid()
 {
-	return normal_uniformId;
+	return normal_uniformId[pIndex];
 }
 
 VSShaderLib* Game::getShader()
@@ -381,10 +379,7 @@ VSShaderLib* Game::getShader()
 	return shader;
 }
 
-GLuint Game::getProgramID()
-{
-	return ProgramId;
-}
+
 
 void Game::keyboardUp(unsigned char key, int x, int y) 
 {

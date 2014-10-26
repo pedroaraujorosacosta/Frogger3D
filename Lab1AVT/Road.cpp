@@ -18,7 +18,7 @@ Road::~Road()
 	delete sideBot;
 }
 
-void Road::draw(GLuint programID){
+void Road::draw(){
 
 	Stack* modelview = game->getModelViewStack();
 
@@ -29,7 +29,7 @@ void Road::draw(GLuint programID){
 
 	modelview->push();
 	modelview->scaleMatrix(20.0, 5.0, 1.0);
-	road->draw(programID);
+	road->draw();
 	modelview->pop();
 
 	modelview->push();
@@ -37,12 +37,12 @@ void Road::draw(GLuint programID){
 
 	modelview->push();
 	modelview->translateMatrix(0.0, 3, 0.0);
-	sideTop->draw(programID);
+	sideTop->draw();
 	modelview->pop();
 
 	modelview->push();
 	modelview->translateMatrix(0.0, -3, 0.0);
-	sideBot->draw(programID);
+	sideBot->draw();
 	modelview->pop();
 
 	modelview->pop();

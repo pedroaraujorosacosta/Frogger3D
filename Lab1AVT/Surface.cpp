@@ -8,7 +8,7 @@ Surface::Surface(float *position, Game *game, float velocity, float *direction) 
 	createBufferObjects();
 }
 
-void Surface::draw(GLuint programID){
+void Surface::draw(){
 
 	Stack* modelview = game->getModelViewStack();
 
@@ -18,7 +18,7 @@ void Surface::draw(GLuint programID){
 	//puts the unitary cube in the origin of the referencial
 	modelview->translateMatrix(-0.5, -0.5, -0.5);
 
-	sendDataToShader(programID);
+	sendDataToShader();
 	modelview->pop();
 }
 

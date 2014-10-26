@@ -17,7 +17,7 @@ River::~River()
 	delete bankBot;
 }
 
-void River::draw(GLuint programID){
+void River::draw(){
 
 	Stack* modelview = game->getModelViewStack();
 
@@ -28,7 +28,7 @@ void River::draw(GLuint programID){
 
 	modelview->push();
 	modelview->scaleMatrix(20.0, 5.0, 1.0);
-		river->draw(programID);
+		river->draw();
 	modelview->pop();
 	
 	modelview->push();
@@ -36,12 +36,12 @@ void River::draw(GLuint programID){
 
 	modelview->push();
 		modelview->translateMatrix(0.0, 3.0, 0.0);
-		bankTop->draw(programID);
+		bankTop->draw();
 	modelview->pop();
 
 	modelview->push();
 	modelview->translateMatrix(0.0, -3.0, 0.0);
-		bankBot->draw(programID);
+		bankBot->draw();
 	modelview->pop();
 	
 	modelview->pop();

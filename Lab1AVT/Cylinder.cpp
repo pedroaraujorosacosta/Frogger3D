@@ -17,7 +17,7 @@ Cylinder::Cylinder(float* position, Game *game, float height, float radius, int 
 }
 
 
-void Cylinder::draw(GLuint programID)
+void Cylinder::draw()
 {
 	Stack* modelview = game->getModelViewStack();
 
@@ -27,7 +27,7 @@ void Cylinder::draw(GLuint programID)
 	//then, puts the sphere in the right position
 	modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
 
-	sendDataToShader(programID);
+	sendDataToShader();
 	modelview->pop();
 }
 

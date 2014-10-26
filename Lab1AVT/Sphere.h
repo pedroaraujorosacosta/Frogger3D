@@ -8,6 +8,6 @@ protected:
 	void init();
 public:
 	Sphere(float* position, Game *game, float radius, int divisions);
-	void draw(GLuint programID);
+	void draw();
 };
 #endif

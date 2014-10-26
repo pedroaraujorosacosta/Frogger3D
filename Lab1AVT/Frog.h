@@ -16,8 +16,8 @@ protected:
 public:
 	Frog(float* position, Game *game, float velocity, float *direction);
 	~Frog();
-	void draw(GLuint programID);
-	void update();
+	void draw();
+	void update(float dt);
 	void move(float *direction);
 	void move();
 	void stop();

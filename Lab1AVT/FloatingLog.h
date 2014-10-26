@@ -14,7 +14,7 @@ protected:
 public:
 	FloatingLog(float* position, Game *game, float velocity, float *direction);
 	~FloatingLog();
-	void draw(GLuint programID);
-	void update();
+	void draw();
+	void update(float dt);
 };
 #endif
