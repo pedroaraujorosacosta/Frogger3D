@@ -72,15 +72,26 @@ void Light::setExponent(float exp)
 	this->exp = exp;
 }
 
+void Light::update(float dt)
+{
+
+}
+void Light::draw()
+{
+
+}
+void Light::reset()
+{
+
+}
+
 void Light::illuminate()
 {
 	Vector point(4);
 	Vector direction(3);
 	GLint lightID;
 	GLint lightIsEnabledID;
-	
 	std::ostringstream stringStream;
-	
 
 	switch (type)
 	{
@@ -88,17 +99,18 @@ void Light::illuminate()
 		point = game->getVM() * *pos;
 		lightID = glGetUniformLocation(game->getShader(), "l_pos");
 		glUniform4fv(lightID, 1, point.v);
-		stringStream << "light" << numLight << ".isEnabled";
+		stringStream << "light[" << numLight << "].isEnabled";
+		checkOpenGLError("ERROR: Could not destroy shaders.");
 		lightIsEnabledID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
-		glUniform1i(game->getShader(), state);
+		glUniform1i(lightIsEnabledID, state);
 		break;
 	case DIR_LIGHT:
 		direction = game->getVM() * *dir;
 		lightID = glGetUniformLocation(game->getShader(), "l_dir");
 		glUniform3fv(lightID, 1, direction.v);
-		stringStream << "dirLight" << numLight << ".isEnabled";
-		lightIsEnabledID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
-		glUniform1i(game->getShader(), state);
+		stringStream << "dirLight.isEnabled";
+		lightIsEnabledID = glGetUniformLocation(game->getShader(), stringStream.str().c_str()); 
+		glUniform1i(lightIsEnabledID, state);
 		break;
 	case SPOT_LIGHT:
 		break;

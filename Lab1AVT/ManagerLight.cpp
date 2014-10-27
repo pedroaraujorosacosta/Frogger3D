@@ -27,14 +27,14 @@ void ManagerLight::init()
 {
 	float ldir[4] = { -1.0f, -1.0f, -1.0f, 0.0f };
 	Vector lightDir(ldir, 4);
-	Light *light2 = new Light(2, Light::DIR_LIGHT, game);
-	light2->setDirection(lightDir);
+	Light *dirLight = new Light(0, Light::DIR_LIGHT, game);
+	dirLight->setDirection(lightDir);
 
-	lights.push_back(light2);
+	lights.push_back(dirLight);
 
 	float lpos[4] = { 0.0f, 0.0f, 14.0f, 1.0f };
 	Vector lightPos(lpos, 4);
-	Light *light1 = new Light(1, Light::POINT_LIGHT, game);
+	Light *light1 = new Light(0, Light::POINT_LIGHT, game);
 	light1->setPosition(lightPos);
 
 	lights.push_back(light1);

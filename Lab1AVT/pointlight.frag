@@ -12,11 +12,11 @@ struct Materials {
 };
 
 struct LightProperties {
-	int isenabled;
+	bool isEnabled;
 };
 
-uniform LightProperties light1;
-uniform LightProperties dirLight2;
+uniform LightProperties light[1];
+uniform LightProperties dirLight;
 
 uniform Materials mat;
 
@@ -37,7 +37,9 @@ void main() {
 
 	vec3 ld = normalize(DataIn.lightDirectional);
 
-	float intensity = max(dot(n, l), 0.0);
+	float intensity = 0.0;
+	if(light[0].isEnabled)
+		intensity = max(dot(n, l), 0.0);
 
 	if (intensity > 0.0) 
 	{
@@ -46,7 +48,9 @@ void main() {
 		spec = mat.specular * pow(intSpec, mat.shininess);
 	}
 	
-	float intensity2 = max(dot(n, ld), 0.0);
+	float intensity2 = 0.0;
+	if(dirLight.isEnabled)
+		intensity2 = max(dot(n, ld), 0.0);
 
 	if (intensity2 > 0.0) 
 	{

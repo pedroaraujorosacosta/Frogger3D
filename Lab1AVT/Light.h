@@ -1,10 +1,12 @@
 #ifndef __LIGHT_H__
 #define __LIGHT_H__
 
+#include "IComponent.h"
+
 class Vector;
 class Game;
 
-class Light
+class Light : public IComponent
 {
 public:
 	enum LightType {POINT_LIGHT, DIR_LIGHT, SPOT_LIGHT};
@@ -28,6 +30,9 @@ private:
 public:
 	Light(int num, LightType type, Game *game);
 
+	void update(float dt);
+	void draw();
+	void reset();
 	void illuminate();
 	void setDiffuse(Vector dif);
 	void setAmbient(Vector amb);

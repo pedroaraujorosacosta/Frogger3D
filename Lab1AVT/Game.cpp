@@ -254,8 +254,8 @@ void Game::createShaderProgram(int pIndex)
 	normal_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_normal");
 	lPos_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "l_pos");
 	lDir_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "l_dir");
-	GLint d = glGetUniformLocation(programId[pIndex], "light1.isEnabled");
-	printf("hello");
+	//GLint d = glGetUniformLocation(programId[pIndex], "light1.isEnabled");
+	//printf("hello");
 }
 
 
