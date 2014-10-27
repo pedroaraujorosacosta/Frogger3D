@@ -15,6 +15,7 @@
 #include "Camera.h"
 #include "vsShaderLib.h"
 #include "Vector.h"
+#include "ManagerLight.h"
 
 
 #define CAPTION "Assignment 1"
@@ -45,6 +46,7 @@ void Game::init(int argc, char* argv[])
 	//z near - far -> nao afecta sem perspective
 
 	managerObj = new ManagerObj(this);
+	managerLight = new ManagerLight(this);
 
 	float posFrog[] = { 0.0, -7.0, -2.0 };
 	float directionFrog[3] = { 0.0, 1.0, 0.0 };
@@ -88,16 +90,18 @@ void Game::draw() {
 
 	cam->setCamera();
 
-	setProgramIndex(1);
-	// transform light to camera space and send it to GLSL
-	//Vector res(4);
-	//res = *modelViewStack.getTop() * lightDir;
-	//res.normalize();
-	//glUniform4fv(lPos_uniformId[0], 1, res.v);
+	setProgramIndex(0);
 
-	Vector res(3);
+	managerLight->illuminate();
+	// transform light to camera space and send it to GLSL
+	/*Vector res(4);
+	res = *modelViewStack.getTop() * lightPos;
+	//res.normalize();
+	glUniform4fv(lPos_uniformId[0], 1, res.v);*/
+
+	/*Vector res(3);
 	res = *modelViewStack.getTop() * lightDir;
-	glUniform3fv(lDir_uniformId[1], 1, res.v);
+	glUniform3fv(lDir_uniformId[1], 1, res.v);*/
 	//shader->setUniform("l_pos", res.v);
 
 	// So usado para luzes direccionais
@@ -408,7 +412,10 @@ GLuint Game::getShader()
 	return programId[pIndex];
 }
 
-
+GLuint Game::getLPosID()
+{
+	return lPos_uniformId[pIndex];
+}
 
 void Game::keyboardUp(unsigned char key, int x, int y) 
 {

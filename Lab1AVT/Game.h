@@ -18,6 +18,7 @@ class ManagerObj;
 class Camera;
 class Frog;
 class VSShaderLib;
+class ManagerLight;
 
 class Game : IComponent {
 
@@ -34,6 +35,7 @@ class Game : IComponent {
 	Camera *cam;
 	VSShaderLib *shader;
 	ManagerObj *managerObj;
+	ManagerLight *managerLight;
 
 	double FOV;
 	double n;
@@ -68,7 +70,6 @@ class Game : IComponent {
 	unsigned int getStreamSize(std::ifstream &ifs);
 	void createBufferObjects();
 	void destroyBufferObjects();
-	void setProgramIndex(int pIndex);
 	void resetProgram();
 	void createShaderProgram(int pIndex);
 	void loadShader(int pIndex, unsigned int ShaderType, char *filename);
@@ -91,6 +92,8 @@ public:
 	void passiveMouseFunc(int x, int y);
 	void mouseMotionFun(int x, int y);
 
+	void setProgramIndex(int pIndex);
+
 	Matrix getPVM();
 	GLuint getPVMid();
 	Matrix getVM();
@@ -100,6 +103,7 @@ public:
 	Stack* getProjectionStack();
 	Frog* getFrog();
 	GLuint getShader();
+	GLuint getLPosID();
 };
 
 #endif

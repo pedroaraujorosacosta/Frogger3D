@@ -1,8 +1,10 @@
 #include "Light.h"
 #include "Vector.h"
+#include "Game.h"
+#include "Stack.h"
+#include "Matrix.h"
 
 struct Material{
-
 	float diffuse[4];
 	float ambient[4];
 	float specular[4];
@@ -12,7 +14,6 @@ struct Material{
 };
 
 enum MaterialSemantics {
-
 	DIFFUSE,
 	AMBIENT,
 	SPECULAR,
@@ -21,8 +22,9 @@ enum MaterialSemantics {
 	TEX_COUNT
 } MaterialComponent;
 
-Light::Light(int num)
+Light::Light(int num, LightType type, Game *game)
 {
+	this->type = type;
 	this->numLight = num;
 	this->amb = new Vector(4);
 	this->dif = new Vector(4);
@@ -30,34 +32,33 @@ Light::Light(int num)
 
 	this->pos = new Vector(4);
 	this->dir = new Vector(3);
-
-	
-	bool state;
+	state = true; 
+	this->game = game;
 }
 
-void Light::setAmbient(Vector *amb)
+void Light::setAmbient(Vector amb)
 {
-	this->amb = amb;
+	*(this->amb) = amb;
 }
 
-void Light::setDiffuse(Vector *dif)
+void Light::setDiffuse(Vector dif)
 {
-	this->dif = dif;
+	*(this->dif) = dif;
 }
 
-void Light::setSpecular(Vector *spec)
+void Light::setSpecular(Vector spec)
 {
-	this->spec = spec;
+	*(this->spec) = spec;
 }
 
-void Light::setPosition(Vector *pos)
+void Light::setPosition(Vector pos)
 {
-	this->pos = pos;
+	*(this->pos) = pos;
 }
 
-void Light::setDirection(Vector *dir)
+void Light::setDirection(Vector dir)
 {
-	this->dir = dir;
+	*(this->dir) = dir;
 }
 
 void Light::setCutoff(float cutOff)
@@ -70,7 +71,28 @@ void Light::setExponent(float exp)
 	this->exp = exp;
 }
 
-
+void Light::illuminate()
+{
+	Vector point(4);
+	Vector direction(3);
+	GLuint lightID;
+	switch (type)
+	{
+	case POINT_LIGHT:
+		game->
+		point = game->getVM() * *pos;
+		lightID = glGetUniformLocation(game->getShader(), "l_pos");
+		glUniform4fv(lightID, 1, point.v);
+		break;
+	case DIR_LIGHT:
+		direction = game->getVM() * *dir;
+		lightID = glGetUniformLocation(game->getShader(), "l_dir");
+		glUniform3fv(lightID, 1, direction.v);
+		break;
+	case SPOT_LIGHT:
+		break;
+	}
+}
 
 /*
 void VSResourceLib::setMaterial(Material &aMat) {
