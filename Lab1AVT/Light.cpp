@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Stack.h"
 #include "Matrix.h"
+#include <string>
 
 struct Material{
 	float diffuse[4];
@@ -75,19 +76,29 @@ void Light::illuminate()
 {
 	Vector point(4);
 	Vector direction(3);
-	GLuint lightID;
+	GLint lightID;
+	GLint lightIsEnabledID;
+	
+	std::ostringstream stringStream;
+	
+
 	switch (type)
 	{
 	case POINT_LIGHT:
-		game->
 		point = game->getVM() * *pos;
 		lightID = glGetUniformLocation(game->getShader(), "l_pos");
 		glUniform4fv(lightID, 1, point.v);
+		stringStream << "light" << numLight << ".isEnabled";
+		lightIsEnabledID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform1i(game->getShader(), state);
 		break;
 	case DIR_LIGHT:
 		direction = game->getVM() * *dir;
 		lightID = glGetUniformLocation(game->getShader(), "l_dir");
 		glUniform3fv(lightID, 1, direction.v);
+		stringStream << "dirLight" << numLight << ".isEnabled";
+		lightIsEnabledID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform1i(game->getShader(), state);
 		break;
 	case SPOT_LIGHT:
 		break;

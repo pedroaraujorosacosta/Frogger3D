@@ -192,9 +192,7 @@ void Game::setupOpenGL() {
 void Game::createShaderPrograms() 
 {
 	createShaderProgram(0);
-	createShaderProgram(1);
-	createShaderProgram(2);
-
+	
 	checkOpenGLError("ERROR: Could not create shaders.");
 }
 
@@ -233,14 +231,14 @@ void Game::createShaderProgram(int pIndex)
 		loadShader(0, VSShaderLib::VERTEX_SHADER, "pointlight.vert");
 		loadShader(0, VSShaderLib::FRAGMENT_SHADER, "pointlight.frag");
 		break;
-	case 1:
+/*	case 1:
 		loadShader(1, VSShaderLib::VERTEX_SHADER, "dirdifambspec.vert");
 		loadShader(1, VSShaderLib::FRAGMENT_SHADER, "dirdifambspec.frag");
 		break;
 	case 2:
 		loadShader(2, VSShaderLib::VERTEX_SHADER, "spotlight.vert");
 		loadShader(2, VSShaderLib::FRAGMENT_SHADER, "spotlight.frag");
-		break;
+		break;*/
 	}
 
 	glBindFragDataLocation(programId[pIndex], 0, "colorOut");
@@ -256,6 +254,8 @@ void Game::createShaderProgram(int pIndex)
 	normal_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_normal");
 	lPos_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "l_pos");
 	lDir_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "l_dir");
+	GLint d = glGetUniformLocation(programId[pIndex], "light1.isEnabled");
+	printf("hello");
 }
 
 

@@ -11,12 +11,20 @@ struct Materials {
 	int texCount;
 };
 
+struct LightProperties {
+	int isenabled;
+};
+
+uniform LightProperties light1;
+uniform LightProperties dirLight2;
+
 uniform Materials mat;
 
 in Data {
 	vec3 normal;
 	vec3 eye;
 	vec3 lightDir;
+	vec3 lightDirectional;
 } DataIn;
 
 void main() {
@@ -27,14 +35,25 @@ void main() {
 	vec3 l = normalize(DataIn.lightDir);
 	vec3 e = normalize(DataIn.eye);
 
-	float intensity = max(dot(n,l), 0.0);
+	vec3 ld = normalize(DataIn.lightDirectional);
+
+	float intensity = max(dot(n, l), 0.0);
 
 	if (intensity > 0.0) 
 	{
 		vec3 h = normalize(l + e);
-		float intSpec = max(dot(h,n), 0.0);
+		float intSpec = max(dot(h, n), 0.0);
 		spec = mat.specular * pow(intSpec, mat.shininess);
 	}
 	
-	colorOut = max(intensity * mat.diffuse + spec, mat.ambient);
+	float intensity2 = max(dot(n, ld), 0.0);
+
+	if (intensity2 > 0.0) 
+	{
+		vec3 h = normalize(ld + e);
+		float intSpec = max(dot(h, n), 0.0);
+		spec += mat.specular * pow(intSpec, mat.shininess);
+	}
+
+	colorOut = max((intensity + intensity2)* mat.diffuse + spec, mat.ambient);
 }
