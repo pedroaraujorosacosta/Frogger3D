@@ -82,12 +82,12 @@ void Camera::setCamera() {
 		setAt(0.0f, 0.0f, -1.0f);
 		setUp(0.0f, 1.0f, 0.0f);
 
-		game->getProjectionStack()->orthogonal(-10, 10, -7, 7, 0.1, 10);
+		game->getProjectionStack()->orthogonal(-20, 20, -14, 14, 0.1, 10);
 		break;
 	case Camera::PERSPECTIVE:
 
 		setFOV(60);
-		setEye(0.0f, 0.0f, 10.0f);
+		setEye(0.0f, 0.0f, 24.0f);
 		setAt(0.0f, 0.0f, -1.0f);
 		setUp(0.0f, 1.0f, 0.0f);
 

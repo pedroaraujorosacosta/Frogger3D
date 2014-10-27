@@ -19,7 +19,7 @@
 
 #define CAPTION "Assignment 1"
 
-Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(20.0),
+Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(30.0),
 	isLeftButtonDown(false), isRightButtonDown(false), frameCount(0), totalFrames(0), startTime(0.0), windowHandle(0)
 {
 	winX = WinX;
@@ -45,9 +45,9 @@ void Game::init(int argc, char* argv[])
 
 	managerObj = new ManagerObj(this);
 
-	float posFrog[] = { 0.0, -7.0, -2.0 };
+	float posFrog[] = { 3.0, -13.0, -2.0 };
 	float directionFrog[3] = { 0.0, 1.0, 0.0 };
-	frog = new Frog(posFrog, this, 0.0, directionFrog);
+	frog = new Frog(posFrog, this, 0.0, directionFrog, 3);
 
 	// setup camera
 	S = tan(FOV*0.5*(M_PI / 180)) * n;
@@ -94,8 +94,10 @@ void Game::draw(GLuint programID) {
 	shader->setBlockUniform("Lights", "l_spotDir", res.v);*/
 	
 	managerObj->draw();
-
-	frog->draw(ProgramId);
+	
+	if (frog->getLife() > 0){
+		frog->draw(ProgramId);
+	}
 
 	glUseProgram(0);
 

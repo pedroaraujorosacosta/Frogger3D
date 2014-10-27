@@ -21,7 +21,7 @@ enum MaterialSemantics {
 	TEX_COUNT
 } MaterialComponent;
 
-
+/*
 
 void Light::setAmbient(Vector amb)
 {
@@ -57,8 +57,8 @@ void Light::setExponent(float exp)
 {
 	this->exp = exp;
 }
-*/
 
+*/
 
 
 /*
@@ -118,4 +118,4 @@ void VSResSurfRevLib::setColor(VSResourceLib::MaterialSemantics m, float *values
 		break;
 	}
 }
-*
+*/

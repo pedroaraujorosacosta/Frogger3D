@@ -2,13 +2,15 @@
 #define __ROAD_H__
 
 #include "Object.h"
+#include "Cube.h"
 
 class Road : public Object {
 
-	Cube *sideTop;
+	Cube *side;
 	Cube *road;
-	Cube *sideBot;
-
+	Cube *lampPost;
+	//Cube *lampadaTopo;
+	
 protected:
 	void init();
 public:

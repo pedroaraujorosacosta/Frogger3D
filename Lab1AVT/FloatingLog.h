@@ -8,6 +8,9 @@ class FloatingLog : public Surface {
 
 	Cylinder *body;
 
+	Cylinder *front;
+	Cylinder *back;
+
 
 protected:
 	void init();

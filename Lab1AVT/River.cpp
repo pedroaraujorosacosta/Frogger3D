@@ -27,12 +27,12 @@ void River::draw(GLuint programID){
 	modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
 
 	modelview->push();
-	modelview->scaleMatrix(20.0, 5.0, 1.0);
+	modelview->scaleMatrix(40.0, 10.0, 1.0);
 		river->draw(programID);
 	modelview->pop();
 	
 	modelview->push();
-	modelview->scaleMatrix(20.0, 1.0, 1.0);
+	modelview->scaleMatrix(40.0, 2.0, 1.0);
 
 	modelview->push();
 		modelview->translateMatrix(0.0, 3.0, 0.0);

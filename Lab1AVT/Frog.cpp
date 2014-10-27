@@ -3,10 +3,11 @@
 #include "Game.h"
 #include <iostream>
 
-Frog::Frog(float *position, Game *game, float velocity, float *direction) : Blocker(position, game, velocity, direction)
+Frog::Frog(float *position, Game *game, float velocity, float *direction, int life) : Blocker(position, game, velocity, direction)
 {
 	init();
 	createBufferObjects();
+	this->life = life;
 }
 
 Frog::~Frog()
@@ -19,6 +20,11 @@ void Frog::update()
 {
 	for (int i = 0; i < 3; i++)
 		position[i] += direction[i] * velocity;
+
+	if (position[1] > -5){
+		position[1] = -13;
+		setLife(getLife()-1);
+	}
 }
 
 void Frog::move(float *direction)
@@ -45,7 +51,7 @@ void Frog::draw(GLuint programID){
 	modelview->push();
 	//puts the frog on the right position
 	modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
-	modelview->scaleMatrix(0.9, 0.8, 0.6);  
+	modelview->scaleMatrix(1.2, 1.0, 0.8);  
 	
 	if (direction[0] < 0.0)
 		modelview->rotateMatrix(0.0, 0.0, 1.0, -90);
@@ -118,4 +124,14 @@ float Frog::getY()
 float Frog::getZ()
 {
 	return position[2];
+}
+
+int Frog::getLife()
+{
+	return life;
+}
+
+void Frog::setLife(int life)
+{
+	this->life = life;
 }

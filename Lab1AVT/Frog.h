@@ -10,11 +10,13 @@ class Frog : public Blocker {
 	Sphere *body;
 	Sphere *eyes;
 
+	int life;
+
 
 protected:
 	void init();
 public:
-	Frog(float* position, Game *game, float velocity, float *direction);
+	Frog(float* position, Game *game, float velocity, float *direction, int life);
 	~Frog();
 	void draw(GLuint programID);
 	void update();
@@ -24,5 +26,8 @@ public:
 	float getX();
 	float getY();
 	float getZ();
+
+	int getLife();
+	void setLife(int _life);
 };
 #endif

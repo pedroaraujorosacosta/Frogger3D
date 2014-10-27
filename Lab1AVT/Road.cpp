@@ -1,4 +1,3 @@
-#include "Cube.h"
 #include "Road.h"
 #include "Stack.h"
 #include "Game.h"
@@ -13,9 +12,10 @@ Road::Road(float *position, Game *game) : Object(position, game)
 
 Road::~Road()
 {
-	delete sideTop;
+	delete side;
 	delete road;
-	delete sideBot;
+	delete lampPost;
+	//delete lampadaTopo;
 }
 
 void Road::draw(GLuint programID){
@@ -28,24 +28,57 @@ void Road::draw(GLuint programID){
 	modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
 
 	modelview->push();
-	modelview->scaleMatrix(20.0, 5.0, 1.0);
+	modelview->scaleMatrix(40.0, 10.0, 1.0);
 	road->draw(programID);
 	modelview->pop();
 
 	modelview->push();
-	modelview->scaleMatrix(20.0, 1.0, 1.0);
+	modelview->scaleMatrix(40.0, 2.0, 1.0);
+
+		modelview->push();
+		modelview->translateMatrix(0.0, 3, 0.0);
+		side->draw(programID);
+		modelview->pop();
+
+		modelview->push();
+		modelview->translateMatrix(0.0, -3, 0.0);
+		side->draw(programID);
+		modelview->pop();
+	
+	modelview->pop();
+
 
 	modelview->push();
-	modelview->translateMatrix(0.0, 3, 0.0);
-	sideTop->draw(programID);
+	modelview->scaleMatrix(1.0, 1.0, 2.0);
+
+		modelview->push();
+		modelview->translateMatrix(0.0, 6.0, 0.6);
+		lampPost->draw(programID);
+		//lampadaTopo->draw(programID);
+		modelview->pop();
+		modelview->push();
+		modelview->translateMatrix(10.0, 6.0, 0.6);
+		lampPost->draw(programID);
+		modelview->pop();
+		modelview->push();
+		modelview->translateMatrix(-10.0, 6.0, 0.6);
+		lampPost->draw(programID);
+		modelview->pop();
+		modelview->push();
+		modelview->translateMatrix(0.0, -6.0, 0.6);
+		lampPost->draw(programID);
+		modelview->pop();
+		modelview->push();
+		modelview->translateMatrix(10.0, -6.0, 0.6);
+		lampPost->draw(programID);
+		modelview->pop();
+		modelview->push();
+		modelview->translateMatrix(-10.0, -6.0, 0.6);
+		lampPost->draw(programID);
+		modelview->pop();
+
 	modelview->pop();
 
-	modelview->push();
-	modelview->translateMatrix(0.0, -3, 0.0);
-	sideBot->draw(programID);
-	modelview->pop();
-
-	modelview->pop();
 
 	//sendDataToShader(programID);
 	modelview->pop();
@@ -54,13 +87,14 @@ void Road::draw(GLuint programID){
 void Road::init() {
 	float o[3] = { 0.0, 0.0, 0.0 };
 
-	sideTop = new Cube(o, this->game);
+	side = new Cube(o, this->game);
 	road = new Cube(o, this->game);
-	sideBot = new Cube(o, this->game);
+	lampPost = new Cube(o, this->game);
+	//lampadaTopo = new Cube(0, this->game);
 
 	// set materials
 	float ambRoad[] = { 0.1f, 0.1f, 0.1f, 1.0f };
-	float diffRoad[] = { 0.1f, 0.1f, 0.1f, 1.0f };
+	float diffRoad[] = { 0.2f, 0.2f, 0.2f, 1.0f };
 	float specRoad[] = { 0.1f, 0.1f, 0.1f, 1.0f };
 	float emissiveRoad[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float shininessRoad = 100.0f;
@@ -74,23 +108,51 @@ void Road::init() {
 	road->setTexCount(texcountRoad);
 
 	float ambSide[] = { 0.2f, 0.2f, 0.2f, 1.0f };
-	float diffSide[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+	float diffSide[] = { 0.3f, 0.3f, 0.3f, 1.0f };
 	float specSide[] = { 0.1f, 0.1f, 0.1f, 1.0f };
 	float emissiveSide[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float shininessSide = 100.0f;
 	int texcountSide = 0;
 
-	sideTop->setAmbient(ambSide);
-	sideTop->setDiffuse(diffSide);
-	sideTop->setSpecular(specSide);
-	sideTop->setEmissive(emissiveSide);
-	sideTop->setShininess(shininessSide);
-	sideTop->setTexCount(texcountSide);
+	side->setAmbient(ambSide);
+	side->setDiffuse(diffSide);
+	side->setSpecular(specSide);
+	side->setEmissive(emissiveSide);
+	side->setShininess(shininessSide);
+	side->setTexCount(texcountSide);
 
-	sideBot->setAmbient(ambSide);
-	sideBot->setDiffuse(diffSide);
-	sideBot->setSpecular(specSide);
-	sideBot->setEmissive(emissiveSide);
-	sideBot->setShininess(shininessSide);
-	sideBot->setTexCount(texcountSide);
+
+	float ambPoste[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+	float diffPoste[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+	float specPoste[] = { 0.1f, 0.1f, 0.1f, 1.0f };
+	float emissivePoste[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float shininessPoste = 100.0f;
+	int texcountPoste = 0;
+	
+	lampPost->setAmbient(ambPoste);
+	lampPost->setDiffuse(diffPoste);
+	lampPost->setSpecular(specPoste);
+	lampPost->setEmissive(emissivePoste);
+	lampPost->setShininess(shininessPoste);
+	lampPost->setTexCount(texcountPoste);
+
+	/*
+	
+	float ambPost2[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+	float diffPost2[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+	float specPost2[] = { 0.1f, 0.1f, 0.1f, 1.0f };
+	float emissivePost2[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float shininessPost2 = 100.0f;
+	int texcountPost2 = 0;
+
+	
+	lampadaTopo->setAmbient(ambPost2);
+	lampadaTopo->setDiffuse(diffPost2);
+	lampadaTopo->setSpecular(specPost2);
+	lampadaTopo->setEmissive(emissivePost2);
+	lampadaTopo->setShininess(shininessPost2);
+	lampadaTopo->setTexCount(texcountPost2);
+	
+	*/
+
 }

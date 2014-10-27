@@ -9,7 +9,7 @@
 
 #include "Game.h"
 
-int WinX = 640, WinY = 480;
+int WinX = 1000, WinY = 800;
 Game game(WinX, WinY);
 
 

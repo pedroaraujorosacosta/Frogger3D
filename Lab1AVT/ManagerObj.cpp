@@ -17,24 +17,24 @@
 ManagerObj::ManagerObj(Game *game) : Manager(game) {
 
 	setDificuldade(1);
-	setLateralEsquerda(-10.0);
-	setLateralDireita(10.0);
+	setLateralEsquerda(-20.0);
+	setLateralDireita(20.0);
 
 
-	float posRiver[] = { 0.0, 3.5, -3.0 };
+	float posRiver[] = { 0.0, 7, -3.0 };
 	objects.push_back(new River(posRiver, game));
-	float posroad[] = { 0.0, -3.5, -3.0 };
+	float posroad[] = { 0.0, -7, -3.0 };
 	objects.push_back(new Road(posroad, game));
 
 
 	//LANE 1
-	float posFloatingLog1[] = { -7.0, 5.0, -2.5 };
+	float posFloatingLog1[] = { -7.0, 11.0, -2.5 };
 	float dirFloatingLog1[] = { 0.05, 0.0, 0.0 };
 
-	float posFloatingLog2[] = { 1.0, 5.0, -2.5 };
+	float posFloatingLog2[] = { 1.0, 11.0, -2.5 };
 	float dirFloatingLog2[] = { 0.05, 0.0, 0.0 };
 
-	float posFloatingLog3[] = { 8.0, 5.0, -2.5 };
+	float posFloatingLog3[] = { 8.0, 11.0, -2.5 };
 	float dirFloatingLog3[] = { 0.05, 0.0, 0.0 };
 
 	objectsMobileLane1.push_back(new FloatingLog(posFloatingLog1, game, getLane1Velocity(), dirFloatingLog1));
@@ -43,13 +43,13 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 
 	//LANE 2
 
-	float posTurtle1[] = { lateralDireita, 3.3, -2.5 };
+	float posTurtle1[] = { lateralDireita, 9, -2.5 };
 	float dirTurtle1[] = { -0.05, 0.0, 0.0 };
 
-	float posTurtle2[] = { 2.0, 3.3, -2.5 };
+	float posTurtle2[] = { 2.0, 9, -2.5 };
 	float dirTurtle2[] = { -0.05, 0.0, 0.0 };
 
-	float posTurtle3[] = { -4, 3.3, -2.5 };
+	float posTurtle3[] = { -4, 9, -2.5 };
 	float dirTurtle3[] = { -0.05, 0.0, 0.0 };
 
 	objectsMobileLane2.push_back(new Turtle(posTurtle1, game, getLane2Velocity(), dirTurtle1));
@@ -58,13 +58,13 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 
 	//LANE 3
 
-	float posFloatingLog4[] = { lateralEsquerda, 2.0, -2.5 };
+	float posFloatingLog4[] = { lateralEsquerda, 7.0, -2.5 };
 	float dirFloatingLog4[] = { 0.05, 0.0, 0.0 };
 
-	float posFloatingLog5[] = { 7.0, 2.0, -2.5 };
+	float posFloatingLog5[] = { 7.0, 7.0, -2.5 };
 	float dirFloatingLog5[] = { 0.05, 0.0, 0.0 };
 
-	float posFloatingLog6[] = { -2.0, 2.0, -2.5 };
+	float posFloatingLog6[] = { -2.0, 7.0, -2.5 };
 	float dirFloatingLog6[] = { 0.05, 0.0, 0.0 };
 
 	objectsMobileLane3.push_back(new FloatingLog(posFloatingLog4, game, getLane3Velocity(), dirFloatingLog4));
@@ -73,17 +73,17 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 
 	//LANE 4
 
-	float posBus[] = { lateralEsquerda, -1.8, -1.5 };
+	float posBus[] = { lateralEsquerda, -3, -1.8 };
 	float dirBus[] = { 0.05, 0.0, 0.0 };
 
 	objectsMobileLane4.push_back(new Bus(posBus, game, getLane4Velocity(), dirBus));
 
 	//LANE 5
 
-	float posCar1[] = { lateralDireita, -3.5, -1.5 };
+	float posCar1[] = { lateralDireita, -5, -1.8 };
 	float dirCar1[] = { -0.05, 0.0, 0.0 };
 
-	float posCar2[] = { -2.0, -3.5, -1.5 };
+	float posCar2[] = { -2.0, -5, -1.8 };
 	float dirCar2[] = { -0.05, 0.0, 0.0 };
 
 
@@ -92,10 +92,10 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 
 	//LANE 6
 
-	float posCar3[] = { 2.0, -5.0, -1.5 };
+	float posCar3[] = { 2.0, -7.0, -1.8 };
 	float dirCar3[] = { 0.05, 0.0, 0.0 };
 
-	float posCar4[] = { lateralEsquerda, -5.0, -1.5 };
+	float posCar4[] = { lateralEsquerda, -7.0, -1.8 };
 	float dirCar4[] = { 0.05, 0.0, 0.0 };
 
 	objectsMobileLane6.push_back(new Car(posCar3, game, getLane6Velocity(), dirCar3));
@@ -138,8 +138,13 @@ void ManagerObj::reset() {
 void ManagerObj::update() {
 
 	int currentTime = glutGet(GLUT_ELAPSED_TIME);
-	std::cout << currentTime << std::endl;
 	dificuldade = currentTime / 500000 + 1;
+
+	//colision variables
+	float position = 0.0;
+	float newPosition = 0.0;
+	float position2 = 0.0;
+	float deltaPosition = 0.0;
 
 	for (Object* o : objects){
 		o->update();
@@ -148,8 +153,19 @@ void ManagerObj::update() {
 	for (MobileObj* o : objectsMobileLane1){
 		o->update();
 		o->multiplyVelocity(dificuldade);
-		if (o->getPositionXXs() > (lateralDireita + 4))
-			o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
+		position = o->getPositionXXs();
+		if (position > (lateralDireita - 4)){
+			newPosition = lateralEsquerda + 4 - (rand() % 10);
+			o->setPositionXXs(newPosition);
+			for (MobileObj* o2 : objectsMobileLane1){
+				position2 = o2->getPositionXXs();
+				deltaPosition = (position - position2);
+				if (0.0 < deltaPosition < 2.0)
+					o->setPositionXXs(newPosition - 3 - deltaPosition / 2);
+				if (-2.0 < deltaPosition < 0.0)
+					o->setPositionXXs(newPosition - deltaPosition / 2);
+			}
+		}
 	}
 	for (MobileObj* o : objectsMobileLane2){
 		o->update();
@@ -200,7 +216,7 @@ void ManagerObj::setLateralDireita(float lateralDireita){
 
 float ManagerObj::getLane1Velocity() {
 
-	return 1.0 * dificuldade;
+	return 3.0 * dificuldade;
 }
 float ManagerObj::getLane2Velocity() {
 

@@ -2,10 +2,12 @@
 #define __LIGHT_H__
 
 
-#include "Vector.h"
+class Vector;
+
 
 class Light
 {
+	/*
 	int numLight;
 	Vector amb(4);
 	Vector dif(4);
@@ -18,7 +20,7 @@ class Light
 	float exp;
 
 	bool state;
-
+	*/
 	
 public:
 	Light(int num);
