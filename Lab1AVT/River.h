@@ -14,6 +14,6 @@ protected:
 public:
 	River(float* position, Game *game);
 	~River();
-	void draw(GLuint programID);
+	void draw();
 };
 #endif

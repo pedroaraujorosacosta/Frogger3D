@@ -15,13 +15,13 @@ Bus::~Bus()
 	delete wheels;
 }
 
-void Bus::update(){
+void Bus::update(float dt){
 
 	for (int i = 0; i < 3; i++)
-		position[i] += direction[i] * velocity;
+		position[i] += direction[i] * velocity * dt;
 }
 
-void Bus::draw(GLuint programID){
+void Bus::draw(){
 
 	Stack* modelview = game->getModelViewStack();
 
@@ -35,30 +35,30 @@ void Bus::draw(GLuint programID){
 
 	modelview->push();
 	modelview->scaleMatrix(1.0, 2.0, 1.0);
-	body->draw(programID);
+	body->draw();
 	modelview->pop();
 
 	modelview->push();
 	modelview->translateMatrix(0.5, 0.6, -0.5);
-	wheels->draw(programID);
+	wheels->draw();
 	modelview->pop();
 
 	modelview->push();
 	modelview->translateMatrix(0.5, -0.6, -0.5);
-	wheels->draw(programID);
+	wheels->draw();
 	modelview->pop();
 
 	modelview->push();
 	modelview->translateMatrix(-0.5, -0.6, -0.5);
-	wheels->draw(programID);
+	wheels->draw();
 	modelview->pop();
 
 	modelview->push();
 	modelview->translateMatrix(-0.5, 0.6, -0.5);
-	wheels->draw(programID);
+	wheels->draw();
 	modelview->pop();
 
-	sendDataToShader(programID);
+	sendDataToShader();
 	modelview->pop();
 }
 

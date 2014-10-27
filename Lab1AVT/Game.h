@@ -18,6 +18,7 @@ class ManagerObj;
 class Camera;
 class Frog;
 class VSShaderLib;
+class ManagerLight;
 
 class Game : IComponent {
 
@@ -26,7 +27,7 @@ class Game : IComponent {
 	double aspectRatio;
 	Stack modelViewStack;
 	Stack projectionStack;
-	double startTime; 
+	double startTime;
 	int windowHandle;
 	unsigned int frameCount;
 	unsigned int totalFrames;
@@ -34,6 +35,7 @@ class Game : IComponent {
 	Camera *cam;
 	VSShaderLib *shader;
 	ManagerObj *managerObj;
+	ManagerLight *managerLight;
 
 	double FOV;
 	double n;
@@ -42,22 +44,25 @@ class Game : IComponent {
 	double t, b;
 	double f;
 
-	GLuint VertexShaderId, FragmentShaderId, ProgramId;
+	int pIndex;
+	GLuint programId[3];
+	GLuint VertexShaderId, FragmentShaderId;
 	//GLuint UniformId;
-	GLint pvm_uniformId;
-	GLint vm_uniformId;
-	GLint normal_uniformId;
-	GLint lPos_uniformId;
+	GLint pvm_uniformId[3];
+	GLint vm_uniformId[3];
+	GLint normal_uniformId[3];
+	GLint lPos_uniformId[3];
+	GLint lDir_uniformId[3];
 	char *VtxShader;
 	char *FragShader;
-	
+
 	bool isLeftButtonDown;
 	bool isRightButtonDown;
-	
+
 	void setupGLUT(int argc, char* argv[]);
 	void setupGLEW();
 	void setupOpenGL();
-	void createShaderProgram();
+	void createShaderPrograms();
 	bool readShaderProgram(const char *filename, char **output);
 	void destroyShaderProgram();
 	void checkProgramLinkage(GLuint programId, GLuint vertexShaderId, GLuint fragmentShaderId);
@@ -65,15 +70,18 @@ class Game : IComponent {
 	unsigned int getStreamSize(std::ifstream &ifs);
 	void createBufferObjects();
 	void destroyBufferObjects();
+	void resetProgram();
+	void createShaderProgram(int pIndex);
+	void loadShader(int pIndex, unsigned int ShaderType, char *filename);
 
 public:
 	Game(int WinX, int WinY);
 	~Game();
 	void init(int argc, char* argv[]);
 
-	void draw(GLuint programID);
+	void draw();
 	void reset();
-	void update();
+	void update(float dt);
 
 	void reshape(int w, int h);
 	void cleanup();
@@ -84,16 +92,18 @@ public:
 	void passiveMouseFunc(int x, int y);
 	void mouseMotionFun(int x, int y);
 
+	void setProgramIndex(int pIndex);
+
 	Matrix getPVM();
 	GLuint getPVMid();
 	Matrix getVM();
 	GLuint getVMid();
 	GLuint getIVMid();
-	GLuint getProgramID();
 	Stack* getModelViewStack();
 	Stack* getProjectionStack();
 	Frog* getFrog();
-	VSShaderLib* getShader();
+	GLuint getShader();
+	GLuint getLPosID();
 };
 
 #endif

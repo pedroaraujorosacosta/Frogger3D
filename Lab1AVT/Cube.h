@@ -8,6 +8,6 @@ protected:
 	void init();
 public:
 	Cube(float* position, Game *game);
-	void draw(GLuint programID);
+	void draw();
 };
 #endif

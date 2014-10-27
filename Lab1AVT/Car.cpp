@@ -15,13 +15,13 @@ Car::~Car()
 	delete wheels;
 }
 
-void Car::update(){
+void Car::update(float dt){
 
 	for (int i = 0; i < 3; i++)
-		position[i] += direction[i] * velocity;
+		position[i] += direction[i] * velocity * dt;
 }
 
-void Car::draw(GLuint programID){
+void Car::draw(){
 
 	Stack* modelview = game->getModelViewStack();
 
@@ -33,29 +33,29 @@ void Car::draw(GLuint programID){
 	if (direction[0] != 0.0)
 		modelview->rotateMatrix(0.0, 0.0, 1.0, 90);
 
-	body->draw(programID);
+	body->draw();
 
 	modelview->push();
 	modelview->translateMatrix(0.5,0.3,-0.5);
-	wheels->draw(programID);
+	wheels->draw();
 	modelview->pop();
 
 	modelview->push();
 	modelview->translateMatrix(0.5, -0.3, -0.5);
-	wheels->draw(programID);
+	wheels->draw();
 	modelview->pop();
 	
 	modelview->push();
 	modelview->translateMatrix(-0.5, -0.3,-0.5);
-	wheels->draw(programID);
+	wheels->draw();
 	modelview->pop();
 
 	modelview->push();
 	modelview->translateMatrix(-0.5, 0.3, -0.5);
-	wheels->draw(programID);
+	wheels->draw();
 	modelview->pop();
 
-	sendDataToShader(programID);
+	sendDataToShader();
 	modelview->pop();
 }
 

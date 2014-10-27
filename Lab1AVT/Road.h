@@ -16,6 +16,6 @@ protected:
 public:
 	Road(float* position, Game *game);
 	~Road();
-	void draw(GLuint programID);
+	void draw();
 };
 #endif

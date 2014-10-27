@@ -10,6 +10,6 @@ protected:
 	virtual void init();
 public:
 	Surface(float* position, Game *game, float velocity, float *direction);
-	virtual void draw(GLuint programID);
+	virtual void draw();
 };
 #endif

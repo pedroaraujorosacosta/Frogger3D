@@ -3,6 +3,7 @@
 #include "Object.h"
 
 #include "ManagerObj.h"
+#include "ManagerLight.h"
 
 #include "River.h"
 #include "Road.h"
@@ -37,13 +38,14 @@ void Game::init(int argc, char* argv[])
 	setupGLUT(argc, argv);
 	setupGLEW();
 	setupOpenGL();
-	createShaderProgram();
+	createShaderPrograms();
 	createBufferObjects();
 	//x esquerda - direita
 	//y cima - baixo
 	//z near - far -> nao afecta sem perspective
 
 	managerObj = new ManagerObj(this);
+	managerLight = new ManagerLight(this);
 
 	float posFrog[] = { 3.0, -13.0, -2.0 };
 	float directionFrog[3] = { 0.0, 1.0, 0.0 };
@@ -64,8 +66,20 @@ Vector lightPos(lpos, 4);
 float sdir[4] = { -4.0f, -6.0f, -2.0f, 0.0f };
 Vector spotDir(sdir, 4);
 
+void Game::setProgramIndex(int pIndex)
+{
+	glUseProgram(programId[pIndex]);
+	this->pIndex = pIndex;
+}
 
-void Game::draw(GLuint programID) {
+void Game::resetProgram()
+{
+	glUseProgram(0);
+	pIndex = 0;
+}
+
+
+void Game::draw() {
 	++frameCount;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -75,13 +89,18 @@ void Game::draw(GLuint programID) {
 	
 	cam->setCamera();
 
-	glUseProgram(ProgramId);
+	setProgramIndex(0);
+
+	managerLight->illuminate();
 	// transform light to camera space and send it to GLSL
-	Vector res(4);
+	/*Vector res(4);
 	res = *modelViewStack.getTop() * lightPos;
 	//res.normalize();
+	glUniform4fv(lPos_uniformId[0], 1, res.v);*/
 
-	glUniform4fv(lPos_uniformId, 1, res.v);
+	/*Vector res(3);
+	res = *modelViewStack.getTop() * lightDir;
+	glUniform3fv(lDir_uniformId[1], 1, res.v);*/
 	//shader->setUniform("l_pos", res.v);
 
 	// So usado para luzes direccionais
@@ -96,7 +115,7 @@ void Game::draw(GLuint programID) {
 	managerObj->draw();
 	
 	if (frog->getLife() > 0){
-		frog->draw(ProgramId);
+		frog->draw();
 	}
 
 	glUseProgram(0);
@@ -109,10 +128,10 @@ void Game::draw(GLuint programID) {
 
 void Game::reset() {}
 
-void Game::update() 
+void Game::update(float dt) 
 {
-	managerObj->update();
-	frog->update();
+	managerObj->update(dt);
+	frog->update(dt);
 }
 
 void Game::reshape(int w, int h)
@@ -171,64 +190,75 @@ void Game::setupOpenGL() {
 	glFrontFace(GL_CCW);
 }
 
-void Game::createShaderProgram() {
 
-	shader->init();
-	shader->loadShader(VSShaderLib::VERTEX_SHADER, "pointlight.vert");
-	shader->loadShader(VSShaderLib::FRAGMENT_SHADER, "pointlight.frag");
-
-	// set semantics for the shader variables
-	/*shader->setProgramOutput(0, "colorOut");
-	shader->setVertexAttribName(VSShaderLib::VERTEX_COORD_ATTRIB, "position");
-	shader->setVertexAttribName(VSShaderLib::NORMAL_ATTRIB, "normal");
-	shader->setVertexAttribName(VSShaderLib::TEXTURE_COORD_ATTRIB, "texCoord");*/
-
-	ProgramId = shader->getProgramIndex();
-	glBindFragDataLocation(ProgramId, 0, "colorOut");
-	glBindAttribLocation(ProgramId, VSShaderLib::VERTEX_COORD_ATTRIB, "position");
-	glBindAttribLocation(ProgramId, VSShaderLib::NORMAL_ATTRIB, "normal");
-	glBindAttribLocation(ProgramId, VSShaderLib::TEXTURE_COORD_ATTRIB, "texCoord");
-	
-	//shader->prepareProgram();
-
-	glLinkProgram(ProgramId);
-
-	pvm_uniformId = glGetUniformLocation(ProgramId, "m_pvm");
-	vm_uniformId = glGetUniformLocation(ProgramId, "m_viewModel");
-	normal_uniformId = glGetUniformLocation(ProgramId, "m_normal");
-	lPos_uniformId = glGetUniformLocation(ProgramId, "l_pos");
-
-    printf("InfoLog for Hello World Shader\n%s\n\n", shader->getAllInfoLogs().c_str());
-
-	
-	/*if (readShaderProgram("vtxShader.vsh", &VtxShader))
-	{
-		VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(VertexShaderId, 1, &VtxShader, 0);
-		glCompileShader(VertexShaderId);
-		checkShaderCompilation(VertexShaderId);
-	}
-
-	if (readShaderProgram("fragShader.fsh", &FragShader))
-	{
-		FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(FragmentShaderId, 1, &FragShader, 0);
-		glCompileShader(FragmentShaderId);
-		checkShaderCompilation(VertexShaderId);
-	}
-
-	ProgramId = glCreateProgram();
-	glAttachShader(ProgramId, VertexShaderId);
-	glAttachShader(ProgramId, FragmentShaderId);
-
-	glBindAttribLocation(ProgramId, MY_VERTEX_COORD_ATTRIB, "in_Position");
-
-	glLinkProgram(ProgramId);
-	checkProgramLinkage(ProgramId, VertexShaderId, FragmentShaderId);
-	UniformId = glGetUniformLocation(ProgramId, "Matrix");*/
+void Game::createShaderPrograms()
+{
+	createShaderProgram(0);
+	createShaderProgram(1);
+	createShaderProgram(2);
 
 	checkOpenGLError("ERROR: Could not create shaders.");
 }
+void Game::loadShader(int pIndex, unsigned int ShaderType, char *filename)
+{
+	if (ShaderType == VSShaderLib::VERTEX_SHADER)
+	{
+		if (readShaderProgram(filename, &VtxShader))
+		{
+			VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
+			glShaderSource(VertexShaderId, 1, &VtxShader, 0);
+			glAttachShader(programId[pIndex], VertexShaderId);
+			glCompileShader(VertexShaderId);
+			checkShaderCompilation(VertexShaderId);
+		}
+	}
+	else
+	{
+		if (readShaderProgram(filename, &FragShader))
+		{
+			FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+			glShaderSource(FragmentShaderId, 1, &FragShader, 0);
+			glAttachShader(programId[pIndex], FragmentShaderId);
+			glCompileShader(FragmentShaderId);
+			checkShaderCompilation(FragmentShaderId);
+		}
+	}
+}
+
+void Game::createShaderProgram(int pIndex)
+{
+	programId[pIndex] = glCreateProgram();
+
+	switch (pIndex) {
+	case 0:
+		loadShader(0, VSShaderLib::VERTEX_SHADER, "pointlight.vert");
+		loadShader(0, VSShaderLib::FRAGMENT_SHADER, "pointlight.frag");
+		break;
+	case 1:
+		loadShader(1, VSShaderLib::VERTEX_SHADER, "dirdifambspec.vert");
+		loadShader(1, VSShaderLib::FRAGMENT_SHADER, "dirdifambspec.frag");
+		break;
+	case 2:
+		loadShader(2, VSShaderLib::VERTEX_SHADER, "spotlight.vert");
+		loadShader(2, VSShaderLib::FRAGMENT_SHADER, "spotlight.frag");
+		break;
+	}
+
+	glBindFragDataLocation(programId[pIndex], 0, "colorOut");
+	glBindAttribLocation(programId[pIndex], VSShaderLib::VERTEX_COORD_ATTRIB, "position");
+	glBindAttribLocation(programId[pIndex], VSShaderLib::NORMAL_ATTRIB, "normal");
+	glBindAttribLocation(programId[pIndex], VSShaderLib::TEXTURE_COORD_ATTRIB, "texCoord");
+
+	glLinkProgram(programId[pIndex]);
+	checkProgramLinkage(programId[pIndex], VertexShaderId, FragmentShaderId);
+
+	pvm_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_pvm");
+	vm_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_viewModel");
+	normal_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_normal");
+	lPos_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "l_pos");
+	lDir_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "l_dir");
+}
+
 
 bool Game::readShaderProgram(const char *filename, char **output) {
 	std::ifstream ifs(filename, std::ifstream::in | std::ifstream::binary);
@@ -311,12 +341,12 @@ void Game::checkProgramLinkage(GLuint programId, GLuint vertexShaderId, GLuint f
 void Game::destroyShaderProgram()
 {
 	glUseProgram(0);
-	glDetachShader(ProgramId, VertexShaderId);
-	glDetachShader(ProgramId, FragmentShaderId);
+	glDetachShader(programId[0], VertexShaderId);
+	glDetachShader(programId[0], FragmentShaderId);
 
 	glDeleteShader(FragmentShaderId);
 	glDeleteShader(VertexShaderId);
-	glDeleteProgram(ProgramId);
+	glDeleteProgram(programId[0]);
 
 	checkOpenGLError("ERROR: Could not destroy shaders.");
 }
@@ -358,9 +388,9 @@ Matrix Game::getPVM()
 	return *projectionStack.getTop() * *modelViewStack.getTop();
 }
 
-GLuint Game::getPVMid() 
+GLuint Game::getPVMid()
 {
-	return pvm_uniformId;
+	return pvm_uniformId[pIndex];
 }
 
 Matrix Game::getVM()
@@ -370,25 +400,25 @@ Matrix Game::getVM()
 
 GLuint Game::getVMid()
 {
-	return vm_uniformId;
+	return vm_uniformId[pIndex];
 }
 
 GLuint Game::getIVMid()
 {
-	return normal_uniformId;
+	return normal_uniformId[pIndex];
 }
 
-VSShaderLib* Game::getShader()
+GLuint Game::getShader()
 {
-	return shader;
+	return programId[pIndex];
 }
 
-GLuint Game::getProgramID()
+GLuint Game::getLPosID()
 {
-	return ProgramId;
+	return lPos_uniformId[pIndex];
 }
 
-void Game::keyboardUp(unsigned char key, int x, int y) 
+void Game::keyboardUp(unsigned char key, int x, int y)
 {
 	switch (key) {
 	case 'q':
@@ -408,39 +438,39 @@ void Game::keyboardUp(unsigned char key, int x, int y)
 void Game::keyboard(unsigned char key, int x, int y)
 {
 	float front[3] = { 0.0, 1.0, 0.0 };
-	float back[3] = { 0.0, -1.0, 0.0 }; 
+	float back[3] = { 0.0, -1.0, 0.0 };
 	float left[3] = { -1.0, 0.0, 0.0 };
 	float right[3] = { 1.0, 0.0, 0.0 };
-	
+
 	switch (key) {
-		case 'q':
-		case 'Q':
-			frog->move(front);
-			break;
-		case 'a':
-		case 'A':
-			frog->move(back);
-			break;
-		case 'o':
-		case 'O':
-			frog->move(left);
-			break;
-		case 'p':
-		case 'P':
-			frog->move(right);
-			break;
-		case '1':
-			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
-			cam->topCameraMode();
-			break;
-		case '2':
-			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
-			cam->topCameraPerspectiveMode();
-			break;
-		case '3':
-			glutSetCursor(GLUT_CURSOR_NONE);
-			cam->FPSCameraMode();
-			break;
+	case 'q':
+	case 'Q':
+		frog->move(front);
+		break;
+	case 'a':
+	case 'A':
+		frog->move(back);
+		break;
+	case 'o':
+	case 'O':
+		frog->move(left);
+		break;
+	case 'p':
+	case 'P':
+		frog->move(right);
+		break;
+	case '1':
+		glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+		cam->topCameraMode();
+		break;
+	case '2':
+		glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+		cam->topCameraPerspectiveMode();
+		break;
+	case '3':
+		glutSetCursor(GLUT_CURSOR_NONE);
+		cam->FPSCameraMode();
+		break;
 	}
 }
 
@@ -492,10 +522,10 @@ void Game::mouseMotionFun(int x, int y)
 
 void Game::passiveMouseFunc(int x, int y)
 {
-	
+
 }
 
-Stack* Game::getModelViewStack() 
+Stack* Game::getModelViewStack()
 {
 	return &modelViewStack;
 }
@@ -509,4 +539,3 @@ Frog* Game::getFrog()
 {
 	return frog;
 }
- 

@@ -18,7 +18,7 @@ Road::~Road()
 	//delete lampadaTopo;
 }
 
-void Road::draw(GLuint programID){
+void Road::draw(){
 
 	Stack* modelview = game->getModelViewStack();
 
@@ -29,7 +29,7 @@ void Road::draw(GLuint programID){
 
 	modelview->push();
 	modelview->scaleMatrix(40.0, 10.0, 1.0);
-	road->draw(programID);
+	road->draw();
 	modelview->pop();
 
 	modelview->push();
@@ -37,12 +37,12 @@ void Road::draw(GLuint programID){
 
 		modelview->push();
 		modelview->translateMatrix(0.0, 3, 0.0);
-		side->draw(programID);
+		side->draw();
 		modelview->pop();
 
 		modelview->push();
 		modelview->translateMatrix(0.0, -3, 0.0);
-		side->draw(programID);
+		side->draw();
 		modelview->pop();
 	
 	modelview->pop();
@@ -53,28 +53,28 @@ void Road::draw(GLuint programID){
 
 		modelview->push();
 		modelview->translateMatrix(0.0, 6.0, 0.6);
-		lampPost->draw(programID);
+		lampPost->draw();
 		//lampadaTopo->draw(programID);
 		modelview->pop();
 		modelview->push();
 		modelview->translateMatrix(10.0, 6.0, 0.6);
-		lampPost->draw(programID);
+		lampPost->draw();
 		modelview->pop();
 		modelview->push();
 		modelview->translateMatrix(-10.0, 6.0, 0.6);
-		lampPost->draw(programID);
+		lampPost->draw();
 		modelview->pop();
 		modelview->push();
 		modelview->translateMatrix(0.0, -6.0, 0.6);
-		lampPost->draw(programID);
+		lampPost->draw();
 		modelview->pop();
 		modelview->push();
 		modelview->translateMatrix(10.0, -6.0, 0.6);
-		lampPost->draw(programID);
+		lampPost->draw();
 		modelview->pop();
 		modelview->push();
 		modelview->translateMatrix(-10.0, -6.0, 0.6);
-		lampPost->draw(programID);
+		lampPost->draw();
 		modelview->pop();
 
 	modelview->pop();

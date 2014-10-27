@@ -36,7 +36,7 @@ public:
 	~ManagerObj();
 	void draw();
 	void reset();
-	void update();
+	void update(float dt);
 
 	void setDificuldade(float _dificuldade);
 	void setLateralEsquerda(float _lateralEsquerda);

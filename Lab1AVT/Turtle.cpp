@@ -16,13 +16,13 @@ Turtle::~Turtle()
 	delete shell;
 }
 
-void Turtle::update(){
+void Turtle::update(float dt){
 
 	for (int i = 0; i < 3; i++)
-		position[i] += direction[i] * velocity;
+		position[i] += direction[i] * velocity * dt;
 }
 
-void Turtle::draw(GLuint programID){
+void Turtle::draw(){
 
 	Stack* modelview = game->getModelViewStack();
 
@@ -34,22 +34,22 @@ void Turtle::draw(GLuint programID){
 	if (direction[0] != 0.0)
 		modelview->rotateMatrix(0.0, 0.0, 1.0, 90);
 
-	head->draw(programID);
+	head->draw();
 
 	modelview->push();
 	modelview->translateMatrix(0.0, 0.6, 0.1);
-	shell->draw(programID);
+	shell->draw();
 	modelview->pop();
 
 	modelview->push();
 
 	modelview->translateMatrix(0.0, 0.6, 0.0);
 	modelview->rotateMatrix(1.0, 0.0, 0.0, 90);
-	body->draw(programID);
+	body->draw();
 	modelview->pop();
 
 
-	sendDataToShader(programID);
+	sendDataToShader();
 	modelview->pop();
 }
 

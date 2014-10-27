@@ -17,7 +17,7 @@ protected:
 public:
 	Turtle(float* position, Game *game, float velocity, float *direction);
 	~Turtle();
-	void draw(GLuint programID);
-	void update();
+	void draw();
+	void update(float dt);
 };
 #endif

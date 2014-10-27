@@ -1,30 +1,34 @@
 #ifndef __LIGHT_H__
 #define __LIGHT_H__
 
-
 class Vector;
-
+class Game;
 
 class Light
 {
-	/*
-	int numLight;
-	Vector amb(4);
-	Vector dif(4);
-	Vector spec(4);
+public:
+	enum LightType { POINT_LIGHT, DIR_LIGHT, SPOT_LIGHT };
 
-	Vector pos(4);
-	Vector dir(3);
+private:
+	LightType type;
+	int numLight;
+	Vector *amb;
+	Vector *dif;
+	Vector *spec;
+
+	Vector *pos;
+	Vector *dir;
 
 	float cutOff;
 	float exp;
 
 	bool state;
-	*/
-	
-public:
-	Light(int num);
+	Game *game;
 
+public:
+	Light(int num, LightType type, Game *game);
+
+	void illuminate();
 	void setDiffuse(Vector dif);
 	void setAmbient(Vector amb);
 	void setSpecular(Vector spec);

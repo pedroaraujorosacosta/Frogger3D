@@ -8,7 +8,7 @@ Cube::Cube(float *position, Game *game) : Object(position, game)
 	createBufferObjects();
 }
 
-void Cube::draw(GLuint programID){
+void Cube::draw(){
 
 	Stack* modelview = game->getModelViewStack();
 
@@ -20,7 +20,7 @@ void Cube::draw(GLuint programID){
 	//puts the unitary cube in the origin of the referencial
 	modelview->translateMatrix(-0.5, -0.5, -0.5);
 
-	sendDataToShader(programID);
+	sendDataToShader();
 	modelview->pop();
 }
 

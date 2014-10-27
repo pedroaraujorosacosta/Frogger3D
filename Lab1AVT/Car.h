@@ -16,7 +16,7 @@ protected:
 public:
 	Car(float* position, Game *game, float velocity, float *direction);
 	~Car();
-	void draw(GLuint programID);
-	void update();
+	void draw();
+	void update(float dt);
 };
 #endif

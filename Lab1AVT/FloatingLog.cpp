@@ -17,13 +17,13 @@ FloatingLog::~FloatingLog()
 	delete back;
 }
 
-void FloatingLog::update(){
+void FloatingLog::update(float dt){
 
 	for (int i = 0; i < 3; i++)
 		position[i] += direction[i] * velocity;
 }
 
-void FloatingLog::draw(GLuint programID){
+void FloatingLog::draw(){
 
 	Stack* modelview = game->getModelViewStack();
 
@@ -35,21 +35,21 @@ void FloatingLog::draw(GLuint programID){
 	if (direction[0] != 0.0)
 		modelview->rotateMatrix(0.0, 0.0, 1.0, 90);
 
-	body->draw(programID);
+	body->draw();
 
 		modelview->push();
 
 		modelview->translateMatrix(0.0,-0.7,0.0);
-		front->draw(programID);
+		front->draw();
 		modelview->pop();
 
 		modelview->push();
 
 		modelview->translateMatrix(0.0,0.7,0.0);
-		back->draw(programID);
+		back->draw();
 		modelview->pop();
 
-	sendDataToShader(programID);
+	sendDataToShader();
 	modelview->pop();
 }
 
