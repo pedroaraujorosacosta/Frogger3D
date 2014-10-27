@@ -50,6 +50,7 @@ class Game : IComponent {
 	GLint vm_uniformId[3];
 	GLint normal_uniformId[3];
 	GLint lPos_uniformId[3];
+	GLint lDir_uniformId[3];
 	char *VtxShader;
 	char *FragShader;
 	
@@ -59,7 +60,7 @@ class Game : IComponent {
 	void setupGLUT(int argc, char* argv[]);
 	void setupGLEW();
 	void setupOpenGL();
-	void createShaderProgram();
+	void createShaderPrograms();
 	bool readShaderProgram(const char *filename, char **output);
 	void destroyShaderProgram();
 	void checkProgramLinkage(GLuint programId, GLuint vertexShaderId, GLuint fragmentShaderId);
@@ -69,7 +70,8 @@ class Game : IComponent {
 	void destroyBufferObjects();
 	void setProgramIndex(int pIndex);
 	void resetProgram();
-	void buildShader(int pIndex);
+	void createShaderProgram(int pIndex);
+	void loadShader(int pIndex, unsigned int ShaderType, char *filename);
 
 public:
 	Game(int WinX, int WinY);
@@ -97,7 +99,7 @@ public:
 	Stack* getModelViewStack();
 	Stack* getProjectionStack();
 	Frog* getFrog();
-	VSShaderLib* getShader();
+	GLuint getShader();
 };
 
 #endif

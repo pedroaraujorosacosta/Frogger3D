@@ -40,32 +40,22 @@ void Object::draw() {
 void Object::sendMaterials()
 {
 	GLint loc;
-	VSShaderLib *shader = game->getShader();
+	GLuint progID = game->getShader();
 	
-	//glUseProgram(shader->getProgramIndex());
-	loc = glGetUniformLocation(shader->getProgramIndex(), "mat.ambient");
+	loc = glGetUniformLocation(progID, "mat.ambient");
 	glUniform4fv(loc, 1, mat.ambient);
-	loc = glGetUniformLocation(shader->getProgramIndex(), "mat.diffuse");
+	loc = glGetUniformLocation(progID, "mat.diffuse");
 	glUniform4fv(loc, 1, mat.diffuse);
-	loc = glGetUniformLocation(shader->getProgramIndex(), "mat.specular");
+	loc = glGetUniformLocation(progID, "mat.specular");
 	glUniform4fv(loc, 1, mat.specular);
-	loc = glGetUniformLocation(shader->getProgramIndex(), "mat.shininess");
+	loc = glGetUniformLocation(progID, "mat.shininess");
 	glUniform1f(loc, mat.shininess);
-	//glUseProgram(0);
 }
 
 void Object::sendDataToShader()
 {
-	/*Matrix top;
-	top = game->getPVM();
-
-	GLfloat PVM[16];
-
-	for (int i = 0; i < top.sizeofMatrix(); i++)
-		PVM[i] = top.m[i];*/
-	
 	glBindVertexArray(VaoId);
-	//glUseProgram(programID);
+
 	GLuint pvmID = game->getPVMid();
 	GLuint vmID = game->getVMid();
 	GLuint iVmID = game->getIVMid();
@@ -75,11 +65,9 @@ void Object::sendDataToShader()
 	float vmFloat[16];
 	for (int i = 0; i < 16; i++)
 		vmFloat[i] = vm.m[i];
-	VSShaderLib *shader = game->getShader();
-	//shader->setUniform("m_viewModel", vmFloat);
+	
 	glUniformMatrix4fv(vmID, 1, GL_TRUE, vmFloat);
 
-	checkOpenGLError("ERROR: Could not draw scene.");
 
 	// compute and send the normal matrix
 	Matrix iVm = vm.invertMatrix();
@@ -87,7 +75,6 @@ void Object::sendDataToShader()
 	for (int i = 0; i < 9; i++)
 		iVmFloat[i] = iVm.m[i];
 	glUniformMatrix3fv(iVmID, 1, GL_TRUE, iVmFloat);
-	//shader->setUniform("m_normal", iVmFloat);
 
 
 	// send the PVM matrix
@@ -96,13 +83,10 @@ void Object::sendDataToShader()
 	for (int i = 0; i < 16; i++)
 		pvmFloat[i] = pvmM.m[i];
 	glUniformMatrix4fv(pvmID, 1, GL_TRUE, pvmFloat);
-	//shader->setUniform("m_pvm", pvmFloat);
 
 
-	//glUniformMatrix4fv(matID, 1, GL_TRUE, PVM);
 	glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_INT, (GLvoid*)0);
 
-	//glUseProgram(0);
 	glBindVertexArray(0);
 
 	checkOpenGLError("ERROR: Could not draw scene.");

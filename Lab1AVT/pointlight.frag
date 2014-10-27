@@ -29,9 +29,8 @@ void main() {
 
 	float intensity = max(dot(n,l), 0.0);
 
-	
-	if (intensity > 0.0) {
-
+	if (intensity > 0.0) 
+	{
 		vec3 h = normalize(l + e);
 		float intSpec = max(dot(h,n), 0.0);
 		spec = mat.specular * pow(intSpec, mat.shininess);
