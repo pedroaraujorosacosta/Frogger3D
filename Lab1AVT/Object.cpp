@@ -51,10 +51,17 @@ void Object::sendMaterials()
 	loc = glGetUniformLocation(progID, "mat.shininess");
 	glUniform1f(loc, mat.shininess);
 	loc = glGetUniformLocation(progID, "texMode");
-	glUniform1i(loc, this->mat.texCount);
-	loc = glGetUniformLocation(game->getShader(), "mat.texCount");
-	glUniform1i(loc, this->mat.texCount);
-	
+	glUniform1i(loc, this->mat.texCount);	
+
+	//Indicar aos samplers do GLSL quais os Texture Units a serem usados
+	loc = glGetUniformLocation(progID, "texmap");
+	glUniform1i(loc, 0);
+
+	loc = glGetUniformLocation(progID, "texmap1");
+	glUniform1i(loc, 1);
+
+	loc = glGetUniformLocation(progID, "texmap2");
+	glUniform1i(loc, 2);
 }
 
 void Object::sendDataToShader()
@@ -88,6 +95,7 @@ void Object::sendDataToShader()
 	for (int i = 0; i < 16; i++)
 		pvmFloat[i] = pvmM.m[i];
 	glUniformMatrix4fv(pvmID, 1, GL_TRUE, pvmFloat);
+
 
 	glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_INT, (GLvoid*)0);
 

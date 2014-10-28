@@ -3,6 +3,7 @@
 
 uniform sampler2D texmap;
 uniform sampler2D texmap1;
+uniform sampler2D texmap2;
 
 uniform int texMode;
 out vec4 colorOut;
@@ -57,7 +58,15 @@ void main() {
 
 	if(texMode == 1) // modulate Phong color with texel color
 	{
-		texel = texture(texmap, DataIn.tex_coord);  // texel from lighwood.tga
+		texel = texture(texmap, DataIn.tex_coord);  // water.tga
+		colorOut = texel;
+	} else 	if(texMode == 2) // modulate Phong color with texel color
+	{
+		texel = texture(texmap1, DataIn.tex_coord);  // stone.tga
+		colorOut = texel;
+	} else 	if(texMode == 3) // modulate Phong color with texel color
+	{
+		texel = texture(texmap2, DataIn.tex_coord);  // grass.tga
 		colorOut = texel;
 	}
 

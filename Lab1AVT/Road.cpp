@@ -28,6 +28,7 @@ void Road::draw(){
 
 	modelview->push();
 	modelview->scaleMatrix(40.0, 10.0, 1.0);
+	road->setTexCount(2);
 	road->draw();
 	modelview->pop();
 

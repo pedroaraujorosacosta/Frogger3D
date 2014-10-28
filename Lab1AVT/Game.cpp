@@ -61,10 +61,10 @@ void Game::init(int argc, char* argv[])
 	cam = new Camera(this, t, b, n, f, l, r, FOV, S);
 
 	//setup textures
-	glGenTextures(2, TextureArray);
+	glGenTextures(3, TextureArray);
 	TGA_Texture(TextureArray, "water.tga", 0);
-	TGA_Texture(TextureArray, "stone.tga", 1);
-
+	TGA_Texture(TextureArray, "ground.tga", 1);
+	TGA_Texture(TextureArray, "grass.tga", 2);
 }
 
 // light direction
@@ -101,9 +101,17 @@ void Game::draw() {
 	setProgramIndex(0);
 
 	managerLight->illuminate();
-	
-	GLuint loc = glGetUniformLocation(programId[pIndex], "texMode");
-	glUniform1i(loc, -1);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[0]);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[1]);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[2]);
+
+
 	// transform light to camera space and send it to GLSL
 	/*Vector res(4);
 	res = *modelViewStack.getTop() * lightPos;
@@ -135,6 +143,7 @@ void Game::draw() {
 	projectionStack.pop();
 	modelViewStack.pop();
 
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glutSwapBuffers();
 }
 
