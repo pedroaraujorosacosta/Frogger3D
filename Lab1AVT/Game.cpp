@@ -16,13 +16,13 @@
 #include "Camera.h"
 #include "vsShaderLib.h"
 #include "Vector.h"
-
+#include "Light.h"
 
 #define CAPTION "Assignment 1"
 
 Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(30.0),
 	isLeftButtonDown(false), isRightButtonDown(false), frameCount(0), totalFrames(0), startTime(0.0), windowHandle(0),
-	pIndex(0)
+	pIndex(0), isKeyDown(false)
 {
 	winX = WinX;
 	winY = WinY;
@@ -543,5 +543,10 @@ Stack* Game::getProjectionStack()
 Frog* Game::getFrog()
 {
 	return frog;
+}
+
+Light* Game::getSpotLight()
+{
+	return managerLight->getSpotLight();
 }
  

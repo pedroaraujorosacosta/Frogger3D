@@ -17,7 +17,7 @@ private:
 	Vector *amb;
 	Vector *dif;
 	Vector *spec;
-
+	Vector *dir;
 	Vector *pos;
 
 	float cutOff;
@@ -37,6 +37,7 @@ public:
 	void setAmbient(Vector amb);
 	void setSpecular(Vector spec);
 	void setPosition(Vector pos);
+	void setDirection(Vector dir);
 	void setCutoff(float cutOff);
 	void setExponent(float exp);
 	void toggleState();

@@ -28,7 +28,7 @@ float spotExponent;
 	float quadraticAttenuation;
 };
 
-const int MaxLights = 7;
+const int MaxLights = 8;
 uniform LightProperties Lights[MaxLights];
 
 uniform Materials mat;
@@ -63,7 +63,15 @@ void main() {
 			attenuation = 1.0 /
 				(Lights[light].constantAttenuation
 					+ Lights[light].linearAttenuation * lightDistance
-					+ Lights[light].quadraticAttenuation * lightDistance * lightDistance);	
+					+ Lights[light].quadraticAttenuation * lightDistance * lightDistance);
+
+			if (Lights[light].isSpot) {
+				float spotCos = dot(lightDirection,	-Lights[light].coneDirection);
+				if (spotCos < Lights[light].spotCosCutoff)
+					attenuation = 0.0;
+				else
+					attenuation *= pow(spotCos,	Lights[light].spotExponent);
+			}
 		}
 
 		halfVector = normalize(lightDirection + EyeDirection);

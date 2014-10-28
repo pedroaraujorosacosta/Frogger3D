@@ -2,6 +2,8 @@
 #include "Stack.h"
 #include "Game.h"
 #include <iostream>
+#include "Light.h"
+#include "Vector.h"
 
 Frog::Frog(float *position, Game *game, float velocity, float *direction, int life) : Blocker(position, game, velocity, direction)
 {
@@ -18,17 +20,41 @@ Frog::~Frog()
 
 void Frog::update(float dt)
 {
-	for (int i = 0; i < 3; i++)
-		position[i] += direction[i] * velocity;
+	if (velocity > 0.0f)
+	{
+		for (int i = 0; i < 3; i++)
+			position[i] += direction[i] * velocity;
 
-	if (position[1] > -5){
-		position[1] = -13;
-		setLife(getLife()-1);
+		// adjust the miner's spot light
+		Light *spot = game->getSpotLight();
+		
+		float newSpotDirf[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+		for (int i = 0; i < 3; i++) newSpotDirf[i] = direction[i];
+		Vector newSpotDir(newSpotDirf, 4);
+		newSpotDir.normalize();
+
+		float hNewSpotPos[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		for (int i = 0; i < 3; i++) hNewSpotPos[i] = position[i] + direction[i];
+		Vector newSpotPos(hNewSpotPos, 4);
+		spot->setPosition(newSpotPos);
+
+		// Check bounds
+		if (position[1] > -5){
+			position[1] = -13;
+			setLife(getLife() - 1);
+		}
 	}
 }
 
 void Frog::move(float *direction)
 {
+	Light *spot = game->getSpotLight();
+	float newSpotDirf[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	for (int i = 0; i < 3; i++) newSpotDirf[i] = direction[i];
+	Vector newSpotDir(newSpotDirf, 4);
+	newSpotDir.normalize();
+	spot->setDirection(newSpotDir);
+
 	for (int i = 0; i < 3; i++)
 		this->direction[i] = direction[i];
 	velocity = 0.08;
@@ -109,6 +135,21 @@ void Frog::init() {
 	eyes->setEmissive(emissiveEyes);
 	eyes->setShininess(shininessEyes);
 	eyes->setTexCount(texcountEyes);
+
+	Light *spot = game->getSpotLight();
+	if (spot != 0) 
+	{
+		float newSpotDirf[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+		for (int i = 0; i < 3; i++) newSpotDirf[i] = direction[i];
+		Vector newSpotDir(newSpotDirf, 4);
+		newSpotDir.normalize();
+		spot->setDirection(newSpotDir);
+
+		float hNewSpotPos[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		for (int i = 0; i < 3; i++) hNewSpotPos[i] = position[i] + direction[i];
+		Vector newSpotPos(hNewSpotPos, 4);
+		spot->setPosition(newSpotPos);
+	}
 }
 
 float Frog::getX()

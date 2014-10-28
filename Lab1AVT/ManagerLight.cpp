@@ -97,6 +97,22 @@ void ManagerLight::init()
 
 	this->dirLight = dirLight;
 	lights.push_back(dirLight);
+
+	// spot light
+	float lSpotPosf[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	Vector lSpotPos(lSpotPosf, 4);
+	float lSpotDirf[3] = { 0.0f, 0.0f, -1.0f };
+	Vector lSpotDir(lSpotDirf, 3);
+	Light *spot = new Light(7, Light::SPOT_LIGHT, game);
+	spot->setDiffuse(diffDir);
+	spot->setAmbient(diffDir);
+	spot->setSpecular(diffDir);
+	spot->setPosition(lSpotPos);
+	spot->setDirection(lSpotDir);
+	spot->setCutoff(0.5f);
+	spot->setExponent(1.0f);
+	spotLight = spot;
+	lights.push_back(spot);
 }
 
 void ManagerLight::togglePointLights()
@@ -119,4 +135,9 @@ void ManagerLight::update() {
 void ManagerLight::toggleDirectional()
 {
 	dirLight->toggleState();
+}
+
+Light* ManagerLight::getSpotLight()
+{
+	return spotLight;
 }

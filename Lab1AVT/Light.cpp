@@ -5,24 +5,6 @@
 #include "Matrix.h"
 #include <string>
 
-struct Material{
-	float diffuse[4];
-	float ambient[4];
-	float specular[4];
-	float emissive[4];
-	float shininess;
-	int texCount;
-};
-
-enum MaterialSemantics {
-	DIFFUSE,
-	AMBIENT,
-	SPECULAR,
-	EMISSIVE,
-	SHININESS,
-	TEX_COUNT
-} MaterialComponent;
-
 Light::Light(int num, LightType type, Game *game)
 {
 	this->type = type;
@@ -32,6 +14,7 @@ Light::Light(int num, LightType type, Game *game)
 	this->spec = new Vector(3);
 
 	this->pos = new Vector(4);
+	this->dir = new Vector(4);
 	state = true; 
 	this->game = game;
 }
@@ -64,6 +47,11 @@ void Light::setCutoff(float cutOff)
 void Light::setExponent(float exp)
 {
 	this->exp = exp;
+}
+
+void Light::setDirection(Vector dir)
+{
+	*(this->dir) = dir;
 }
 
 void Light::update(float dt)
@@ -123,6 +111,49 @@ void Light::illuminate()
 		stringStream.clear();
 		break;
 	case SPOT_LIGHT:
+		// position
+		stringStream << "Lights[" << numLight << "].position";
+		point = game->getVM() * *pos;
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform3fv(lightID, 1, point.v);
+		stringStream.str("");
+		stringStream.clear();
+
+		// isLocal
+		stringStream << "Lights[" << numLight << "].isLocal";
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform1i(lightID, true);
+		stringStream.str("");
+		stringStream.clear();
+		
+		// isSpot
+		stringStream << "Lights[" << numLight << "].isSpot";
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform1i(lightID, true);
+		stringStream.str("");
+		stringStream.clear();
+
+		// cone direction
+		stringStream << "Lights[" << numLight << "].coneDirection";
+		point = game->getVM() * *dir;
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform3fv(lightID, 1, point.v);
+		stringStream.str("");
+		stringStream.clear();
+
+		// spotCosCutoff
+		stringStream << "Lights[" << numLight << "].spotCosCutoff";
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform1f(lightID, cutOff);
+		stringStream.str("");
+		stringStream.clear();
+
+		// spot exponent
+		stringStream << "Lights[" << numLight << "].spotExponent";
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform1f(lightID, exp);
+		stringStream.str("");
+		stringStream.clear();
 		break;
 	}
 
@@ -184,62 +215,3 @@ bool Light::isPointLight()
 {
 	return (type == POINT_LIGHT);
 }
-
-/*
-void VSResourceLib::setMaterial(Material &aMat) {
-
-	// use named block
-	if (mMaterialBlockName != "" && mMatSemanticMap.size() == 0) {
-		VSShaderLib::setBlock(mMaterialBlockName, &aMat);
-	}
-	// use uniforms in named block
-	else if (mMaterialBlockName != "" && mMatSemanticMap.size() != 0) {
-
-		std::map<std::string, MaterialSemantics>::iterator iter;
-		for (iter = mMatSemanticMap.begin(); iter != mMatSemanticMap.end(); ++iter) {
-			void *value;
-			switch ((*iter).second) {
-			case DIFFUSE: value = (void *)aMat.diffuse;
-				break;
-			case AMBIENT: value = (void *)aMat.ambient;
-				break;
-			case SPECULAR: value = (void *)aMat.specular;
-				break;
-			case EMISSIVE: value = (void *)aMat.emissive;
-				break;
-			case SHININESS: value = (void *)&aMat.shininess;
-				break;
-			case TEX_COUNT: value = (void *)&aMat.texCount;
-				break;
-			}
-			VSShaderLib::setBlockUniform(mMaterialBlockName,
-				(*iter).first, value);
-		}
-	}
-}
-
-
-void VSResSurfRevLib::setColor(VSResourceLib::MaterialSemantics m, float *values) {
-
-	if (m == TEX_COUNT)
-		return;
-
-	switch (m) {
-	case SHININESS:
-		mMyMesh.mat.shininess = *values;
-		break;
-	case DIFFUSE:
-		memcpy(mMyMesh.mat.diffuse, values, sizeof(float) * 4);
-		break;
-	case AMBIENT:
-		memcpy(mMyMesh.mat.ambient, values, sizeof(float) * 4);
-		break;
-	case SPECULAR:
-		memcpy(mMyMesh.mat.specular, values, sizeof(float) * 4);
-		break;
-	case EMISSIVE:
-		memcpy(mMyMesh.mat.emissive, values, sizeof(float) * 4);
-		break;
-	}
-}
-*/
