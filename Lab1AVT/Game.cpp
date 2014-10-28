@@ -16,11 +16,11 @@
 #include "Camera.h"
 #include "vsShaderLib.h"
 #include "Vector.h"
-
+#include "TGA.h"
 
 #define CAPTION "Assignment 1"
 
-Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(20.0),
+Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(30.0),
 	isLeftButtonDown(false), isRightButtonDown(false), frameCount(0), totalFrames(0), startTime(0.0), windowHandle(0),
 	pIndex(0)
 {
@@ -57,6 +57,11 @@ void Game::init(int argc, char* argv[])
 	r = aspectRatio * S, l = -r;
 	t = S, b = -t;
 	cam = new Camera(this, t, b, n, f, l, r, FOV, S);
+
+	//setup textures
+	glGenTextures(2, TextureArray);
+	TGA_Texture(TextureArray, "water.tga", 0);
+	TGA_Texture(TextureArray, "stone.tga", 1);
 }
 
 // light direction

@@ -90,6 +90,7 @@
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Stack.cpp" />
     <ClCompile Include="Surface.cpp" />
+    <ClCompile Include="TGA.cpp" />
     <ClCompile Include="Torus.cpp" />
     <ClCompile Include="Turtle.cpp" />
     <ClCompile Include="Vector.cpp" />
@@ -121,6 +122,7 @@
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="Surface.h" />
+    <ClInclude Include="TGA.h" />
     <ClInclude Include="Torus.h" />
     <ClInclude Include="Turtle.h" />
     <ClInclude Include="Vector.h" />
@@ -135,6 +137,10 @@
     <None Include="spotlight.frag" />
     <None Include="spotlight.vert" />
     <None Include="vtxShader.vsh" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="stone.tga" />
+    <Image Include="water.tga" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

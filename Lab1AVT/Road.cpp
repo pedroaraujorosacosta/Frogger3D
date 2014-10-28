@@ -2,7 +2,6 @@
 #include "Stack.h"
 #include "Game.h"
 
-
 Road::Road(float *position, Game *game) : Object(position, game)
 {
 	init();
@@ -15,7 +14,7 @@ Road::~Road()
 	delete side;
 	delete road;
 	delete lampPost;
-	//delete lampadaTopo;
+	delete lampadaTopo;
 }
 
 void Road::draw(){
@@ -54,7 +53,11 @@ void Road::draw(){
 		modelview->push();
 		modelview->translateMatrix(0.0, 6.0, 0.6);
 		lampPost->draw();
-		//lampadaTopo->draw(programID);
+			modelview->push();
+			modelview->scaleMatrix(1.0, 1.0, 0.5);
+			modelview->translateMatrix(0.0, 0.0, 0.5);
+			lampadaTopo->draw();
+			modelview->pop();
 		modelview->pop();
 		modelview->push();
 		modelview->translateMatrix(10.0, 6.0, 0.6);
@@ -79,7 +82,7 @@ void Road::draw(){
 
 	modelview->pop();
 
-
+	
 	//sendDataToShader(programID);
 	modelview->pop();
 }
@@ -90,7 +93,7 @@ void Road::init() {
 	side = new Cube(o, this->game);
 	road = new Cube(o, this->game);
 	lampPost = new Cube(o, this->game);
-	//lampadaTopo = new Cube(0, this->game);
+	lampadaTopo = new Sphere(o, this->game, 1, 4);
 
 	// set materials
 	float ambRoad[] = { 0.1f, 0.1f, 0.1f, 1.0f };
@@ -136,7 +139,7 @@ void Road::init() {
 	lampPost->setShininess(shininessPoste);
 	lampPost->setTexCount(texcountPoste);
 
-	/*
+	
 	
 	float ambPost2[] = { 0.2f, 0.2f, 0.2f, 1.0f };
 	float diffPost2[] = { 0.5f, 0.5f, 0.5f, 1.0f };
@@ -152,7 +155,5 @@ void Road::init() {
 	lampadaTopo->setEmissive(emissivePost2);
 	lampadaTopo->setShininess(shininessPost2);
 	lampadaTopo->setTexCount(texcountPost2);
-	
-	*/
 
 }

@@ -104,6 +104,8 @@ public:
 	Frog* getFrog();
 	GLuint getShader();
 	GLuint getLPosID();
+
+	GLuint TextureArray[2];
 };
 
 #endif

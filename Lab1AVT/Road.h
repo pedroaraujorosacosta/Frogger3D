@@ -3,13 +3,14 @@
 
 #include "Object.h"
 #include "Cube.h"
+#include "Sphere.h"
 
 class Road : public Object {
 
 	Cube *side;
 	Cube *road;
 	Cube *lampPost;
-	//Cube *lampadaTopo;
+	Sphere *lampadaTopo;
 	
 protected:
 	void init();
