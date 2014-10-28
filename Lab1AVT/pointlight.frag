@@ -28,7 +28,7 @@ float spotExponent;
 	float quadraticAttenuation;
 };
 
-const int MaxLights = 2;
+const int MaxLights = 7;
 uniform LightProperties Lights[MaxLights];
 
 uniform Materials mat;

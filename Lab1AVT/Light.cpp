@@ -180,6 +180,11 @@ void Light::toggleState()
 	state = !state;
 }
 
+bool Light::isPointLight()
+{
+	return (type == POINT_LIGHT);
+}
+
 /*
 void VSResourceLib::setMaterial(Material &aMat) {
 

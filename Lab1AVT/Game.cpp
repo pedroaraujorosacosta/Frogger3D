@@ -477,6 +477,10 @@ void Game::keyboard(unsigned char key, int x, int y)
 		case 'N':
 			managerLight->toggleDirectional();
 			break;
+		case 'c':
+		case 'C':
+			managerLight->togglePointLights();
+			break;
 	}
 }
 
