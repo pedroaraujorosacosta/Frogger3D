@@ -20,8 +20,9 @@
 
 #define CAPTION "Assignment 1"
 
-Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(30.0),
-	isLeftButtonDown(false), isRightButtonDown(false), frameCount(0), totalFrames(0), startTime(0.0), windowHandle(0)
+Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(20.0),
+	isLeftButtonDown(false), isRightButtonDown(false), frameCount(0), totalFrames(0), startTime(0.0), windowHandle(0),
+	pIndex(0)
 {
 	winX = WinX;
 	winY = WinY;
@@ -59,7 +60,7 @@ void Game::init(int argc, char* argv[])
 }
 
 // light direction
-float ldir[4] = { 1.0f, 1.0f, 1.0f, 0.0f };
+float ldir[4] = { 1.0f, 1.0f, -1.0f, 0.0f };
 Vector lightDir(ldir, 4);
 float lpos[4] = { 0.0f, 0.0f, 14.0f, 1.0f };
 Vector lightPos(lpos, 4);
@@ -86,7 +87,7 @@ void Game::draw() {
 	modelViewStack.push();
 
 	projectionStack.push();
-	
+
 	cam->setCamera();
 
 	setProgramIndex(0);
@@ -113,12 +114,12 @@ void Game::draw() {
 	shader->setBlockUniform("Lights", "l_spotDir", res.v);*/
 	
 	managerObj->draw();
-	
+
 	if (frog->getLife() > 0){
-		frog->draw();
+	frog->draw();
 	}
 
-	glUseProgram(0);
+	resetProgram();
 
 	projectionStack.pop();
 	modelViewStack.pop();
@@ -191,11 +192,9 @@ void Game::setupOpenGL() {
 }
 
 
-void Game::createShaderPrograms()
+void Game::createShaderPrograms() 
 {
 	createShaderProgram(0);
-	createShaderProgram(1);
-	createShaderProgram(2);
 
 	checkOpenGLError("ERROR: Could not create shaders.");
 }
@@ -234,14 +233,14 @@ void Game::createShaderProgram(int pIndex)
 		loadShader(0, VSShaderLib::VERTEX_SHADER, "pointlight.vert");
 		loadShader(0, VSShaderLib::FRAGMENT_SHADER, "pointlight.frag");
 		break;
-	case 1:
+/*	case 1:
 		loadShader(1, VSShaderLib::VERTEX_SHADER, "dirdifambspec.vert");
 		loadShader(1, VSShaderLib::FRAGMENT_SHADER, "dirdifambspec.frag");
 		break;
 	case 2:
 		loadShader(2, VSShaderLib::VERTEX_SHADER, "spotlight.vert");
 		loadShader(2, VSShaderLib::FRAGMENT_SHADER, "spotlight.frag");
-		break;
+		break;*/
 	}
 
 	glBindFragDataLocation(programId[pIndex], 0, "colorOut");
@@ -255,8 +254,6 @@ void Game::createShaderProgram(int pIndex)
 	pvm_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_pvm");
 	vm_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_viewModel");
 	normal_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_normal");
-	lPos_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "l_pos");
-	lDir_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "l_dir");
 }
 
 
@@ -388,7 +385,7 @@ Matrix Game::getPVM()
 	return *projectionStack.getTop() * *modelViewStack.getTop();
 }
 
-GLuint Game::getPVMid()
+GLuint Game::getPVMid() 
 {
 	return pvm_uniformId[pIndex];
 }
@@ -418,7 +415,7 @@ GLuint Game::getLPosID()
 	return lPos_uniformId[pIndex];
 }
 
-void Game::keyboardUp(unsigned char key, int x, int y)
+void Game::keyboardUp(unsigned char key, int x, int y) 
 {
 	switch (key) {
 	case 'q':
@@ -438,39 +435,43 @@ void Game::keyboardUp(unsigned char key, int x, int y)
 void Game::keyboard(unsigned char key, int x, int y)
 {
 	float front[3] = { 0.0, 1.0, 0.0 };
-	float back[3] = { 0.0, -1.0, 0.0 };
+	float back[3] = { 0.0, -1.0, 0.0 }; 
 	float left[3] = { -1.0, 0.0, 0.0 };
 	float right[3] = { 1.0, 0.0, 0.0 };
-
+	
 	switch (key) {
-	case 'q':
-	case 'Q':
-		frog->move(front);
-		break;
-	case 'a':
-	case 'A':
-		frog->move(back);
-		break;
-	case 'o':
-	case 'O':
-		frog->move(left);
-		break;
-	case 'p':
-	case 'P':
-		frog->move(right);
-		break;
-	case '1':
-		glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
-		cam->topCameraMode();
-		break;
-	case '2':
-		glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
-		cam->topCameraPerspectiveMode();
-		break;
-	case '3':
-		glutSetCursor(GLUT_CURSOR_NONE);
-		cam->FPSCameraMode();
-		break;
+		case 'q':
+		case 'Q':
+			frog->move(front);
+			break;
+		case 'a':
+		case 'A':
+			frog->move(back);
+			break;
+		case 'o':
+		case 'O':
+			frog->move(left);
+			break;
+		case 'p':
+		case 'P':
+			frog->move(right);
+			break;
+		case '1':
+			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+			cam->topCameraMode();
+			break;
+		case '2':
+			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+			cam->topCameraPerspectiveMode();
+			break;
+		case '3':
+			glutSetCursor(GLUT_CURSOR_NONE);
+			cam->FPSCameraMode();
+			break;
+		case 'n':
+		case 'N':
+			managerLight->toggleDirectional();
+			break;
 	}
 }
 
@@ -522,10 +523,10 @@ void Game::mouseMotionFun(int x, int y)
 
 void Game::passiveMouseFunc(int x, int y)
 {
-
+	
 }
 
-Stack* Game::getModelViewStack()
+Stack* Game::getModelViewStack() 
 {
 	return &modelViewStack;
 }
@@ -539,3 +540,4 @@ Frog* Game::getFrog()
 {
 	return frog;
 }
+ 

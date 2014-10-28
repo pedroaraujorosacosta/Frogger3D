@@ -1,5 +1,7 @@
 #version 330
 
+out vec4 colorOut;
+
 struct Materials {
 	vec4 diffuse;
 	vec4 ambient;
@@ -9,35 +11,46 @@ struct Materials {
 	int texCount;
 };
 
+struct LightProperties {
+	bool isEnabled;
+	bool isLocal;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	vec3 position;
+	float constantAttenuation;
+	float linearAttenuation;
+	float quadraticAttenuation;
+};
+
+const int MaxLights = 1;
+uniform LightProperties Lights[MaxLights];
+
 uniform Materials mat;
 
 in Data {
 	vec3 normal;
 	vec3 eye;
-	vec3 lightDir;
+	vec3 pos;
 } DataIn;
 
-out vec4 colorOut;
-
 void main() {
-	// set the specular term to black
-	vec4 spec = vec4(0.0);
+	vec3 scatteredLight = vec3(0.0); 
+	vec3 reflectedLight = vec3(0.0);
 
-	vec3 n = normalize(DataIn.normal);
-	vec3 l = normalize(DataIn.lightDir);
-	vec3 e = normalize(DataIn.eye);
+	vec3 Normal = normalize(DataIn.normal);
+	vec3 EyeDirection = normalize(DataIn.eye);
 
-	float intensity = max(dot(n, l), 0.0);
+	float attenuation = 0.0; // remover isto
 
-	// if the vertex is lit compute the specular color
-	if (intensity > 0.0) {
-		// compute the half vector
-		vec3 h = normalize(l + e);
-
-		// compute the specular term into spec
-		float intSpec = max(dot(h,n), 0.0);
-		spec = mat.specular * pow(intSpec, mat.shininess);
+	// for all lights
+	for (int light = 0; light < MaxLights; ++light) {		
+		
+		// Accumulate all the lights’ effects
+		scatteredLight += Lights[light].ambient;
+		reflectedLight += Lights[light].specular;
 	}
-	// add the specular color when the vertex is lit
-	colorOut = max(intensity *  mat.diffuse + spec, mat.ambient);
+	
+	vec3 rgb = scatteredLight;
+	colorOut = vec4(rgb, 1.0);
 }

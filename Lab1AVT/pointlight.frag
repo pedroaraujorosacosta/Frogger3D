@@ -11,30 +11,80 @@ struct Materials {
 	int texCount;
 };
 
+struct LightProperties {
+	bool isEnabled;
+	bool isLocal;
+bool isSpot;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	vec3 position;
+vec3 halfVector;
+vec3 coneDirection;
+float spotCosCutoff;
+float spotExponent;
+	float constantAttenuation;
+	float linearAttenuation;
+	float quadraticAttenuation;
+};
+
+const int MaxLights = 2;
+uniform LightProperties Lights[MaxLights];
+
 uniform Materials mat;
 
 in Data {
 	vec3 normal;
 	vec3 eye;
-	vec3 lightDir;
+	vec3 pos;
 } DataIn;
 
 void main() {
+	vec3 scatteredLight = vec3(0.0); 
+	vec3 reflectedLight = vec3(0.0);
 
-	vec4 spec = vec4(0.0);
+	vec3 Normal = normalize(DataIn.normal);
+	vec3 EyeDirection = normalize(DataIn.eye);
 
-	vec3 n = normalize(DataIn.normal);
-	vec3 l = normalize(DataIn.lightDir);
-	vec3 e = normalize(DataIn.eye);
+	// for all lights
+	for (int light = 0; light < MaxLights; ++light) {
+		if (! Lights[light].isEnabled)
+			continue;
+		
+		vec3 halfVector;
+		vec3 lightDirection = Lights[light].position; // works for both directional and point
+		float attenuation = 1.0;
 
-	float intensity = max(dot(n,l), 0.0);
+		if (Lights[light].isLocal) {
+			lightDirection = lightDirection - vec3(DataIn.pos);
+			float lightDistance = length(lightDirection);
+			lightDirection = lightDirection / lightDistance;
 
-	if (intensity > 0.0) 
-	{
-		vec3 h = normalize(l + e);
-		float intSpec = max(dot(h,n), 0.0);
-		spec = mat.specular * pow(intSpec, mat.shininess);
+			attenuation = 1.0 /
+				(Lights[light].constantAttenuation
+					+ Lights[light].linearAttenuation * lightDistance
+					+ Lights[light].quadraticAttenuation * lightDistance * lightDistance);	
+		}
+
+		halfVector = normalize(lightDirection + EyeDirection);
+
+		float diffuse = max(0.0, dot(Normal, lightDirection));
+		float specular = max(0.0, dot(Normal, halfVector));
+
+		if (diffuse == 0.0)
+			specular = 0.0;
+		else
+			specular = pow(specular, mat.shininess);
+			
+		// Accumulate all the lights’ effects
+		scatteredLight.x += Lights[light].ambient.x * mat.ambient.x * attenuation + Lights[light].diffuse.x * mat.diffuse.x * diffuse * attenuation;
+		scatteredLight.y += Lights[light].ambient.y * mat.ambient.y * attenuation + Lights[light].diffuse.y * mat.diffuse.y * diffuse * attenuation;
+		scatteredLight.z += Lights[light].ambient.z * mat.ambient.z * attenuation + Lights[light].diffuse.z * mat.diffuse.z * diffuse * attenuation;
+		reflectedLight.x += Lights[light].specular.x * mat.specular.x * specular * attenuation;
+		reflectedLight.y += Lights[light].specular.y * mat.specular.y * specular * attenuation;
+		reflectedLight.z += Lights[light].specular.z * mat.specular.z * specular * attenuation;
 	}
 	
-	colorOut = max(intensity * mat.diffuse + spec, mat.ambient);
+	vec3 rgb = min(scatteredLight + reflectedLight, vec3(1.0));
+	colorOut = vec4(rgb, 1.0);
 }

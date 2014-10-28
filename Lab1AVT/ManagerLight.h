@@ -11,6 +11,8 @@ class ManagerLight : public Manager
 {
 protected:
 	std::vector<Light*> lights;
+	Light *dirLight;
+	//Light *spotLight;
 
 	virtual void init();
 
@@ -21,6 +23,8 @@ public:
 	virtual void draw();
 	virtual void reset();
 	virtual void update();
+
+	void toggleDirectional();
 };
 
 #endif
