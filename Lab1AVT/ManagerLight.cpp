@@ -28,20 +28,64 @@ void ManagerLight::init()
 	// point lights
 	float dif[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	Vector diff(dif, 4);
-	float lpos[4] = { 0.0f, 0.0f, 14.0f, 1.0f };
-	Vector lightPos(lpos, 4);
+	float lpos1[4] = { 0.0f, -1.0f, 0.0f, 1.0f };
+	Vector lightPos1(lpos1, 4);
 	Light *light1 = new Light(0, Light::POINT_LIGHT, game);
-	light1->setPosition(lightPos);
+	light1->setPosition(lightPos1);
 	light1->setDiffuse(diff);
 	light1->setAmbient(diff);
 	light1->setSpecular(diff);
-
 	lights.push_back(light1);
+
+	float lpos2[4] = { 10.0f, -1.0f, 0.0f, 1.0f };
+	Vector lightPos2(lpos2, 4);
+	Light *light2 = new Light(1, Light::POINT_LIGHT, game);
+	light2->setPosition(lightPos2);
+	light2->setDiffuse(diff);
+	light2->setAmbient(diff);
+	light2->setSpecular(diff);
+	lights.push_back(light2);
+
+	float lpos3[4] = { -10.0f, -1.0f, 0.0f, 1.0f };
+	Vector lightPos3(lpos3, 4);
+	Light *light3 = new Light(2, Light::POINT_LIGHT, game);
+	light3->setPosition(lightPos3);
+	light3->setDiffuse(diff);
+	light3->setAmbient(diff);
+	light3->setSpecular(diff);
+	lights.push_back(light3);
+
+	float lpos4[4] = { 0.0f, -13.0f, 0.0f, 1.0f };
+	Vector lightPos4(lpos4, 4);
+	Light *light4 = new Light(3, Light::POINT_LIGHT, game);
+	light4->setPosition(lightPos4);
+	light4->setDiffuse(diff);
+	light4->setAmbient(diff);
+	light4->setSpecular(diff);
+	lights.push_back(light4);
+
+	float lpos5[4] = { 10.0f, -13.0f, 0.0f, 1.0f };
+	Vector lightPos5(lpos5, 4);
+	Light *light5 = new Light(4, Light::POINT_LIGHT, game);
+	light5->setPosition(lightPos5);
+	light5->setDiffuse(diff);
+	light5->setAmbient(diff);
+	light5->setSpecular(diff);
+	lights.push_back(light5);
+
+	float lpos6[4] = { -10.0f, -13.0f, 0.0f, 1.0f };
+	Vector lightPos6(lpos6, 4);
+	Light *light6 = new Light(5, Light::POINT_LIGHT, game);
+	light6->setPosition(lightPos6);
+	light6->setDiffuse(diff);
+	light6->setAmbient(diff);
+	light6->setSpecular(diff);
+	lights.push_back(light6);
 
 	// directional light
 	float ldir[4] = { -1.0f, -1.0f, -1.0f, 0.0f };
 	Vector lightDir(ldir, 4);
-	Light *dirLight = new Light(1, Light::DIR_LIGHT, game);
+	Light *dirLight = new Light(6, Light::DIR_LIGHT, game);
 	dirLight->setDiffuse(diff);
 	dirLight->setAmbient(diff);
 	dirLight->setSpecular(diff);
@@ -49,6 +93,15 @@ void ManagerLight::init()
 
 	this->dirLight = dirLight;
 	lights.push_back(dirLight);
+}
+
+void ManagerLight::togglePointLights()
+{
+	for (Light *l : lights)
+	{
+		if (l->isPointLight())
+			l->toggleState();
+	}
 }
 
 void ManagerLight::reset() {

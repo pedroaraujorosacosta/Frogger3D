@@ -25,6 +25,7 @@ public:
 	virtual void update();
 
 	void toggleDirectional();
+	void togglePointLights();
 };
 
 #endif

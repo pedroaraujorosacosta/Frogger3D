@@ -20,7 +20,7 @@
 
 #define CAPTION "Assignment 1"
 
-Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(20.0),
+Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(30.0),
 	isLeftButtonDown(false), isRightButtonDown(false), frameCount(0), totalFrames(0), startTime(0.0), windowHandle(0),
 	pIndex(0)
 {
@@ -471,6 +471,10 @@ void Game::keyboard(unsigned char key, int x, int y)
 		case 'n':
 		case 'N':
 			managerLight->toggleDirectional();
+			break;
+		case 'c':
+		case 'C':
+			managerLight->togglePointLights();
 			break;
 	}
 }

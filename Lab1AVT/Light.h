@@ -40,5 +40,6 @@ public:
 	void setCutoff(float cutOff);
 	void setExponent(float exp);
 	void toggleState();
+	bool isPointLight();
 };
 #endif
