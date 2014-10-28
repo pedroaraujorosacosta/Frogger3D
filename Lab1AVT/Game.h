@@ -107,6 +107,8 @@ public:
 	GLuint getShader();
 	GLuint getLPosID();
 	Light* getSpotLight();
+
+	GLuint TextureArray[2];
 };
 
 #endif

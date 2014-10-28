@@ -17,6 +17,8 @@
 #include "vsShaderLib.h"
 #include "Vector.h"
 #include "Light.h"
+#include "TGA.h"
+
 
 #define CAPTION "Assignment 1"
 
@@ -57,6 +59,12 @@ void Game::init(int argc, char* argv[])
 	r = aspectRatio * S, l = -r;
 	t = S, b = -t;
 	cam = new Camera(this, t, b, n, f, l, r, FOV, S);
+
+	//setup textures
+	glGenTextures(2, TextureArray);
+	TGA_Texture(TextureArray, "water.tga", 0);
+	TGA_Texture(TextureArray, "stone.tga", 1);
+
 }
 
 // light direction
@@ -93,6 +101,9 @@ void Game::draw() {
 	setProgramIndex(0);
 
 	managerLight->illuminate();
+	
+	GLuint loc = glGetUniformLocation(programId[pIndex], "texMode");
+	glUniform1i(loc, -1);
 	// transform light to camera space and send it to GLSL
 	/*Vector res(4);
 	res = *modelViewStack.getTop() * lightPos;
@@ -544,7 +555,7 @@ Frog* Game::getFrog()
 {
 	return frog;
 }
-
+ 
 Light* Game::getSpotLight()
 {
 	return managerLight->getSpotLight();
