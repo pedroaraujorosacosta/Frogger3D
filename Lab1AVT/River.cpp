@@ -28,6 +28,7 @@ void River::draw(){
 
 	modelview->push();
 	modelview->scaleMatrix(40.0, 10.0, 1.0);
+		river->setTexCount(1);
 		river->draw();
 	modelview->pop();
 	

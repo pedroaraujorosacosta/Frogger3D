@@ -62,6 +62,7 @@ void Game::init(int argc, char* argv[])
 	glGenTextures(2, TextureArray);
 	TGA_Texture(TextureArray, "water.tga", 0);
 	TGA_Texture(TextureArray, "stone.tga", 1);
+
 }
 
 // light direction
@@ -98,6 +99,9 @@ void Game::draw() {
 	setProgramIndex(0);
 
 	managerLight->illuminate();
+	
+	GLuint loc = glGetUniformLocation(programId[pIndex], "texMode");
+	glUniform1i(loc, -1);
 	// transform light to camera space and send it to GLSL
 	/*Vector res(4);
 	res = *modelViewStack.getTop() * lightPos;

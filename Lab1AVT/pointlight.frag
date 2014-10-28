@@ -1,5 +1,10 @@
 #version 330
 
+
+uniform sampler2D texmap;
+uniform sampler2D texmap1;
+
+uniform int texMode;
 out vec4 colorOut;
 
 struct Materials {
@@ -37,14 +42,24 @@ in Data {
 	vec3 normal;
 	vec3 eye;
 	vec3 pos;
+	vec2 tex_coord;
 } DataIn;
 
 void main() {
+	vec4 texel, texel1;
 	vec3 scatteredLight = vec3(0.0); 
 	vec3 reflectedLight = vec3(0.0);
 
 	vec3 Normal = normalize(DataIn.normal);
 	vec3 EyeDirection = normalize(DataIn.eye);
+
+	colorOut = vec4(1.0);
+
+	if(texMode == 1) // modulate Phong color with texel color
+	{
+		texel = texture(texmap, DataIn.tex_coord);  // texel from lighwood.tga
+		colorOut = texel;
+	}
 
 	// for all lights
 	for (int light = 0; light < MaxLights; ++light) {
@@ -86,5 +101,5 @@ void main() {
 	}
 	
 	vec3 rgb = min(scatteredLight + reflectedLight, vec3(1.0));
-	colorOut = vec4(rgb, 1.0);
+	colorOut *= vec4(rgb, 1.0);
 }

@@ -50,6 +50,9 @@ void Object::sendMaterials()
 	glUniform4fv(loc, 1, mat.specular);
 	loc = glGetUniformLocation(progID, "mat.shininess");
 	glUniform1f(loc, mat.shininess);
+	loc = glGetUniformLocation(progID, "texMode");
+	glUniform1i(loc, this->mat.texCount);
+	
 }
 
 void Object::sendDataToShader()
@@ -83,6 +86,8 @@ void Object::sendDataToShader()
 	for (int i = 0; i < 16; i++)
 		pvmFloat[i] = pvmM.m[i];
 	glUniformMatrix4fv(pvmID, 1, GL_TRUE, pvmFloat);
+
+	glUniform1i(70, this->mat.texCount);
 
 
 	glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_INT, (GLvoid*)0);
