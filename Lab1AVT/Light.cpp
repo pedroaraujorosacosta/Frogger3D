@@ -27,12 +27,11 @@ Light::Light(int num, LightType type, Game *game)
 {
 	this->type = type;
 	this->numLight = num;
-	this->amb = new Vector(4);
-	this->dif = new Vector(4);
-	this->spec = new Vector(4);
+	this->amb = new Vector(3);
+	this->dif = new Vector(3);
+	this->spec = new Vector(3);
 
 	this->pos = new Vector(4);
-	this->dir = new Vector(3);
 	state = true; 
 	this->game = game;
 }
@@ -55,11 +54,6 @@ void Light::setSpecular(Vector spec)
 void Light::setPosition(Vector pos)
 {
 	*(this->pos) = pos;
-}
-
-void Light::setDirection(Vector dir)
-{
-	*(this->dir) = dir;
 }
 
 void Light::setCutoff(float cutOff)
@@ -87,34 +81,98 @@ void Light::reset()
 
 void Light::illuminate()
 {
-	Vector point(4);
-	Vector direction(3);
+	Vector point(3);
+	float direction[3];
 	GLint lightID;
-	GLint lightIsEnabledID;
 	std::ostringstream stringStream;
+
 
 	switch (type)
 	{
 	case POINT_LIGHT:
+		// position
+		stringStream << "Lights[" << numLight << "].position";
 		point = game->getVM() * *pos;
-		lightID = glGetUniformLocation(game->getShader(), "l_pos");
-		glUniform4fv(lightID, 1, point.v);
-		stringStream << "light[" << numLight << "].isEnabled";
-		checkOpenGLError("ERROR: Could not destroy shaders.");
-		lightIsEnabledID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
-		glUniform1i(lightIsEnabledID, state);
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform3fv(lightID, 1, point.v);
+		stringStream.str("");
+		stringStream.clear();
+
+		// isLocal
+		stringStream << "Lights[" << numLight << "].isLocal";
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform1i(lightID, true);
+		stringStream.str("");
+		stringStream.clear();
 		break;
 	case DIR_LIGHT:
-		direction = game->getVM() * *dir;
-		lightID = glGetUniformLocation(game->getShader(), "l_dir");
-		glUniform3fv(lightID, 1, direction.v);
-		stringStream << "dirLight.isEnabled";
-		lightIsEnabledID = glGetUniformLocation(game->getShader(), stringStream.str().c_str()); 
-		glUniform1i(lightIsEnabledID, state);
+		// position
+		stringStream << "Lights[" << numLight << "].position";
+		point = game->getVM() * *pos;
+		for (int i = 0; i < 3; i++)	direction[i] = - point.v[i];
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform3fv(lightID, 1, direction);
+		stringStream.str("");
+		stringStream.clear();
+
+		// isLocal
+		stringStream << "Lights[" << numLight << "].isLocal";
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform1i(lightID, false);
+		stringStream.str("");
+		stringStream.clear();
 		break;
 	case SPOT_LIGHT:
 		break;
 	}
+
+	// isEnabled
+	stringStream << "Lights[" << numLight << "].isEnabled";
+	lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+	glUniform1i(lightID, state);
+	stringStream.str("");
+	stringStream.clear();
+
+	// Ambient
+	stringStream << "Lights[" << numLight << "].ambient";
+	lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+	stringStream.str("");
+	stringStream.clear();
+
+	// Diffuse
+	stringStream << "Lights[" << numLight << "].diffuse";
+	lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+	glUniform3fv(lightID, 1, (*dif).v);
+	stringStream.str("");
+	stringStream.clear();
+
+	// Specular
+	stringStream << "Lights[" << numLight << "].specular";
+	lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+	glUniform3fv(lightID, 1, (*spec).v);
+	stringStream.str("");
+	stringStream.clear();
+
+	// Constant attenuation
+	stringStream << "Lights[" << numLight << "].constantAttenuation";
+	lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+	glUniform1f(lightID, 1.0f);
+	stringStream.str("");
+	stringStream.clear();
+
+	// Linear attenuation
+	stringStream << "Lights[" << numLight << "].linearAttenuation";
+	lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+	glUniform1f(lightID, 0.0f);
+	stringStream.str("");
+	stringStream.clear();
+
+	// Quadratic attenuation
+	stringStream << "Lights[" << numLight << "].quadraticAttenuation";
+	lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+	glUniform1f(lightID, 0.0f);
+	stringStream.str("");
+	stringStream.clear();
 }
 
 /*

@@ -252,10 +252,6 @@ void Game::createShaderProgram(int pIndex)
 	pvm_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_pvm");
 	vm_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_viewModel");
 	normal_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_normal");
-	lPos_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "l_pos");
-	lDir_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "l_dir");
-	//GLint d = glGetUniformLocation(programId[pIndex], "light1.isEnabled");
-	//printf("hello");
 }
 
 
