@@ -47,6 +47,7 @@ void ManagerLight::init()
 	dirLight->setSpecular(diff);
 	dirLight->setPosition(lightDir);
 
+	this->dirLight = dirLight;
 	lights.push_back(dirLight);
 }
 
@@ -56,4 +57,9 @@ void ManagerLight::reset() {
 
 void ManagerLight::update() {
 
+}
+
+void ManagerLight::toggleDirectional()
+{
+	dirLight->toggleState();
 }

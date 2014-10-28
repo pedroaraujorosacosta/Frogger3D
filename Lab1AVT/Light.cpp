@@ -175,6 +175,11 @@ void Light::illuminate()
 	stringStream.clear();
 }
 
+void Light::toggleState()
+{
+	state = !state;
+}
+
 /*
 void VSResourceLib::setMaterial(Material &aMat) {
 

@@ -466,6 +466,10 @@ void Game::keyboard(unsigned char key, int x, int y)
 			glutSetCursor(GLUT_CURSOR_NONE);
 			cam->FPSCameraMode();
 			break;
+		case 'n':
+		case 'N':
+			managerLight->toggleDirectional();
+			break;
 	}
 }
 

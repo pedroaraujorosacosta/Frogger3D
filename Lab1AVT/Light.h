@@ -39,5 +39,6 @@ public:
 	void setPosition(Vector pos);
 	void setCutoff(float cutOff);
 	void setExponent(float exp);
+	void toggleState();
 };
 #endif
