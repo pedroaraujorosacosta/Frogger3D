@@ -154,6 +154,8 @@ void Game::draw() {
 
 void Game::winGame() {
 	this->gameState = WIN;
+	this->gamePoints = 10000000 / (glutGet(GLUT_ELAPSED_TIME) - startTime);
+	std::cout << this->gamePoints << std::endl;
 }
 
 void Game::reset() 
@@ -164,7 +166,7 @@ void Game::reset()
 	frog->setDirection(directionFrog);
 	frog->setVelocity(0.0);
 	frog->setLife(3);
-
+	this->gamePoints = 0;
 	this->gameState = PLAYING;
 	
 	//velocidades dos objetos
@@ -179,7 +181,6 @@ void Game::update(float dt)
 	//corre primeiro e diz se houve um crash
 	frog->update(dt);
 	//se houver um crash o frog vai fazer update para o inicio
-	
 }
 
 void Game::reshape(int w, int h)
@@ -526,6 +527,9 @@ void Game::keyboard(unsigned char key, int x, int y)
 	case 'r':
 	case 'R':
 		this->reset();
+		break;
+	case '0':
+		this->winGame();
 		break;
 	case '1':
 		glutSetCursor(GLUT_CURSOR_LEFT_ARROW);

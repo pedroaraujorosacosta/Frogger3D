@@ -41,7 +41,7 @@ class Game : IComponent {
 	ManagerLight *managerLight;
 
 	GameState gameState;
-
+	int gamePoints;
 
 	double FOV;
 	double n;
@@ -61,11 +61,9 @@ class Game : IComponent {
 	GLint lDir_uniformId[3];
 	char *VtxShader;
 	char *FragShader;
-
 	bool isLeftButtonDown;
 	bool isRightButtonDown;
 	char keyDown;
-
 	GLuint TextureArray[2];
 
 	void setupGLUT(int argc, char* argv[]);
