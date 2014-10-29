@@ -19,15 +19,14 @@ struct Materials {
 struct LightProperties {
 	bool isEnabled;
 	bool isLocal;
-bool isSpot;
+	bool isSpot;
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
 	vec3 position;
-vec3 halfVector;
-vec3 coneDirection;
-float spotCosCutoff;
-float spotExponent;
+	vec3 coneDirection;
+	float spotCosCutoff;
+	float spotExponent;
 	float constantAttenuation;
 	float linearAttenuation;
 	float quadraticAttenuation;

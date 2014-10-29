@@ -30,7 +30,7 @@ void ManagerLight::init()
 	Vector diff(dif, 4);
 	float specPointf[4] = { 0.1f, 0.1f, 0.1f, 1.0f };
 	Vector specPoint(specPointf, 4);
-	float lpos1[4] = { 0.0f, -1.0f, -0.5f, 1.0f };
+	float lpos1[4] = { 0.0f, -1.0f, 0.5f, 1.0f };
 	Vector lightPos1(lpos1, 4);
 	Light *light1 = new Light(0, Light::POINT_LIGHT, game);
 	light1->setPosition(lightPos1);
