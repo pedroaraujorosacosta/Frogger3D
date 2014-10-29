@@ -99,14 +99,16 @@ void ManagerLight::init()
 	lights.push_back(dirLight);
 
 	// spot light
+	float difSpotf[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	Vector difSpot(difSpotf, 4);
 	float lSpotPosf[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	Vector lSpotPos(lSpotPosf, 4);
 	float lSpotDirf[3] = { 0.0f, 0.0f, -1.0f };
 	Vector lSpotDir(lSpotDirf, 3);
 	Light *spot = new Light(7, Light::SPOT_LIGHT, game);
-	spot->setDiffuse(diffDir);
-	spot->setAmbient(diffDir);
-	spot->setSpecular(diffDir);
+	spot->setDiffuse(difSpot);
+	spot->setAmbient(difSpot);
+	spot->setSpecular(difSpot);
 	spot->setPosition(lSpotPos);
 	spot->setDirection(lSpotDir);
 	spot->setCutoff(0.5f);

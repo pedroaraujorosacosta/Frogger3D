@@ -193,5 +193,7 @@
   <ItemGroup>
     <Image Include="water.tga" />
     <Image Include="stone.tga" />
+    <Image Include="grass.tga" />
+    <Image Include="ground.tga" />
   </ItemGroup>
 </Project>

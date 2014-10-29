@@ -59,7 +59,7 @@ class Game : IComponent {
 
 	bool isLeftButtonDown;
 	bool isRightButtonDown;
-	bool isKeyDown;
+	char keyDown;
 
 	void setupGLUT(int argc, char* argv[]);
 	void setupGLEW();

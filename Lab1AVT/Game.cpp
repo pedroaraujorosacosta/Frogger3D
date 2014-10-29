@@ -18,13 +18,14 @@
 #include "Vector.h"
 #include "Light.h"
 #include "TGA.h"
+#include <cctype>
 
 
 #define CAPTION "Assignment 1"
 
 Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(30.0),
 	isLeftButtonDown(false), isRightButtonDown(false), frameCount(0), totalFrames(0), startTime(0.0), windowHandle(0),
-	pIndex(0), isKeyDown(false)
+	pIndex(0), keyDown('\0')
 {
 	winX = WinX;
 	winY = WinY;
@@ -143,7 +144,7 @@ void Game::draw() {
 	projectionStack.pop();
 	modelViewStack.pop();
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+	//glBindTexture(GL_TEXTURE_2D, 0);
 	glutSwapBuffers();
 }
 
@@ -437,18 +438,22 @@ GLuint Game::getLPosID()
 
 void Game::keyboardUp(unsigned char key, int x, int y) 
 {
-	switch (key) {
-	case 'q':
-	case 'Q':
-	case 'a':
-	case 'A':
-	case 'o':
-	case 'O':
-	case 'p':
-	case 'P':
-		frog->stop();
-		break;
+	if (tolower(key) == tolower(keyDown))
+	{
+		keyDown = '\0';
 
+		switch (key) {
+		case 'q':
+		case 'Q':
+		case 'a':
+		case 'A':
+		case 'o':
+		case 'O':
+		case 'p':
+		case 'P':
+			frog->stop();
+			break;
+		}
 	}
 }
 
@@ -458,8 +463,12 @@ void Game::keyboard(unsigned char key, int x, int y)
 	float back[3] = { 0.0, -1.0, 0.0 }; 
 	float left[3] = { -1.0, 0.0, 0.0 };
 	float right[3] = { 1.0, 0.0, 0.0 };
-	
-	switch (key) {
+
+	if (tolower(key) != tolower(keyDown))
+	{
+		keyDown = key;
+
+		switch (key) {
 		case 'q':
 		case 'Q':
 			frog->move(front);
@@ -496,6 +505,7 @@ void Game::keyboard(unsigned char key, int x, int y)
 		case 'C':
 			managerLight->togglePointLights();
 			break;
+		}
 	}
 }
 

@@ -92,6 +92,27 @@ void Light::illuminate()
 		glUniform1i(lightID, true);
 		stringStream.str("");
 		stringStream.clear();
+
+		// Constant attenuation
+		stringStream << "Lights[" << numLight << "].constantAttenuation";
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform1f(lightID, 1.0f);
+		stringStream.str("");
+		stringStream.clear();
+
+		// Linear attenuation
+		stringStream << "Lights[" << numLight << "].linearAttenuation";
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform1f(lightID, 0.0f);
+		stringStream.str("");
+		stringStream.clear();
+
+		// Quadratic attenuation
+		stringStream << "Lights[" << numLight << "].quadraticAttenuation";
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform1f(lightID, 0.0f);
+		stringStream.str("");
+		stringStream.clear();
 		break;
 	case DIR_LIGHT:
 		// position
@@ -107,6 +128,27 @@ void Light::illuminate()
 		stringStream << "Lights[" << numLight << "].isLocal";
 		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
 		glUniform1i(lightID, false);
+		stringStream.str("");
+		stringStream.clear();
+
+		// Constant attenuation
+		stringStream << "Lights[" << numLight << "].constantAttenuation";
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform1f(lightID, 1.0f);
+		stringStream.str("");
+		stringStream.clear();
+
+		// Linear attenuation
+		stringStream << "Lights[" << numLight << "].linearAttenuation";
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform1f(lightID, 0.0f);
+		stringStream.str("");
+		stringStream.clear();
+
+		// Quadratic attenuation
+		stringStream << "Lights[" << numLight << "].quadraticAttenuation";
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform1f(lightID, 0.0f);
 		stringStream.str("");
 		stringStream.clear();
 		break;
@@ -154,6 +196,27 @@ void Light::illuminate()
 		glUniform1f(lightID, exp);
 		stringStream.str("");
 		stringStream.clear();
+		
+		// Constant attenuation
+		stringStream << "Lights[" << numLight << "].constantAttenuation";
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform1f(lightID, 1.0f);
+		stringStream.str("");
+		stringStream.clear();
+
+		// Linear attenuation
+		stringStream << "Lights[" << numLight << "].linearAttenuation";
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform1f(lightID, 0.1f);
+		stringStream.str("");
+		stringStream.clear();
+
+		// Quadratic attenuation
+		stringStream << "Lights[" << numLight << "].quadraticAttenuation";
+		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
+		glUniform1f(lightID, 0.1f);
+		stringStream.str("");
+		stringStream.clear();
 		break;
 	}
 
@@ -181,27 +244,6 @@ void Light::illuminate()
 	stringStream << "Lights[" << numLight << "].specular";
 	lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
 	glUniform3fv(lightID, 1, (*spec).v);
-	stringStream.str("");
-	stringStream.clear();
-
-	// Constant attenuation
-	stringStream << "Lights[" << numLight << "].constantAttenuation";
-	lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
-	glUniform1f(lightID, 1.0f);
-	stringStream.str("");
-	stringStream.clear();
-
-	// Linear attenuation
-	stringStream << "Lights[" << numLight << "].linearAttenuation";
-	lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
-	glUniform1f(lightID, 0.0f);
-	stringStream.str("");
-	stringStream.clear();
-
-	// Quadratic attenuation
-	stringStream << "Lights[" << numLight << "].quadraticAttenuation";
-	lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
-	glUniform1f(lightID, 0.0f);
 	stringStream.str("");
 	stringStream.clear();
 }
