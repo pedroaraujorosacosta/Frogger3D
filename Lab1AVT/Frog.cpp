@@ -39,9 +39,12 @@ void Frog::update(float dt)
 		spot->setPosition(newSpotPos);
 
 		// Check bounds
-		if (position[1] > 13){
+		if (position[1] > 13)
 			game->winGame();
-		}
+		else if (position[1] < -13)
+			this->velocity = 0;
+		if ((position[0] > 19.5) || (position[0] < -19.5))
+			this->velocity = 0;
 	}
 }
 
