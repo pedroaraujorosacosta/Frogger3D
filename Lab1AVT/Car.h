@@ -3,12 +3,12 @@
 
 #include "Blocker.h"
 #include "Cube.h"
-#include "Sphere.h"
+#include "Torus.h"
 
 class Car : public Blocker {
 
 	Cube *body;
-	Sphere *wheels;
+	Torus *wheels;
 
 
 protected:
