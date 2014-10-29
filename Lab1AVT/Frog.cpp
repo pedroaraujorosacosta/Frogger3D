@@ -169,3 +169,18 @@ void Frog::killed()
 	setPositionYYs(-13.0);
 	setPositionZZs(-2.0);
 }
+
+void Frog::setPosition(float* pos)
+{
+	for (int i = 0; i < 3; i++)
+		this->position[i] = pos[i];
+}
+void Frog::setDirection(float* dir)
+{
+	for (int i = 0; i < 3; i++)
+		this->position[i] = dir[i];
+}
+void Frog::setVelocity(float v)
+{
+	this->velocity = v;
+}

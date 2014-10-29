@@ -164,6 +164,32 @@ void ManagerObj::init(){
 
 void ManagerObj::reset() {
 
+	dificuldade = 1;
+
+	for (MobileObj* o : objectsMobileLane1){
+		o->reset();
+	}
+	for (MobileObj* o : objectsMobileLane2){
+		o->reset();
+	}
+	for (MobileObj* o : objectsMobileLane3){
+		o->reset();
+	}
+	for (MobileObj* o : objectsMobileLane4){
+		o->reset();
+	}
+	for (MobileObj* o : objectsMobileLane5){
+		o->reset();
+	}
+	for (MobileObj* o : objectsMobileLane6){
+		o->reset();
+	}
+	for (MobileObj* o : objectsMobileLane7){
+		o->reset();
+	}
+	for (MobileObj* o : objectsMobileLane8){
+		o->reset();
+	}
 }
 
 void ManagerObj::update(float dt, Frog* frog) {

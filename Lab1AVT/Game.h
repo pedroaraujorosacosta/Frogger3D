@@ -116,6 +116,7 @@ public:
 	Light* getSpotLight();
 
 	void winGame();
+
 };
 
 #endif

@@ -140,7 +140,7 @@ void Game::draw() {
 	
 	if (frog->getLife() > 0)
 		frog->draw();
-	else 
+	else
 		this->gameState = LOSE;
 
 	resetProgram();
@@ -156,7 +156,23 @@ void Game::winGame() {
 	this->gameState = WIN;
 }
 
-void Game::reset() {}
+void Game::reset() 
+{
+	/*float posFrog[] = { 3.0, -13.0, -2.0 };
+	float directionFrog[] = { 0.0, 1.0, 0.0 };
+	frog->setPosition(posFrog);
+	frog->setDirection(directionFrog);*/
+	frog->killed();
+	frog->setVelocity(0.0);
+	frog->setLife(3);
+
+	this->gameState = PLAYING;
+	
+	//velocidades dos objetos
+	managerObj->reset();
+
+	startTime = glutGet(GLUT_ELAPSED_TIME);
+}
 
 void Game::update(float dt) 
 {
