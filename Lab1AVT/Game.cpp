@@ -20,6 +20,7 @@
 #include "TGA.h"
 #include <cctype>
 
+#define LIFES 5
 
 #define CAPTION "Assignment 1"
 
@@ -53,7 +54,7 @@ void Game::init(int argc, char* argv[])
 
 	float posFrog[] = { 3.0, -13.0, -2.0 };
 	float directionFrog[3] = { 0.0, 1.0, 0.0 };
-	frog = new Frog(posFrog, this, 0.0, directionFrog, 3);
+	frog = new Frog(posFrog, this, 0.0, directionFrog, LIFES);
 
 	// setup camera
 	S = tan(FOV*0.5*(M_PI / 180)) * n;
@@ -115,26 +116,6 @@ void Game::draw() {
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[2]);
 
-
-	// transform light to camera space and send it to GLSL
-	/*Vector res(4);
-	res = *modelViewStack.getTop() * lightPos;
-	//res.normalize();
-	glUniform4fv(lPos_uniformId[0], 1, res.v);*/
-
-	/*Vector res(3);
-	res = *modelViewStack.getTop() * lightDir;
-	glUniform3fv(lDir_uniformId[1], 1, res.v);*/
-	//shader->setUniform("l_pos", res.v);
-
-	// So usado para luzes direccionais
-	/*shader->setBlockUniform("Lights", "l_dir", res.v);
-
-	res = *modelViewStack.getTop() * lightPos;
-	shader->setBlockUniform("Lights", "l_pos", res.v);
-
-	res = *modelViewStack.getTop() * spotDir;
-	shader->setBlockUniform("Lights", "l_spotDir", res.v);*/
 	
 	managerObj->draw();
 	
@@ -165,7 +146,7 @@ void Game::reset()
 	float directionFrog[] = { 0.0, 1.0, 0.0 };
 	frog->setDirection(directionFrog);
 	frog->setVelocity(0.0);
-	frog->setLife(3);
+	frog->setLife(LIFES);
 	this->gamePoints = 0;
 	this->gameState = PLAYING;
 	
