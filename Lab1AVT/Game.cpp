@@ -66,6 +66,9 @@ void Game::init(int argc, char* argv[])
 	TGA_Texture(TextureArray, "water.tga", 0);
 	TGA_Texture(TextureArray, "ground.tga", 1);
 	TGA_Texture(TextureArray, "grass.tga", 2);
+
+	//game state
+	this->gameState = PLAYING; 
 }
 
 // light direction
@@ -135,9 +138,10 @@ void Game::draw() {
 	
 	managerObj->draw();
 	
-	if (frog->getLife() > 0){
+	if (frog->getLife() > 0)
 		frog->draw();
-	}
+	else 
+		this->gameState = LOSE;
 
 	resetProgram();
 
@@ -146,6 +150,10 @@ void Game::draw() {
 
 	//glBindTexture(GL_TEXTURE_2D, 0);
 	glutSwapBuffers();
+}
+
+void Game::winGame() {
+	this->gameState = WIN;
 }
 
 void Game::reset() {}

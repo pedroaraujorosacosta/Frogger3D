@@ -23,6 +23,8 @@ class Light;
 
 class Game : IComponent {
 
+	enum GameState {WIN, LOSE, PLAYING};
+
 	int winX;
 	int winY;
 	double aspectRatio;
@@ -37,6 +39,9 @@ class Game : IComponent {
 	VSShaderLib *shader;
 	ManagerObj *managerObj;
 	ManagerLight *managerLight;
+
+	GameState gameState;
+
 
 	double FOV;
 	double n;
@@ -109,6 +114,8 @@ public:
 	GLuint getShader();
 	GLuint getLPosID();
 	Light* getSpotLight();
+
+	void winGame();
 };
 
 #endif

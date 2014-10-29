@@ -40,7 +40,7 @@ void Frog::update(float dt)
 
 		// Check bounds
 		if (position[1] > 13){
-			killed();
+			game->winGame();
 		}
 	}
 }
