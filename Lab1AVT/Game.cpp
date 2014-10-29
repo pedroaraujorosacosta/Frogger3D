@@ -158,11 +158,10 @@ void Game::winGame() {
 
 void Game::reset() 
 {
-	/*float posFrog[] = { 3.0, -13.0, -2.0 };
-	float directionFrog[] = { 0.0, 1.0, 0.0 };
+	float posFrog[] = { 3.0, -13.0, -2.0 };
 	frog->setPosition(posFrog);
-	frog->setDirection(directionFrog);*/
-	frog->killed();
+	float directionFrog[] = { 0.0, 1.0, 0.0 };
+	frog->setDirection(directionFrog);
 	frog->setVelocity(0.0);
 	frog->setLife(3);
 
@@ -523,6 +522,10 @@ void Game::keyboard(unsigned char key, int x, int y)
 		frog->move(right);
 		else
 			frog->setPositionXXs(19);
+		break;
+	case 'r':
+	case 'R':
+		this->reset();
 		break;
 	case '1':
 		glutSetCursor(GLUT_CURSOR_LEFT_ARROW);

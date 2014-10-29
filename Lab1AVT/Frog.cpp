@@ -178,7 +178,7 @@ void Frog::setPosition(float* pos)
 void Frog::setDirection(float* dir)
 {
 	for (int i = 0; i < 3; i++)
-		this->position[i] = dir[i];
+		this->direction[i] = dir[i];
 }
 void Frog::setVelocity(float v)
 {
