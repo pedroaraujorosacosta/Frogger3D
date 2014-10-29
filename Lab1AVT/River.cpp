@@ -37,11 +37,13 @@ void River::draw(){
 
 	modelview->push();
 		modelview->translateMatrix(0.0, 3.0, 0.0);
+		bankTop->setTexCount(2);
 		bankTop->draw();
 	modelview->pop();
 
 	modelview->push();
 	modelview->translateMatrix(0.0, -3.0, 0.0);
+		bankBot->setTexCount(2);
 		bankBot->draw();
 	modelview->pop();
 	

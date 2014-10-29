@@ -187,14 +187,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="fragShader.fsh" />
-    <None Include="vtxShader.vsh" />
     <None Include="pointlight.frag" />
     <None Include="pointlight.vert" />
-    <None Include="spotlight.frag" />
-    <None Include="spotlight.vert" />
-    <None Include="dirdifambspec.frag" />
-    <None Include="dirdifambspec.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="water.tga" />
