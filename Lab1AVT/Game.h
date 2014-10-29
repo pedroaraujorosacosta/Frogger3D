@@ -61,6 +61,8 @@ class Game : IComponent {
 	bool isRightButtonDown;
 	char keyDown;
 
+	GLuint TextureArray[2];
+
 	void setupGLUT(int argc, char* argv[]);
 	void setupGLEW();
 	void setupOpenGL();
@@ -107,8 +109,6 @@ public:
 	GLuint getShader();
 	GLuint getLPosID();
 	Light* getSpotLight();
-
-	GLuint TextureArray[2];
 };
 
 #endif

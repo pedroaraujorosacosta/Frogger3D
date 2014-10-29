@@ -39,7 +39,7 @@ void ManagerLight::init()
 	light1->setSpecular(specPoint);
 	lights.push_back(light1);
 
-	float lpos2[4] = { 10.0f, -1.0f, -0.5f, 1.0f };
+	float lpos2[4] = { 10.0f, -1.0f, 0.5f, 1.0f };
 	Vector lightPos2(lpos2, 4);
 	Light *light2 = new Light(1, Light::POINT_LIGHT, game);
 	light2->setPosition(lightPos2);
@@ -48,7 +48,7 @@ void ManagerLight::init()
 	light2->setSpecular(specPoint);
 	lights.push_back(light2);
 
-	float lpos3[4] = { -10.0f, -1.0f, -0.5f, 1.0f };
+	float lpos3[4] = { -10.0f, -1.0f, 0.5f, 1.0f };
 	Vector lightPos3(lpos3, 4);
 	Light *light3 = new Light(2, Light::POINT_LIGHT, game);
 	light3->setPosition(lightPos3);
@@ -57,7 +57,7 @@ void ManagerLight::init()
 	light3->setSpecular(specPoint);
 	lights.push_back(light3);
 
-	float lpos4[4] = { 0.0f, -13.0f, -0.5f, 1.0f };
+	float lpos4[4] = { 0.0f, -13.0f, 0.5f, 1.0f };
 	Vector lightPos4(lpos4, 4);
 	Light *light4 = new Light(3, Light::POINT_LIGHT, game);
 	light4->setPosition(lightPos4);
@@ -66,7 +66,7 @@ void ManagerLight::init()
 	light4->setSpecular(specPoint);
 	lights.push_back(light4);
 
-	float lpos5[4] = { 10.0f, -13.0f, -0.5f, 1.0f };
+	float lpos5[4] = { 10.0f, -13.0f, 0.5f, 1.0f };
 	Vector lightPos5(lpos5, 4);
 	Light *light5 = new Light(4, Light::POINT_LIGHT, game);
 	light5->setPosition(lightPos5);
@@ -75,7 +75,7 @@ void ManagerLight::init()
 	light5->setSpecular(specPoint);
 	lights.push_back(light5);
 
-	float lpos6[4] = { -10.0f, -13.0f, -0.5f, 1.0f };
+	float lpos6[4] = { -10.0f, -13.0f, 0.5f, 1.0f };
 	Vector lightPos6(lpos6, 4);
 	Light *light6 = new Light(5, Light::POINT_LIGHT, game);
 	light6->setPosition(lightPos6);
@@ -94,7 +94,6 @@ void ManagerLight::init()
 	dirLight->setAmbient(diffDir);
 	dirLight->setSpecular(diffDir);
 	dirLight->setPosition(lightDir);
-
 	this->dirLight = dirLight;
 	lights.push_back(dirLight);
 

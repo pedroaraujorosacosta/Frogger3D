@@ -60,25 +60,55 @@ void Road::draw(){
 			lampadaTopo->draw();
 			modelview->pop();
 		modelview->pop();
+
 		modelview->push();
 		modelview->translateMatrix(10.0, 6.0, 0.6);
 		lampPost->draw();
+			modelview->push();
+			modelview->scaleMatrix(1.0, 1.0, 0.5);
+			modelview->translateMatrix(0.0, 0.0, 0.5);
+			lampadaTopo->draw();
+			modelview->pop();
 		modelview->pop();
+
 		modelview->push();
 		modelview->translateMatrix(-10.0, 6.0, 0.6);
 		lampPost->draw();
+			modelview->push();
+			modelview->scaleMatrix(1.0, 1.0, 0.5);
+			modelview->translateMatrix(0.0, 0.0, 0.5);
+			lampadaTopo->draw();
+			modelview->pop();
 		modelview->pop();
+
 		modelview->push();
 		modelview->translateMatrix(0.0, -6.0, 0.6);
 		lampPost->draw();
+			modelview->push();
+			modelview->scaleMatrix(1.0, 1.0, 0.5);
+			modelview->translateMatrix(0.0, 0.0, 0.5);
+			lampadaTopo->draw();
+			modelview->pop();
 		modelview->pop();
+
 		modelview->push();
 		modelview->translateMatrix(10.0, -6.0, 0.6);
 		lampPost->draw();
+			modelview->push();
+			modelview->scaleMatrix(1.0, 1.0, 0.5);
+			modelview->translateMatrix(0.0, 0.0, 0.5);
+			lampadaTopo->draw();
+			modelview->pop();
 		modelview->pop();
+
 		modelview->push();
 		modelview->translateMatrix(-10.0, -6.0, 0.6);
 		lampPost->draw();
+			modelview->push();
+			modelview->scaleMatrix(1.0, 1.0, 0.5);
+			modelview->translateMatrix(0.0, 0.0, 0.5);
+			lampadaTopo->draw();
+			modelview->pop();
 		modelview->pop();
 
 	modelview->pop();

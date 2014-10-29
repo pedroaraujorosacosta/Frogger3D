@@ -34,7 +34,7 @@ void Frog::update(float dt)
 		newSpotDir.normalize();
 
 		float hNewSpotPos[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-		for (int i = 0; i < 3; i++) hNewSpotPos[i] = position[i] + direction[i];
+		for (int i = 0; i < 3; i++) hNewSpotPos[i] = position[i] + 0.5*direction[i];
 		Vector newSpotPos(hNewSpotPos, 4);
 		spot->setPosition(newSpotPos);
 
@@ -146,7 +146,7 @@ void Frog::init() {
 		spot->setDirection(newSpotDir);
 
 		float hNewSpotPos[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-		for (int i = 0; i < 3; i++) hNewSpotPos[i] = position[i] + direction[i];
+		for (int i = 0; i < 3; i++) hNewSpotPos[i] = position[i] + 0.5*direction[i];
 		Vector newSpotPos(hNewSpotPos, 4);
 		spot->setPosition(newSpotPos);
 	}
