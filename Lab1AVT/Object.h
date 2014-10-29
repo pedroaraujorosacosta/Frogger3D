@@ -64,6 +64,18 @@ public:
 	void setPositionXXs(float positionXXs){
 		position[0] = positionXXs;
 	}
+	float getPositionYYs(){
+		return position[1];
+	}
+	void setPositionYYs(float positionYYs){
+		position[1] = positionYYs;
+	}
+	float getPositionZZs(){
+		return position[2];
+	}
+	void setPositionZZs(float positionZZs){
+		position[2] = positionZZs;
+	}
 };
 
 #endif

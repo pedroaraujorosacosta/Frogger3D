@@ -26,6 +26,39 @@ class ManagerObj : public Manager
 	std::vector<MobileObj*> objectsMobileLane4;
 	std::vector<MobileObj*> objectsMobileLane5;
 	std::vector<MobileObj*> objectsMobileLane6;
+	std::vector<MobileObj*> objectsMobileLane7;
+	std::vector<MobileObj*> objectsMobileLane8;
+
+
+
+
+	//frog collision variables
+	float frogXXs;
+	float frogYYs;
+
+	float frogHeigth;
+	float frogWeigth;
+
+	float frogTopYYs;
+	float frogBottomYYs;
+
+	float carWeigth;
+	float busWeigth;
+	float logWeigth;
+	float turtleWeigth;
+
+	//Optimization variables
+	bool canColideLane1;
+	bool canColideLane2;
+	bool canColideLane3;
+	bool canColideLane5;
+	bool canColideLane6;
+	bool canColideLane7;
+	bool canColideLane8;
+	bool canColideLane4;
+
+	//Checking the river
+	bool onSurface;
 
 protected:
 
@@ -36,7 +69,7 @@ public:
 	~ManagerObj();
 	void draw();
 	void reset();
-	void update(float dt);
+	void update(float dt,Frog* frog);
 
 	void setDificuldade(float _dificuldade);
 	void setLateralEsquerda(float _lateralEsquerda);

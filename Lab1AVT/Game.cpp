@@ -130,8 +130,11 @@ void Game::reset() {}
 
 void Game::update(float dt) 
 {
-	managerObj->update(dt);
+	managerObj->update(dt,frog); 
+	//corre primeiro e diz se houve um crash
 	frog->update(dt);
+	//se houver um crash o frog vai fazer update para o inicio
+	
 }
 
 void Game::reshape(int w, int h)
@@ -442,22 +445,36 @@ void Game::keyboard(unsigned char key, int x, int y)
 	float left[3] = { -1.0, 0.0, 0.0 };
 	float right[3] = { 1.0, 0.0, 0.0 };
 
+	
+
 	switch (key) {
 	case 'q':
 	case 'Q':
+		if (frog->getPositionYYs() < 13.5)
 		frog->move(front);
+		else
+			frog->setPositionYYs(13.5);
 		break;
 	case 'a':
 	case 'A':
+		if (frog->getPositionYYs() > -13.5)
 		frog->move(back);
+		else
+			frog->setPositionYYs(-13.5);
 		break;
 	case 'o':
 	case 'O':
+		if (frog->getPositionXXs() > -19)
 		frog->move(left);
+		else
+			frog->setPositionXXs(-19);
 		break;
 	case 'p':
 	case 'P':
-		frog->move(right);
+		if (frog->getPositionXXs() < 19)
+			frog->move(right);
+		else
+			frog->setPositionXXs(19);
 		break;
 	case '1':
 		glutSetCursor(GLUT_CURSOR_LEFT_ARROW);

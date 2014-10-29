@@ -19,11 +19,12 @@ Frog::~Frog()
 void Frog::update(float dt)
 {
 	for (int i = 0; i < 3; i++)
-		position[i] += direction[i] * velocity;
+		position[i] += direction[i] * velocity *2;
 
-	if (position[1] > -5){
-		position[1] = -13;
-		setLife(getLife()-1);
+
+
+	if (position[1] > 13){
+		killed();
 	}
 }
 
@@ -111,21 +112,6 @@ void Frog::init() {
 	eyes->setTexCount(texcountEyes);
 }
 
-float Frog::getX()
-{
-	return position[0];
-}
-
-float Frog::getY()
-{
-	return position[1];
-}
-
-float Frog::getZ()
-{
-	return position[2];
-}
-
 int Frog::getLife()
 {
 	return life;
@@ -134,4 +120,12 @@ int Frog::getLife()
 void Frog::setLife(int life)
 {
 	this->life = life;
+}
+
+void Frog::killed()
+{
+	setLife(getLife() - 1);
+	setPositionXXs(3.0);
+	setPositionYYs(-13.0); 
+	setPositionZZs(-2.0);
 }

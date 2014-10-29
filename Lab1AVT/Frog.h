@@ -23,9 +23,7 @@ public:
 	void move(float *direction);
 	void move();
 	void stop();
-	float getX();
-	float getY();
-	float getZ();
+	void killed();
 
 	int getLife();
 	void setLife(int _life);
