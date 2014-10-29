@@ -16,12 +16,16 @@
 #include "Camera.h"
 #include "vsShaderLib.h"
 #include "Vector.h"
+#include "Light.h"
+#include "TGA.h"
+#include <cctype>
 
 
 #define CAPTION "Assignment 1"
 
 Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(30.0),
-	isLeftButtonDown(false), isRightButtonDown(false), frameCount(0), totalFrames(0), startTime(0.0), windowHandle(0)
+	isLeftButtonDown(false), isRightButtonDown(false), frameCount(0), totalFrames(0), startTime(0.0), windowHandle(0),
+	pIndex(0), keyDown('\0')
 {
 	winX = WinX;
 	winY = WinY;
@@ -56,10 +60,16 @@ void Game::init(int argc, char* argv[])
 	r = aspectRatio * S, l = -r;
 	t = S, b = -t;
 	cam = new Camera(this, t, b, n, f, l, r, FOV, S);
+
+	//setup textures
+	glGenTextures(3, TextureArray);
+	TGA_Texture(TextureArray, "water.tga", 0);
+	TGA_Texture(TextureArray, "ground.tga", 1);
+	TGA_Texture(TextureArray, "grass.tga", 2);
 }
 
 // light direction
-float ldir[4] = { 1.0f, 1.0f, 1.0f, 0.0f };
+float ldir[4] = { 1.0f, 1.0f, -1.0f, 0.0f };
 Vector lightDir(ldir, 4);
 float lpos[4] = { 0.0f, 0.0f, 14.0f, 1.0f };
 Vector lightPos(lpos, 4);
@@ -92,6 +102,17 @@ void Game::draw() {
 	setProgramIndex(0);
 
 	managerLight->illuminate();
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[0]);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[1]);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[2]);
+
+
 	// transform light to camera space and send it to GLSL
 	/*Vector res(4);
 	res = *modelViewStack.getTop() * lightPos;
@@ -118,11 +139,12 @@ void Game::draw() {
 		frog->draw();
 	}
 
-	glUseProgram(0);
+	resetProgram();
 
 	projectionStack.pop();
 	modelViewStack.pop();
 
+	//glBindTexture(GL_TEXTURE_2D, 0);
 	glutSwapBuffers();
 }
 
@@ -197,8 +219,6 @@ void Game::setupOpenGL() {
 void Game::createShaderPrograms()
 {
 	createShaderProgram(0);
-	createShaderProgram(1);
-	createShaderProgram(2);
 
 	checkOpenGLError("ERROR: Could not create shaders.");
 }
@@ -237,14 +257,14 @@ void Game::createShaderProgram(int pIndex)
 		loadShader(0, VSShaderLib::VERTEX_SHADER, "pointlight.vert");
 		loadShader(0, VSShaderLib::FRAGMENT_SHADER, "pointlight.frag");
 		break;
-	case 1:
+/*	case 1:
 		loadShader(1, VSShaderLib::VERTEX_SHADER, "dirdifambspec.vert");
 		loadShader(1, VSShaderLib::FRAGMENT_SHADER, "dirdifambspec.frag");
 		break;
 	case 2:
 		loadShader(2, VSShaderLib::VERTEX_SHADER, "spotlight.vert");
 		loadShader(2, VSShaderLib::FRAGMENT_SHADER, "spotlight.frag");
-		break;
+		break;*/
 	}
 
 	glBindFragDataLocation(programId[pIndex], 0, "colorOut");
@@ -258,8 +278,6 @@ void Game::createShaderProgram(int pIndex)
 	pvm_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_pvm");
 	vm_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_viewModel");
 	normal_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_normal");
-	lPos_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "l_pos");
-	lDir_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "l_dir");
 }
 
 
@@ -423,6 +441,10 @@ GLuint Game::getLPosID()
 
 void Game::keyboardUp(unsigned char key, int x, int y)
 {
+	if (tolower(key) == tolower(keyDown))
+	{
+		keyDown = '\0';
+
 	switch (key) {
 	case 'q':
 	case 'Q':
@@ -434,7 +456,7 @@ void Game::keyboardUp(unsigned char key, int x, int y)
 	case 'P':
 		frog->stop();
 		break;
-
+		}
 	}
 }
 
@@ -445,7 +467,9 @@ void Game::keyboard(unsigned char key, int x, int y)
 	float left[3] = { -1.0, 0.0, 0.0 };
 	float right[3] = { 1.0, 0.0, 0.0 };
 
-	
+	if (tolower(key) != tolower(keyDown))
+	{
+		keyDown = key;
 
 	switch (key) {
 	case 'q':
@@ -472,7 +496,7 @@ void Game::keyboard(unsigned char key, int x, int y)
 	case 'p':
 	case 'P':
 		if (frog->getPositionXXs() < 19)
-			frog->move(right);
+		frog->move(right);
 		else
 			frog->setPositionXXs(19);
 		break;
@@ -488,7 +512,16 @@ void Game::keyboard(unsigned char key, int x, int y)
 		glutSetCursor(GLUT_CURSOR_NONE);
 		cam->FPSCameraMode();
 		break;
+		case 'n':
+		case 'N':
+			managerLight->toggleDirectional();
+			break;
+		case 'c':
+		case 'C':
+			managerLight->togglePointLights();
+			break;
 	}
+}
 }
 
 void Game::mouseFunc(int button, int state, int x, int y)
@@ -556,3 +589,9 @@ Frog* Game::getFrog()
 {
 	return frog;
 }
+ 
+Light* Game::getSpotLight()
+{
+	return managerLight->getSpotLight();
+}
+ 

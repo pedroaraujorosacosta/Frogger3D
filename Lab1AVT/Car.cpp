@@ -37,21 +37,25 @@ void Car::draw(){
 
 	modelview->push();
 	modelview->translateMatrix(0.5,0.3,-0.5);
+	modelview->rotateMatrix(0.0f, 0.0f, 1.0f, 90);
 	wheels->draw();
 	modelview->pop();
 
 	modelview->push();
 	modelview->translateMatrix(0.5, -0.3, -0.5);
+	modelview->rotateMatrix(0.0f, 0.0f, 1.0f, 90);
 	wheels->draw();
 	modelview->pop();
 	
 	modelview->push();
 	modelview->translateMatrix(-0.5, -0.3,-0.5);
+	modelview->rotateMatrix(0.0f, 0.0f, 1.0f, 90);
 	wheels->draw();
 	modelview->pop();
 
 	modelview->push();
 	modelview->translateMatrix(-0.5, 0.3, -0.5);
+	modelview->rotateMatrix(0.0f, 0.0f, 1.0f, 90);
 	wheels->draw();
 	modelview->pop();
 
@@ -62,7 +66,7 @@ void Car::draw(){
 void Car::init() {
 	float o[3] = { 0.0, 0.0, 0.0 };
 	body = new Cube(o, game);
-	wheels = new Sphere(o, game, 0.2, 8);
+	wheels = new Torus(o, game, 0.1f, 0.3f, 8, 8);
 
 	// set materials
 	float ambBody[] = { 0.1f, 0.1f, 0.1f, 1.0f };

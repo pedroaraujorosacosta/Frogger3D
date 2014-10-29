@@ -50,6 +50,18 @@ void Object::sendMaterials()
 	glUniform4fv(loc, 1, mat.specular);
 	loc = glGetUniformLocation(progID, "mat.shininess");
 	glUniform1f(loc, mat.shininess);
+	loc = glGetUniformLocation(progID, "texMode");
+	glUniform1i(loc, this->mat.texCount);	
+
+	//Indicar aos samplers do GLSL quais os Texture Units a serem usados
+	loc = glGetUniformLocation(progID, "texmap");
+	glUniform1i(loc, 0);
+
+	loc = glGetUniformLocation(progID, "texmap1");
+	glUniform1i(loc, 1);
+
+	loc = glGetUniformLocation(progID, "texmap2");
+	glUniform1i(loc, 2);
 }
 
 void Object::sendDataToShader()

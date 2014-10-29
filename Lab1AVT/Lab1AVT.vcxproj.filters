@@ -96,6 +96,9 @@
     <ClCompile Include="vsShaderLib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TGA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -179,15 +182,18 @@
     <ClInclude Include="vsShaderLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TGA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="fragShader.fsh" />
-    <None Include="vtxShader.vsh" />
     <None Include="pointlight.frag" />
     <None Include="pointlight.vert" />
-    <None Include="spotlight.frag" />
-    <None Include="spotlight.vert" />
-    <None Include="dirdifambspec.frag" />
-    <None Include="dirdifambspec.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="water.tga" />
+    <Image Include="stone.tga" />
+    <Image Include="grass.tga" />
+    <Image Include="ground.tga" />
   </ItemGroup>
 </Project>

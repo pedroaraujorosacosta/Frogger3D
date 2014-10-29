@@ -2,6 +2,8 @@
 #include "Stack.h"
 #include "Game.h"
 #include <iostream>
+#include "Light.h"
+#include "Vector.h"
 
 Frog::Frog(float *position, Game *game, float velocity, float *direction, int life) : Blocker(position, game, velocity, direction)
 {
@@ -18,18 +20,40 @@ Frog::~Frog()
 
 void Frog::update(float dt)
 {
-	for (int i = 0; i < 3; i++)
-		position[i] += direction[i] * velocity *2;
+	if (velocity > 0.0f)
+	{
+		for (int i = 0; i < 3; i++)
+			position[i] += direction[i] * velocity;
 
+		// adjust the miner's spot light
+		Light *spot = game->getSpotLight();
+		
+		float newSpotDirf[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+		for (int i = 0; i < 3; i++) newSpotDirf[i] = direction[i];
+		Vector newSpotDir(newSpotDirf, 4);
+		newSpotDir.normalize();
 
+		float hNewSpotPos[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		for (int i = 0; i < 3; i++) hNewSpotPos[i] = position[i] + 0.5*direction[i];
+		Vector newSpotPos(hNewSpotPos, 4);
+		spot->setPosition(newSpotPos);
 
-	if (position[1] > 13){
-		killed();
+		// Check bounds
+		if (position[1] > 13){
+			killed();
+		}
 	}
 }
 
 void Frog::move(float *direction)
 {
+	Light *spot = game->getSpotLight();
+	float newSpotDirf[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	for (int i = 0; i < 3; i++) newSpotDirf[i] = direction[i];
+	Vector newSpotDir(newSpotDirf, 4);
+	newSpotDir.normalize();
+	spot->setDirection(newSpotDir);
+
 	for (int i = 0; i < 3; i++)
 		this->direction[i] = direction[i];
 	velocity = 0.08;
@@ -110,6 +134,21 @@ void Frog::init() {
 	eyes->setEmissive(emissiveEyes);
 	eyes->setShininess(shininessEyes);
 	eyes->setTexCount(texcountEyes);
+
+	Light *spot = game->getSpotLight();
+	if (spot != 0) 
+	{
+		float newSpotDirf[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+		for (int i = 0; i < 3; i++) newSpotDirf[i] = direction[i];
+		Vector newSpotDir(newSpotDirf, 4);
+		newSpotDir.normalize();
+		spot->setDirection(newSpotDir);
+
+		float hNewSpotPos[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		for (int i = 0; i < 3; i++) hNewSpotPos[i] = position[i] + 0.5*direction[i];
+		Vector newSpotPos(hNewSpotPos, 4);
+		spot->setPosition(newSpotPos);
+	}
 }
 
 int Frog::getLife()
@@ -122,10 +161,11 @@ void Frog::setLife(int life)
 	this->life = life;
 }
 
+
 void Frog::killed()
 {
 	setLife(getLife() - 1);
 	setPositionXXs(3.0);
-	setPositionYYs(-13.0); 
+	setPositionYYs(-13.0);
 	setPositionZZs(-2.0);
 }

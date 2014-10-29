@@ -5,10 +5,12 @@
 #include "Cube.h"
 #include "Sphere.h"
 
+class Torus;
+
 class Bus : public Blocker {
 
 	Cube *body;
-	Sphere *wheels;
+	Torus *wheels;
 
 
 protected:

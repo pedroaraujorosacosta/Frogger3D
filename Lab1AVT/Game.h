@@ -19,6 +19,7 @@ class Camera;
 class Frog;
 class VSShaderLib;
 class ManagerLight;
+class Light;
 
 class Game : IComponent {
 
@@ -58,6 +59,9 @@ class Game : IComponent {
 
 	bool isLeftButtonDown;
 	bool isRightButtonDown;
+	char keyDown;
+
+	GLuint TextureArray[2];
 
 	void setupGLUT(int argc, char* argv[]);
 	void setupGLEW();
@@ -104,6 +108,7 @@ public:
 	Frog* getFrog();
 	GLuint getShader();
 	GLuint getLPosID();
+	Light* getSpotLight();
 };
 
 #endif

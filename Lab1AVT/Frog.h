@@ -11,8 +11,6 @@ class Frog : public Blocker {
 	Sphere *eyes;
 
 	int life;
-
-
 protected:
 	void init();
 public:
