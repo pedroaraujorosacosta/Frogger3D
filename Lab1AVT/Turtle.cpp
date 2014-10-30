@@ -3,7 +3,7 @@
 #include "Game.h"
 #include <iostream>
 
-Turtle::Turtle(float *position, Game *game, float velocity, float *direction) : MobileObj(position, game, velocity, direction, 2.2f, 2.2f)
+Turtle::Turtle(float *position, Game *game, float velocity, float *direction) : MobileObj(position, game, velocity, direction, 2.4f, 2.0f)
 {
 	init();
 	createBufferObjects();
@@ -29,7 +29,7 @@ void Turtle::draw(){
 	modelview->push();
 	//puts the car on the right position
 	modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
-	modelview->scaleMatrix(turtleW, turtleH, 2.0);
+	modelview->scaleMatrix(2.0f, 2.0f, 2.0f);
 
 	if (direction[0] != 0.0)
 		modelview->rotateMatrix(0.0, 0.0, 1.0, 90);
