@@ -4,7 +4,7 @@
 #include "Torus.h"
 #include <iostream>
 
-Bus::Bus(float *position, Game *game, float velocity, float *direction) : Blocker(position, game, velocity, direction)
+Bus::Bus(float *position, Game *game, float velocity, float *direction) : MobileObj(position, game, velocity, direction, 2.4f, 1.0f)
 {
 	init();
 	createBufferObjects();

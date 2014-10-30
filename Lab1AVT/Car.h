@@ -7,11 +7,14 @@ class Torus;
 class Sphere;
 class Cylinder;
 
-class Car : public Blocker {
+class Car : public MobileObj {
 
 	Cylinder *body;
 	Torus *wheels;
 	Sphere *cabin;
+
+	const float carW = 1.2f;
+	const float carH = 0.8f;
 
 protected:
 	void init();

@@ -7,11 +7,13 @@
 
 class Torus;
 
-class Bus : public Blocker {
+class Bus : public MobileObj {
 
 	Cube *body;
 	Torus *wheels;
 
+	const float busW = 2.4f;
+	const float busH = 1.0f;
 
 protected:
 	void init();

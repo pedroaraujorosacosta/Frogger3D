@@ -3,7 +3,7 @@
 #include "Game.h"
 #include <iostream>
 
-FloatingLog::FloatingLog(float *position, Game *game, float velocity, float *direction) : Surface(position, game, velocity, direction)
+FloatingLog::FloatingLog(float *position, Game *game, float velocity, float *direction) : MobileObj(position, game, velocity, direction, 4.0f, 1.0f)
 {
 	init();
 	createBufferObjects();

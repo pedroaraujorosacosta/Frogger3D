@@ -2,11 +2,14 @@
 #include "Stack.h"
 #include "Game.h"
 
-MobileObj::MobileObj(float *position, Game *game, float velocity, float *direction) : Object(position, game)
+MobileObj::MobileObj(float *position, Game *game, float velocity, float *direction, float width, float height) : Object(position, game)
 {
 	initVelocity = this->velocity = velocity;
 	for (int i = 0; i < 3; i++)
 		this->direction[i] = direction[i];
+
+	this->width = width;
+	this->height = height;
 
 	init();
 	createBufferObjects();
@@ -54,4 +57,9 @@ float MobileObj::getDirZ()
 void MobileObj::multiplyVelocity(float dificulty)
 {
 	velocity = velocity + dificulty * initVelocity / 500;
+}
+
+float MobileObj::getWidth()
+{
+	return width;
 }

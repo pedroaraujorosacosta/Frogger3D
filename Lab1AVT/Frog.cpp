@@ -5,7 +5,7 @@
 #include "Light.h"
 #include "Vector.h"
 
-Frog::Frog(float *position, Game *game, float velocity, float *direction, int life) : Blocker(position, game, velocity, direction)
+Frog::Frog(float *position, Game *game, float velocity, float *direction, int life) : MobileObj(position, game, velocity, direction, 1.4f, 1.0f)
 {
 	init();
 	createBufferObjects();
