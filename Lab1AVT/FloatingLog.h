@@ -4,13 +4,15 @@
 #include "Surface.h"
 #include "Cylinder.h"
 
-class FloatingLog : public Surface {
+class FloatingLog : public MobileObj {
 
 	Cylinder *body;
 
 	Cylinder *front;
 	Cylinder *back;
 
+	const float logW = 4.0f;
+	const float logH = 1.0f;
 
 protected:
 	void init();

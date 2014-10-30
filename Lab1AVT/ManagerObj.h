@@ -103,6 +103,7 @@ public:
 	int getRandomStartPosition(int randomIndex);
 	void updateValidPositions(int lane, float objectXXs);
 
+	bool laneCollision(std::vector<MobileObj*> lane, MobileObj* obj);
 };
 
 #endif

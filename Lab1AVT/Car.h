@@ -2,14 +2,19 @@
 #define __CAR_H__
 
 #include "Blocker.h"
-#include "Cube.h"
-#include "Torus.h"
 
-class Car : public Blocker {
+class Torus;
+class Sphere;
+class Cylinder;
 
-	Cube *body;
+class Car : public MobileObj {
+
+	Cylinder *body;
 	Torus *wheels;
+	Sphere *cabin;
 
+	const float carW = 1.2f;
+	const float carH = 0.8f;
 
 protected:
 	void init();

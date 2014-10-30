@@ -138,6 +138,11 @@ void ManagerLight::toggleDirectional()
 	dirLight->toggleState();
 }
 
+void ManagerLight::toggleSpotLight()
+{
+	spotLight->toggleState();
+}
+
 Light* ManagerLight::getSpotLight()
 {
 	return spotLight;

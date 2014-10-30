@@ -5,12 +5,14 @@
 #include "Torus.h"
 #include "Sphere.h"
 
-class Turtle : public Surface {
+class Turtle : public MobileObj {
 
 	Sphere *head;
 	Torus *body;
 	Sphere *shell;
 
+	const float turtleW = 2.0f;
+	const float turtleH = 2.0f;
 
 protected:
 	void init();

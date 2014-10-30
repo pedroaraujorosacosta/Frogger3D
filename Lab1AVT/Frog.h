@@ -5,12 +5,16 @@
 #include "Cube.h"
 #include "Sphere.h"
 
-class Frog : public Blocker {
+class Frog : public MobileObj {
 
 	Sphere *body;
 	Sphere *eyes;
 
 	int life;
+
+	const float FROG_VELOCITY = 0.3f;
+	const float FROG_W = 1.4f;
+	const float FROG_H = 1.0f;
 protected:
 	void init();
 public:
