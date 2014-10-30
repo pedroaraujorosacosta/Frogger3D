@@ -148,17 +148,23 @@ void ManagerObj::draw() {
 	for (Object* o : objects)
 		o->draw();
 	for (MobileObj* o : objectsMobileLane1)
-		o->draw();
+		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
+			o->draw();
 	for (MobileObj* o : objectsMobileLane2)
-		o->draw();
+		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
+			o->draw();
 	for (MobileObj* o : objectsMobileLane3)
-		o->draw();
+		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
+			o->draw();
 	for (MobileObj* o : objectsMobileLane6)
-		o->draw();
+		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
+			o->draw();
 	for (MobileObj* o : objectsMobileLane7)
-		o->draw();
+		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
+			o->draw();
 	for (MobileObj* o : objectsMobileLane8)
-		o->draw();
+		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
+			o->draw();
 
 	//bridge test
 	for (MobileObj* o : objectsMobileLane4)

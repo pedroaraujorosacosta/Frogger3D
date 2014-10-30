@@ -14,6 +14,7 @@ Bus::~Bus()
 {
 	delete body;
 	delete wheels;
+	delete bumper;
 }
 
 void Bus::update(float dt){
@@ -63,6 +64,20 @@ void Bus::draw(){
 	wheels->draw();
 	modelview->pop();
 
+	modelview->push();
+	modelview->translateMatrix(0.0f, -0.75f, -0.075f);
+	modelview->rotateMatrix(0.0f, 0.0f, 1.0f, 90);
+	modelview->scaleMatrix(1.0f, 1.0f, 1.20f);
+	bumper->draw();
+	modelview->pop();
+
+	modelview->push();
+	modelview->translateMatrix(0.0f, 0.5f, -0.35f);
+	modelview->rotateMatrix(0.0f, 0.0f, 1.0f, 90);
+	modelview->scaleMatrix(1.5f, 1.0f, 1.20f);
+	bumper->draw();
+	modelview->pop();
+
 	sendDataToShader();
 	modelview->pop();
 }
@@ -71,6 +86,7 @@ void Bus::init() {
 	float o[3] = { 0.0, 0.0, 0.0 };
 	body = new Cube(o, game);
 	wheels = new Torus(o, game, 0.1f, 0.3f, 8, 8);
+	bumper = new Cylinder(o, game, 1.0f, 0.5f, 15);
 
 	// set materials
 	float ambBody[] = { 0.1f, 0.1f, 0.1f, 1.0f };
@@ -86,6 +102,13 @@ void Bus::init() {
 	body->setEmissive(emissiveBody);
 	body->setShininess(shininessBody);
 	body->setTexCount(texcountBody);
+
+	bumper->setAmbient(ambBody);
+	bumper->setDiffuse(diffBody);
+	bumper->setSpecular(specBody);
+	bumper->setEmissive(emissiveBody);
+	bumper->setShininess(shininessBody);
+	bumper->setTexCount(texcountBody);
 
 	float ambWheels[] = { 0.1f, 0.1f, 0.1f, 1.0f };
 	float diffWheels[] = { 0.4f, 0.4f, 0.4f, 1.0f };
