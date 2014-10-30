@@ -18,6 +18,7 @@
 #include "Vector.h"
 #include "Light.h"
 #include "TGA.h"
+#include "FontLib.h"
 #include <cctype>
 
 
@@ -66,6 +67,15 @@ void Game::init(int argc, char* argv[])
 	TGA_Texture(TextureArray, "water.tga", 0);
 	TGA_Texture(TextureArray, "ground.tga", 1);
 	TGA_Texture(TextureArray, "grass.tga", 2);
+
+	vsfl = new VSFontLib(this);
+	vsfl->load("arial");
+
+	uiWinID = vsfl->genSentence();
+	vsfl->prepareSentence(uiWinID, "You won! Congrats!");
+
+	uiLoseID = vsfl->genSentence();
+	vsfl->prepareSentence(uiLoseID, "You lost! Try again!");
 }
 
 // light direction
@@ -144,8 +154,25 @@ void Game::draw() {
 	projectionStack.pop();
 	modelViewStack.pop();
 
-	//glBindTexture(GL_TEXTURE_2D, 0);
+	// Render the UI
+	renderHUD();
+
 	glutSwapBuffers();
+}
+
+void Game::renderHUD()
+{
+	char str[256];
+
+	setProgramIndex(1);
+
+	unsigned int sentenceID;
+	sentenceID = vsfl->genSentence();
+	sprintf_s(str, "Lives: %d", frog->getLife());
+	vsfl->prepareSentence(sentenceID, str);
+
+	vsfl->setColor(1.0f, 0.0f, 0.0f, 1.0f);
+	vsfl->renderSentence(30, 10, sentenceID);
 }
 
 void Game::reset() {}
@@ -216,9 +243,11 @@ void Game::setupOpenGL() {
 void Game::createShaderPrograms() 
 {
 	createShaderProgram(0);
+	createShaderProgram(1);
 
 	checkOpenGLError("ERROR: Could not create shaders.");
 }
+
 void Game::loadShader(int pIndex, unsigned int ShaderType, char *filename)
 {
 	if (ShaderType == VSShaderLib::VERTEX_SHADER)
@@ -254,11 +283,11 @@ void Game::createShaderProgram(int pIndex)
 		loadShader(0, VSShaderLib::VERTEX_SHADER, "pointlight.vert");
 		loadShader(0, VSShaderLib::FRAGMENT_SHADER, "pointlight.frag");
 		break;
-/*	case 1:
-		loadShader(1, VSShaderLib::VERTEX_SHADER, "dirdifambspec.vert");
-		loadShader(1, VSShaderLib::FRAGMENT_SHADER, "dirdifambspec.frag");
+	case 1:
+		loadShader(1, VSShaderLib::VERTEX_SHADER, "fontshade.vert");
+		loadShader(1, VSShaderLib::FRAGMENT_SHADER, "fontshade.frag");
 		break;
-	case 2:
+		/*	case 2:
 		loadShader(2, VSShaderLib::VERTEX_SHADER, "spotlight.vert");
 		loadShader(2, VSShaderLib::FRAGMENT_SHADER, "spotlight.frag");
 		break;*/
@@ -380,6 +409,9 @@ void Game::cleanup()
 
 	if (frog) { delete frog; frog = 0; }
 	if (cam) { delete cam; cam = 0; }
+
+	vsfl->deleteSentence(uiWinID);
+	vsfl->deleteSentence(uiLoseID);
 }
 
 void Game::createBufferObjects() {
@@ -500,6 +532,7 @@ void Game::keyboard(unsigned char key, int x, int y)
 		case 'n':
 		case 'N':
 			managerLight->toggleDirectional();
+			managerLight->toggleSpotLight();
 			break;
 		case 'c':
 		case 'C':

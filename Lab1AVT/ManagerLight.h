@@ -26,6 +26,7 @@ public:
 
 	void toggleDirectional();
 	void togglePointLights();
+	void toggleSpotLight();
 
 	Light* getSpotLight();
 };

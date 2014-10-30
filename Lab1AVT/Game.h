@@ -20,6 +20,7 @@ class Frog;
 class VSShaderLib;
 class ManagerLight;
 class Light;
+class VSFontLib;
 
 class Game : IComponent {
 
@@ -37,6 +38,7 @@ class Game : IComponent {
 	VSShaderLib *shader;
 	ManagerObj *managerObj;
 	ManagerLight *managerLight;
+	VSFontLib *vsfl;
 
 	double FOV;
 	double n;
@@ -62,6 +64,8 @@ class Game : IComponent {
 	char keyDown;
 
 	GLuint TextureArray[2];
+	unsigned int uiWinID;
+	unsigned int uiLoseID;
 
 	void setupGLUT(int argc, char* argv[]);
 	void setupGLEW();
@@ -77,6 +81,7 @@ class Game : IComponent {
 	void resetProgram();
 	void createShaderProgram(int pIndex);
 	void loadShader(int pIndex, unsigned int ShaderType, char *filename);
+	void renderHUD();
 
 public:
 	Game(int WinX, int WinY);
