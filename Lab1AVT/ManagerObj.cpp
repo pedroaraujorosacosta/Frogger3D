@@ -615,13 +615,10 @@ void ManagerObj::updateValidPositions(int lane,float objectXXs){
 		//std::cout << "0 is" << validPositions[laneArray][0] << ' ';
 	}
 
-
-
 	if ((pos > 22.9) && (pos < 28.5)){
 		validPositions[laneArray][1] = true;
 		//std::cout << "1 is" << validPositions[laneArray][1] << ' ';
 	}
-
 
 	if ((pos > 25.4 && pos < 31.6)){
 		validPositions[laneArray][2] = true;
