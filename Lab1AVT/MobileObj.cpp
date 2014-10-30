@@ -63,3 +63,8 @@ float MobileObj::getWidth()
 {
 	return width;
 }
+
+float MobileObj::getVelocity()
+{
+	return velocity;
+}

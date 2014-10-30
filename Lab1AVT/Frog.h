@@ -1,9 +1,9 @@
 #ifndef __FROG_H__
 #define __FROG_H__
 
-#include "Blocker.h"
 #include "Cube.h"
 #include "Sphere.h"
+#include "MobileObj.h"
 
 class Frog : public MobileObj {
 

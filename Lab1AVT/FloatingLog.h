@@ -1,8 +1,8 @@
 #ifndef __FLOATINGLOG_H__
 #define __FLOATINGLOG_H__
 
-#include "Surface.h"
 #include "Cylinder.h"
+#include "MobileObj.h"
 
 class FloatingLog : public MobileObj {
 

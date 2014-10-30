@@ -2,7 +2,7 @@
 #define __MANAGEROBJ_H__
 
 #include "Manager.h"
-
+#include "Vector.h"
 
 #include <iostream>
 #include <sstream>
@@ -28,11 +28,6 @@ class ManagerObj : public Manager
 	std::vector<MobileObj*> objectsMobileLane6;
 	std::vector<MobileObj*> objectsMobileLane7;
 	std::vector<MobileObj*> objectsMobileLane8;
-
-
-
-
-
 
 	//frog collision variables
 	float frogXXs;
@@ -67,8 +62,6 @@ class ManagerObj : public Manager
 	//vector de vector
 	bool** validPositions;
 
-	
-
 	//Checking the river
 	bool onSurface;
 
@@ -99,11 +92,18 @@ public:
 	float getLane7Velocity();
 	float getLane8Velocity();
 
+	Vector getLane1Direction();
+	Vector getLane2Direction();
+	Vector getLane3Direction();
+	Vector getLane4Direction();
+	Vector getLane5Direction();
+
 	int validateRandomPosition(int lane, int randomIndex);
 	int getRandomStartPosition(int randomIndex);
 	void updateValidPositions(int lane, float objectXXs);
 
 	bool laneCollision(std::vector<MobileObj*> lane, MobileObj* obj);
+	float getRiverLaneVelocity(Vector &laneDir);
 };
 
 #endif

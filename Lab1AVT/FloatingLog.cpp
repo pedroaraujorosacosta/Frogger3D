@@ -20,7 +20,7 @@ FloatingLog::~FloatingLog()
 void FloatingLog::update(float dt){
 
 	for (int i = 0; i < 3; i++)
-		position[i] += direction[i] * velocity;
+		position[i] += direction[i] * velocity * dt;
 }
 
 void FloatingLog::draw(){

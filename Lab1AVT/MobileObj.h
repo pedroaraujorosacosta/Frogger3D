@@ -20,6 +20,7 @@ public:
 	float getDirY();
 	float getDirZ();
 	float getWidth();
+	float getVelocity();
 	void multiplyVelocity(float dificulty);
 	void reset();
 };

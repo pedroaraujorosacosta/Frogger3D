@@ -4,6 +4,7 @@
 #include "ManagerLight.h"
 #include "Light.h"
 #include "Vector.h"
+#include "Game.h"
 
 ManagerLight::ManagerLight(Game *game) : Manager(game)
 {

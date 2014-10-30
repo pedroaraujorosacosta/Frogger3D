@@ -1,9 +1,9 @@
 #ifndef __BUS_H__
 #define __BUS_H__
 
-#include "Blocker.h"
 #include "Cube.h"
 #include "Sphere.h"
+#include "MobileObj.h"
 
 class Torus;
 

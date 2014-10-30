@@ -117,6 +117,10 @@ public:
 	GLuint getShader();
 	GLuint getLPosID();
 	Light* getSpotLight();
+	ManagerObj* getManagerObj();
+	bool isGameWon();
+	bool isGameLost();
+	bool isGamePlaying();
 
 	void winGame();
 
