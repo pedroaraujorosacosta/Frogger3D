@@ -21,9 +21,10 @@ public:
 	void move(float *direction);
 	void move();
 	void stop();
-	float getX();
-	float getY();
-	float getZ();
+	void killed();
+	void setPosition(float* pos);
+	void setDirection(float* dir);
+	void setVelocity(float v);
 
 	int getLife();
 	void setLife(int _life);

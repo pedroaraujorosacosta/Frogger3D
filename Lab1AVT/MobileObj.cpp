@@ -26,6 +26,10 @@ void MobileObj::draw(){
 	modelview->pop();
 }
 
+void MobileObj::reset() {
+	this->velocity = initVelocity;
+}
+
 void MobileObj::init() {
 
 

@@ -39,10 +39,12 @@ void Frog::update(float dt)
 		spot->setPosition(newSpotPos);
 
 		// Check bounds
-		if (position[1] > -5){
-			position[1] = -13;
-			setLife(getLife() - 1);
-		}
+		if (position[1] > 13)
+			game->winGame();
+		else if (position[1] < -13)
+			this->velocity = 0;
+		if ((position[0] > 19.5) || (position[0] < -19.5))
+			this->velocity = 0;
 	}
 }
 
@@ -152,21 +154,6 @@ void Frog::init() {
 	}
 }
 
-float Frog::getX()
-{
-	return position[0];
-}
-
-float Frog::getY()
-{
-	return position[1];
-}
-
-float Frog::getZ()
-{
-	return position[2];
-}
-
 int Frog::getLife()
 {
 	return life;
@@ -175,4 +162,28 @@ int Frog::getLife()
 void Frog::setLife(int life)
 {
 	this->life = life;
+}
+
+
+void Frog::killed()
+{
+	setLife(getLife() - 1);
+	setPositionXXs(3.0);
+	setPositionYYs(-13.0);
+	setPositionZZs(-2.0);
+}
+
+void Frog::setPosition(float* pos)
+{
+	for (int i = 0; i < 3; i++)
+		this->position[i] = pos[i];
+}
+void Frog::setDirection(float* dir)
+{
+	for (int i = 0; i < 3; i++)
+		this->direction[i] = dir[i];
+}
+void Frog::setVelocity(float v)
+{
+	this->velocity = v;
 }

@@ -66,12 +66,12 @@ void Camera::setCamera() {
 	float dirY = xx * frogBasis2[1] + yy * frogBasis1[1] + zz * frogBasis3[1];
 	float dirZ = xx * frogBasis2[2] + yy * frogBasis1[2] + zz * frogBasis3[2];
 	
-	float eyePosX = frog->getX() - 2*xx;/*frog->getX() - 2 * frog->getDirX();*/
-	float eyePosY = frog->getY() - 2*yy;/*frog->getY() - frog->getDirY();*/
-	float eyePosZ = frog->getZ() - 2*zz;/*frog->getZ()+1 - 2 * frog->getDirZ();*/
-	float atX = frog->getX(); /*eyePosX + dirX;*/
-	float atY = frog->getY(); /*eyePosY + dirY;*/
-	float atZ = frog->getZ(); /*eyePosZ + dirZ;*/
+	float eyePosX = frog->getPositionXXs() - 2*xx;/*frog->getX() - 2 * frog->getDirX();*/
+	float eyePosY = frog->getPositionYYs() - 2*yy;/*frog->getY() - frog->getDirY();*/
+	float eyePosZ = frog->getPositionZZs() - 2*zz;/*frog->getZ()+1 - 2 * frog->getDirZ();*/
+	float atX = frog->getPositionXXs(); /*eyePosX + dirX;*/
+	float atY = frog->getPositionYYs(); /*eyePosY + dirY;*/
+	float atZ = frog->getPositionZZs(); /*eyePosZ + dirZ;*/
 
 	switch (mode)
 	{

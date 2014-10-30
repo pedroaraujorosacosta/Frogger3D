@@ -21,6 +21,7 @@
 #include "FontLib.h"
 #include <cctype>
 
+#define LIFES 5
 
 #define CAPTION "Assignment 1"
 
@@ -54,7 +55,7 @@ void Game::init(int argc, char* argv[])
 
 	float posFrog[] = { 3.0, -13.0, -2.0 };
 	float directionFrog[3] = { 0.0, 1.0, 0.0 };
-	frog = new Frog(posFrog, this, 0.0, directionFrog, 3);
+	frog = new Frog(posFrog, this, 0.0, directionFrog, LIFES);
 
 	// setup camera
 	S = tan(FOV*0.5*(M_PI / 180)) * n;
@@ -76,6 +77,9 @@ void Game::init(int argc, char* argv[])
 
 	uiLoseID = vsfl->genSentence();
 	vsfl->prepareSentence(uiLoseID, "You lost! Try again!");
+
+	//game state
+	this->gameState = PLAYING; 
 }
 
 // light direction
@@ -123,31 +127,12 @@ void Game::draw() {
 	glBindTexture(GL_TEXTURE_2D, TextureArray[2]);
 
 
-	// transform light to camera space and send it to GLSL
-	/*Vector res(4);
-	res = *modelViewStack.getTop() * lightPos;
-	//res.normalize();
-	glUniform4fv(lPos_uniformId[0], 1, res.v);*/
-
-	/*Vector res(3);
-	res = *modelViewStack.getTop() * lightDir;
-	glUniform3fv(lDir_uniformId[1], 1, res.v);*/
-	//shader->setUniform("l_pos", res.v);
-
-	// So usado para luzes direccionais
-	/*shader->setBlockUniform("Lights", "l_dir", res.v);
-
-	res = *modelViewStack.getTop() * lightPos;
-	shader->setBlockUniform("Lights", "l_pos", res.v);
-
-	res = *modelViewStack.getTop() * spotDir;
-	shader->setBlockUniform("Lights", "l_spotDir", res.v);*/
-	
 	managerObj->draw();
 
-	if (frog->getLife() > 0){
+	if (frog->getLife() > 0)
 	frog->draw();
-	}
+	else
+		this->gameState = LOSE;
 
 	resetProgram();
 
@@ -176,11 +161,35 @@ void Game::renderHUD()
 }
 
 void Game::reset() {}
+void Game::winGame() {
+	this->gameState = WIN;
+	this->gamePoints = 10000000 / (glutGet(GLUT_ELAPSED_TIME) - startTime);
+	std::cout << this->gamePoints << std::endl;
+}
+
+void Game::reset() 
+{
+	float posFrog[] = { 3.0, -13.0, -2.0 };
+	frog->setPosition(posFrog);
+	float directionFrog[] = { 0.0, 1.0, 0.0 };
+	frog->setDirection(directionFrog);
+	frog->setVelocity(0.0);
+	frog->setLife(LIFES);
+	this->gamePoints = 0;
+	this->gameState = PLAYING;
+
+	//velocidades dos objetos
+	managerObj->reset();
+
+	startTime = glutGet(GLUT_ELAPSED_TIME);
+}
 
 void Game::update(float dt) 
 {
-	managerObj->update(dt);
+	managerObj->update(dt,frog); 
+	//corre primeiro e diz se houve um crash
 	frog->update(dt);
+	//se houver um crash o frog vai fazer update para o inicio
 }
 
 void Game::reshape(int w, int h)
@@ -503,19 +512,38 @@ void Game::keyboard(unsigned char key, int x, int y)
 		switch (key) {
 		case 'q':
 		case 'Q':
+		if (frog->getPositionYYs() < 13.5)
 			frog->move(front);
+		else
+			frog->setPositionYYs(13.5);
 			break;
 		case 'a':
 		case 'A':
+		if (frog->getPositionYYs() > -13.5)
 			frog->move(back);
+		else
+			frog->setPositionYYs(-13.5);
 			break;
 		case 'o':
 		case 'O':
+		if (frog->getPositionXXs() > -19)
 			frog->move(left);
+		else
+			frog->setPositionXXs(-19);
 			break;
 		case 'p':
 		case 'P':
+		if (frog->getPositionXXs() < 19)
 			frog->move(right);
+		else
+			frog->setPositionXXs(19);
+		break;
+	case 'r':
+	case 'R':
+		this->reset();
+		break;
+	case '0':
+		this->winGame();
 			break;
 		case '1':
 			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);

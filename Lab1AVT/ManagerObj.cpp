@@ -3,6 +3,7 @@
 
 #include "Object.h"
 #include "Game.h"
+#include "Frog.h"
 
 #include "River.h"
 #include "Road.h"
@@ -20,6 +21,27 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	setLateralEsquerda(-20.0);
 	setLateralDireita(20.0);
 
+	//collision variables init
+	carWeigth = 1.2;
+	busWeigth = 2.4;
+	logWeigth = 2.2;
+	turtleWeigth = 2.0;
+	frogHeigth = 1.0;
+	frogWeigth = 1.4; 
+
+	
+	validPositions = new bool*[8];
+	for (int t = 0; t < 8; ++t) {
+		validPositions[t] = new bool[5];
+	}
+	for (int t = 0; t < 8; ++t) {
+		for (int i = 0; i < 5; ++i){
+			validPositions[t][i] = false;
+		}
+	}
+
+
+
 
 	float posRiver[] = { 0.0, 7, -3.0 };
 	objects.push_back(new River(posRiver, game));
@@ -28,7 +50,7 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 
 
 	//LANE 1
-	float posFloatingLog1[] = { -7.0, 11.0, -2.5 };
+	float posFloatingLog1[] = { -5.0, 11.0, -2.5 };
 	float dirFloatingLog1[] = { 1, 0.0, 0.0 };
 
 	float posFloatingLog2[] = { 1.0, 11.0, -2.5 };
@@ -71,12 +93,27 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	objectsMobileLane3.push_back(new FloatingLog(posFloatingLog5, game, getLane3Velocity(), dirFloatingLog5));
 	objectsMobileLane3.push_back(new FloatingLog(posFloatingLog6, game, getLane3Velocity(), dirFloatingLog6));
 
+	//BRIDGE new Lane 4
+
+	float posFloatingLog7[] = { 0.0, 5.0, -2.5 };
+	float dirFloatingLog7[] = { 1, 0.0, 0.0 };
+
+
+	objectsMobileLane4.push_back(new FloatingLog(posFloatingLog7, game, getLane4Velocity(), dirFloatingLog4));
+
+	//BRIDGE new Lane 5
+
+	float posFloatingLog8[] = { 0.0, 3.0, -2.5 };
+	float dirFloatingLog8[] = { 1, 0.0, 0.0 };
+
+	objectsMobileLane5.push_back(new FloatingLog(posFloatingLog8, game, getLane5Velocity(), dirFloatingLog4));
+
 	//LANE 4
 
 	float posBus[] = { lateralEsquerda, -3, -1.8 };
 	float dirBus[] = { 1, 0.0, 0.0 };
 
-	objectsMobileLane4.push_back(new Bus(posBus, game, getLane4Velocity(), dirBus));
+	objectsMobileLane6.push_back(new Bus(posBus, game, getLane6Velocity(), dirBus));
 
 	//LANE 5
 
@@ -87,8 +124,8 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	float dirCar2[] = { -1, 0.0, 0.0 };
 
 
-	objectsMobileLane5.push_back(new Car(posCar1, game, getLane5Velocity(), dirCar1));
-	objectsMobileLane5.push_back(new Car(posCar2, game, getLane5Velocity(), dirCar2));
+	objectsMobileLane7.push_back(new Car(posCar1, game, getLane7Velocity(), dirCar1));
+	objectsMobileLane7.push_back(new Car(posCar2, game, getLane7Velocity(), dirCar2));
 
 	//LANE 6
 
@@ -98,8 +135,8 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	float posCar4[] = { lateralEsquerda, -7.0, -1.8 };
 	float dirCar4[] = { 1, 0.0, 0.0 };
 
-	objectsMobileLane6.push_back(new Car(posCar3, game, getLane6Velocity(), dirCar3));
-	objectsMobileLane6.push_back(new Car(posCar4, game, getLane6Velocity(), dirCar4));
+	objectsMobileLane8.push_back(new Car(posCar3, game, getLane8Velocity(), dirCar3));
+	objectsMobileLane8.push_back(new Car(posCar4, game, getLane8Velocity(), dirCar4));
 
 
 }
@@ -117,11 +154,17 @@ void ManagerObj::draw() {
 		o->draw();
 	for (MobileObj* o : objectsMobileLane3)
 		o->draw();
+	for (MobileObj* o : objectsMobileLane6)
+		o->draw();
+	for (MobileObj* o : objectsMobileLane7)
+		o->draw();
+	for (MobileObj* o : objectsMobileLane8)
+		o->draw();
+
+	//bridge test
 	for (MobileObj* o : objectsMobileLane4)
 		o->draw();
 	for (MobileObj* o : objectsMobileLane5)
-		o->draw();
-	for (MobileObj* o : objectsMobileLane6)
 		o->draw();
 
 
@@ -134,70 +177,271 @@ void ManagerObj::init(){
 
 void ManagerObj::reset() {
 
+	dificuldade = 1;
+
+	for (MobileObj* o : objectsMobileLane1){
+		o->reset();
+	}
+	for (MobileObj* o : objectsMobileLane2){
+		o->reset();
+	}
+	for (MobileObj* o : objectsMobileLane3){
+		o->reset();
+	}
+	for (MobileObj* o : objectsMobileLane4){
+		o->reset();
+	}
+	for (MobileObj* o : objectsMobileLane5){
+		o->reset();
+	}
+	for (MobileObj* o : objectsMobileLane6){
+		o->reset();
+	}
+	for (MobileObj* o : objectsMobileLane7){
+		o->reset();
+	}
+	for (MobileObj* o : objectsMobileLane8){
+		o->reset();
+	}
 }
 
-void ManagerObj::update(float dt) {
+void ManagerObj::update(float dt, Frog* frog) {
 
 	int currentTime = glutGet(GLUT_ELAPSED_TIME);
 	dificuldade = currentTime / 5000 + 1;
 
-	//colision variables
-	float position = 0.0;
-	float newPosition = 0.0;
-	float position2 = 0.0;
-	float deltaPosition = 0.0;
+
+	//frog collision variables
+	frogXXs = frog->getPositionXXs();
+	frogYYs = frog->getPositionYYs();
+
+	frogTopYYs = frogYYs + frogHeigth / 2;
+	frogBottomYYs = frogYYs - frogHeigth / 2;
+	frogRigthXXs = frogXXs + frogWeigth / 2;
+	frogLeftXXs = frogYYs - frogWeigth / 2;
+
+	canColideLane1 = false;
+	canColideLane2 = false;
+	canColideLane3 = false;
+	canColideLane6 = false;
+	canColideLane7 = false;
+	canColideLane8 = false;
+
+	canColideLane4 = false;
+	canColideLane5 = false;
+
+	onSurface = false;
+
+	//validPositions a false
+	for (int t = 0; t < 8; ++t) {
+		for (int i = 0; i < 5; ++i){
+			validPositions[t][i] = false;
+		}
+	}
+
+	//YYS check
+	//river collision lanes to use
+
+	if ((11.8 > frogBottomYYs) && (10.2 < frogBottomYYs) || (11.8 > frogTopYYs) && (10.2 < frogTopYYs)){
+		canColideLane1 = true;
+	}
+	if ((9.8 > frogBottomYYs) && (8.2 < frogBottomYYs) || (9.8 > frogTopYYs) && (8.2 < frogTopYYs)){
+		canColideLane2 = true;
+	}
+	if ((7.8 > frogBottomYYs) && (6.2 < frogBottomYYs) || (7.8 > frogTopYYs) && (6.2 < frogTopYYs)){
+		canColideLane3 = true;
+	}
+	if ((5.8 > frogBottomYYs) && (4.2 < frogBottomYYs) || (5.8 > frogTopYYs) && (4.2 < frogTopYYs)){
+		canColideLane4 = true;
+	}
+	if ((3.8 > frogBottomYYs) && (2.2 < frogBottomYYs) || (3.8 > frogTopYYs) && (2.2 < frogTopYYs)){
+		canColideLane5 = true;
+	}
+
+	//road collision lanes to use
+
+	if ((-3.8 < frogBottomYYs) && (-2.2 > frogBottomYYs) || (-3.8 < frogTopYYs) && (-2.2 > frogTopYYs)){
+		canColideLane6 = true;
+	}
+	if ((-5.8 < frogBottomYYs) && (-4.2 > frogBottomYYs) || (-5.8 < frogTopYYs) && (-4.2 > frogTopYYs)){
+		canColideLane7 = true;
+	}
+	if ((-7.9 < frogBottomYYs) && (-6.3 > frogBottomYYs) || (-7.9 < frogTopYYs) && (-6.3 > frogTopYYs)){
+		canColideLane8 = true;
+	}
+
+
+
+	//colision variables for the random //to be changed *******************************************************
 
 	for (Object* o : objects){
 		o->update(dt);
 	}
 
+	//fazer update às posições válidas para o random
 	for (MobileObj* o : objectsMobileLane1){
-		o->update(dt);
-		o->multiplyVelocity(dificuldade);
-		position = o->getPositionXXs();
-		if (position > (lateralDireita - 4)){
-			newPosition = lateralEsquerda + 4 - (rand() % 10);
-			o->setPositionXXs(newPosition);
-			for (MobileObj* o2 : objectsMobileLane1){
-				position2 = o2->getPositionXXs();
-				deltaPosition = (position - position2);
-				if (0.0 < deltaPosition < 2.0)
-					o->setPositionXXs(newPosition - 3 - deltaPosition / 2);
-				if (-2.0 < deltaPosition < 0.0)
-					o->setPositionXXs(newPosition - deltaPosition / 2);
-			}
-		}
+		updateValidPositions(1, o->getPositionXXs());
 	}
 	for (MobileObj* o : objectsMobileLane2){
+		updateValidPositions(2, o->getPositionXXs());
+	}
+	for (MobileObj* o : objectsMobileLane3){
+		updateValidPositions(3, o->getPositionXXs());
+	}
+/*	for (MobileObj* o : objectsMobileLane4){
+		updateValidPositions(1, o->getPositionXXs());
+	}
+	for (MobileObj* o : objectsMobileLane5){
+		updateValidPositions(1, o->getPositionXXs());
+	}
+	*/
+	for (MobileObj* o : objectsMobileLane6){
+		updateValidPositions(6, o->getPositionXXs());
+	}
+	for (MobileObj* o : objectsMobileLane7){
+		updateValidPositions(7, o->getPositionXXs());
+	}
+	for (MobileObj* o : objectsMobileLane8){
+		updateValidPositions(8, o->getPositionXXs());
+	}
+
+	for (MobileObj* o : objectsMobileLane1){
 		o->update(dt);
+		
+
+		//XXs check
+		//soma das dimensões têm de ser maiores que a distância para haver colisão
+		if (canColideLane1){
+			if (((frogWeigth / 2 + logWeigth / 2) > fabs((frogXXs - o->getPositionXXs()))))
+				onSurface = true;
+
+		}
+
 		o->multiplyVelocity(dificuldade);
-		if (o->getPositionXXs() < (lateralEsquerda - 4))
-			o->setPositionXXs(lateralDireita + 4 + (rand() % 10));
+		if (o->getPositionXXs() > (lateralDireita + 4)){
+			randomIndex = validateRandomPosition(1, (rand() % 5));
+			o->setPositionXXs(-(getRandomStartPosition(randomIndex)));
+
+		}
+
+	}
+	//fazer update às posições válidas para o random
+	for (MobileObj* o : objectsMobileLane2){
+		o->update(dt);
+
+		if (canColideLane2){
+			if (((frogWeigth / 2 + turtleWeigth / 2) > fabs((frogXXs - o->getPositionXXs()))))
+				onSurface = true;
+		}
+
+		o->multiplyVelocity(dificuldade);
+		if (o->getPositionXXs() < (lateralEsquerda - 4)){
+			randomIndex = validateRandomPosition(2, (rand() % 4));
+			o->setPositionXXs((getRandomStartPosition(randomIndex)));
+		}
+
+
 	}
 	for (MobileObj* o : objectsMobileLane3){
 		o->update(dt);
+
+		if (canColideLane3){
+			if (((frogWeigth / 2 + logWeigth / 2) > fabs((frogXXs - o->getPositionXXs()))))
+				onSurface = true;
+		}
+
 		o->multiplyVelocity(dificuldade);
-		if (o->getPositionXXs() > (lateralDireita + 4))
-			o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
+		if (o->getPositionXXs() > (lateralDireita + 4)){
+			randomIndex = validateRandomPosition(3, (rand() % 5));
+			o->setPositionXXs(-(getRandomStartPosition(randomIndex)));
+		}
+
 	}
+
 	for (MobileObj* o : objectsMobileLane4){
 		o->update(dt);
+
+		if (canColideLane4){
+			if (((frogWeigth / 2 + logWeigth / 2) > fabs((frogXXs - o->getPositionXXs()))))
+				onSurface = true;
+		}
+
 		o->multiplyVelocity(dificuldade);
-		if (o->getPositionXXs() > (lateralDireita + 4))
-			o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
+		if (o->getPositionXXs() > (lateralDireita + 4)){
+			randomIndex = validateRandomPosition(4, (rand() % 5));
+			o->setPositionXXs((getRandomStartPosition(randomIndex)));
+		}
+
 	}
+
 	for (MobileObj* o : objectsMobileLane5){
 		o->update(dt);
+
+		if (canColideLane5){
+			if (((frogWeigth / 2 + logWeigth / 2) > fabs((frogXXs - o->getPositionXXs()))))
+				onSurface = true;
+		}
+
 		o->multiplyVelocity(dificuldade);
-		if (o->getPositionXXs() < (lateralEsquerda - 4))
-			o->setPositionXXs(lateralDireita + 4 + (rand() % 10));
+		if (o->getPositionXXs() > (lateralDireita + 4)){
+			randomIndex = validateRandomPosition(5, (rand() % 5));
+			o->setPositionXXs((getRandomStartPosition(randomIndex)));
+		}
+
 	}
+
 	for (MobileObj* o : objectsMobileLane6){
 		o->update(dt);
+
+		if (canColideLane6){
+			if ((frogWeigth / 2 + busWeigth / 2) > fabs((frogXXs - o->getPositionXXs())))
+				frog->killed();
+		}
+
 		o->multiplyVelocity(dificuldade);
-		if (o->getPositionXXs() > (lateralDireita + 4))
-			o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
+		if (o->getPositionXXs() > (lateralDireita + 4)){
+			randomIndex = validateRandomPosition(6, (rand() % 5));
+			o->setPositionXXs(-(getRandomStartPosition(randomIndex)));
+		}
+
 	}
+	for (MobileObj* o : objectsMobileLane7){
+		o->update(dt);
+
+		if (canColideLane7){
+			if ((frogWeigth / 2 + carWeigth / 2) > fabs((frogXXs - o->getPositionXXs())))
+				frog->killed();
+		}
+
+		o->multiplyVelocity(dificuldade);
+		if (o->getPositionXXs() < (lateralEsquerda - 4)){
+			randomIndex = validateRandomPosition(7, (rand() % 5));
+			o->setPositionXXs((getRandomStartPosition(randomIndex)));
+		}
+
+	}
+	for (MobileObj* o : objectsMobileLane8){
+		o->update(dt);
+		
+		if (canColideLane8){
+			if ((frogWeigth / 2 + carWeigth / 2) > fabs((frogXXs - o->getPositionXXs())))
+				frog->killed();
+		}
+
+		o->multiplyVelocity(dificuldade);
+		if (o->getPositionXXs() > (lateralDireita + 4)){
+			randomIndex = validateRandomPosition(8, (rand() % 5));
+			o->setPositionXXs(-(getRandomStartPosition(randomIndex)));
+		}
+
+	}
+
+	//se em river verificar se há alguma colisão, se houve então tudo bem.
+	if ((frogYYs > 2.0) && (frogYYs < 12.0)){
+		if (!onSurface)
+			frog->killed();
+	}
+		
 
 
 }
@@ -215,27 +459,121 @@ void ManagerObj::setLateralDireita(float lateralDireita){
 	this->lateralDireita = lateralDireita;
 }
 
+
 float ManagerObj::getLane1Velocity() {
 
-	return 3.0 * dificuldade;
+	return 0.2 * dificuldade;
 }
 float ManagerObj::getLane2Velocity() {
 
-	return 0.4 * dificuldade;
+	return 1.2 * dificuldade;
 }
 float ManagerObj::getLane3Velocity() {
 
-	return 1.0 * dificuldade;
+	return 0.2 * dificuldade;
 }
 float ManagerObj::getLane4Velocity() {
 
-	return 1 * dificuldade;
+	return 0 * dificuldade;
 }
 float ManagerObj::getLane5Velocity() {
 
-	return 2 * dificuldade;
+	return 0 * dificuldade;
 }
 float ManagerObj::getLane6Velocity() {
 
+	return 1 * dificuldade;
+}
+float ManagerObj::getLane7Velocity() {
+
 	return 2 * dificuldade;
+}
+float ManagerObj::getLane8Velocity() {
+
+	return 2 * dificuldade;
+}
+
+
+int ManagerObj::validateRandomPosition(int lane, int randomIndex){
+		
+	int laneArray = lane - 1;
+	
+	do{ randomIndex = ((randomIndex + 2) % 5); } while (validPositions[laneArray][randomIndex] == true);
+
+	//só deve haver 1 colisão com a parede da direita 
+	//validPositions[laneArray][randomIndex] = true;
+
+	//std::cout << randomIndex << ' ';
+
+	return randomIndex;
+}
+
+int ManagerObj::getRandomStartPosition(int randomIndex){
+
+
+	if (randomIndex == 0){
+		
+		//std::cout << 22 << std::endl;
+		return 22;
+	}
+	else if (randomIndex == 1){
+		//std::cout << 25.5 << std::endl;
+		return 25.5;
+	}
+	else if (randomIndex == 2){
+		 //std::cout << 29 << std::endl;
+		 return 29;
+	}
+	else if (randomIndex == 3){
+		//std::cout << 32.5 << std::endl;
+		return 32.5;
+	}
+	else if (randomIndex == 4){
+		 //std::cout << 35 << std::endl;
+		 return 35;
+	}
+	else //never here
+		return 0.0;
+		
+}
+
+void ManagerObj::updateValidPositions(int lane,float objectXXs){
+
+	float pos = fabs(objectXXs);
+	int laneArray = lane - 1;
+
+
+	//std::cout << std::endl << "new check"  << ' ' << "object position is" << objectXXs << ' ';
+	if ((pos > 19.5) && (pos < 24.1)){
+
+		validPositions[laneArray][0] = true;
+		//std::cout << "0 is" << validPositions[laneArray][0] << ' ';
+	}
+
+
+
+	if ((pos > 22.9) && (pos < 28.5)){
+		validPositions[laneArray][1] = true;
+		//std::cout << "1 is" << validPositions[laneArray][1] << ' ';
+	}
+
+
+	if ((pos > 25.4 && pos < 31.6)){
+		validPositions[laneArray][2] = true;
+		//std::cout << "2 is" << validPositions[laneArray][2] << ' ';
+	}
+
+
+	if ((pos > 28.9 && pos < 35.5)){
+		validPositions[laneArray][3] = true;
+		//std::cout << "3 is" << validPositions[laneArray][3] << ' ';
+	}
+
+
+	if ((pos > 30.4 && pos < 38.6)){
+		validPositions[laneArray][4] = true;
+		//std::cout << "4 is" << validPositions[laneArray][4] << ' ';
+	}
+
+
 }
