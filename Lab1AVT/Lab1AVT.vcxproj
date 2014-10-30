@@ -67,7 +67,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Blocker.cpp" />
     <ClCompile Include="Bus.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Car.cpp" />
@@ -90,7 +89,6 @@
     <ClCompile Include="Road.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Stack.cpp" />
-    <ClCompile Include="Surface.cpp" />
     <ClCompile Include="TGA.cpp" />
     <ClCompile Include="Torus.cpp" />
     <ClCompile Include="Turtle.cpp" />
@@ -101,7 +99,6 @@
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Blocker.h" />
     <ClInclude Include="Bus.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Car.h" />
@@ -123,7 +120,6 @@
     <ClInclude Include="Road.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Stack.h" />
-    <ClInclude Include="Surface.h" />
     <ClInclude Include="TGA.h" />
     <ClInclude Include="Torus.h" />
     <ClInclude Include="Turtle.h" />

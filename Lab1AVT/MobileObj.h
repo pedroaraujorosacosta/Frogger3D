@@ -9,14 +9,18 @@ protected:
 	float direction[3];
 	float velocity;
 	float initVelocity;
+	float width;
+	float height;
 
 	virtual void init();
 public:
-	MobileObj(float* position, Game *game, float velocity, float *direction);
+	MobileObj(float* position, Game *game, float velocity, float *direction, float width, float height);
 	virtual void draw();
 	float getDirX();
 	float getDirY();
 	float getDirZ();
+	float getWidth();
+	float getVelocity();
 	void multiplyVelocity(float dificulty);
 	void reset();
 };

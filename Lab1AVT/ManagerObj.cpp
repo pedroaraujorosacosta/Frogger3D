@@ -2,6 +2,7 @@
 #include <string>
 
 #include "Object.h"
+#include "MobileObj.h"
 #include "Game.h"
 #include "Frog.h"
 
@@ -40,8 +41,6 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 		}
 	}
 	*/
-
-
 
 	float posRiver[] = { 0.0, 7, -3.0 };
 	objects.push_back(new River(posRiver, game));
@@ -149,17 +148,23 @@ void ManagerObj::draw() {
 	for (Object* o : objects)
 		o->draw();
 	for (MobileObj* o : objectsMobileLane1)
-		o->draw();
+		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
+			o->draw();
 	for (MobileObj* o : objectsMobileLane2)
-		o->draw();
+		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
+			o->draw();
 	for (MobileObj* o : objectsMobileLane3)
-		o->draw();
+		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
+			o->draw();
 	for (MobileObj* o : objectsMobileLane6)
-		o->draw();
+		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
+			o->draw();
 	for (MobileObj* o : objectsMobileLane7)
-		o->draw();
+		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
+			o->draw();
 	for (MobileObj* o : objectsMobileLane8)
-		o->draw();
+		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
+			o->draw();
 
 	//bridge test
 	for (MobileObj* o : objectsMobileLane4)
@@ -203,6 +208,114 @@ void ManagerObj::reset() {
 	for (MobileObj* o : objectsMobileLane8){
 		o->reset();
 	}
+}
+
+bool ManagerObj::laneCollision(std::vector<MobileObj*> lane, MobileObj* obj)
+{
+	bool collision = false;
+	for (MobileObj *el : lane) 
+	{
+		if (el != obj)
+		{
+			if ((obj->getWidth() / 2 + el->getWidth() / 2) > fabs((obj->getPositionXXs() - el->getPositionXXs())))
+				collision = true;
+		}
+	}
+
+	return collision;
+}
+
+float ManagerObj::getRiverLaneVelocity(Vector &laneDir)
+{
+	canColideLane1 = false;
+	canColideLane2 = false;
+	canColideLane3 = false;
+	canColideLane4 = false;
+	canColideLane5 = false;
+	laneDir = Vector(3);
+
+	if ((11.8 > frogBottomYYs) && (10.2 < frogBottomYYs) || (11.8 > frogTopYYs) && (10.2 < frogTopYYs)){
+		canColideLane1 = true;
+	}
+	if ((9.8 > frogBottomYYs) && (8.2 < frogBottomYYs) || (9.8 > frogTopYYs) && (8.2 < frogTopYYs)){
+		canColideLane2 = true;
+	}
+	if ((7.8 > frogBottomYYs) && (6.2 < frogBottomYYs) || (7.8 > frogTopYYs) && (6.2 < frogTopYYs)){
+		canColideLane3 = true;
+	}
+	if ((5.8 > frogBottomYYs) && (4.2 < frogBottomYYs) || (5.8 > frogTopYYs) && (4.2 < frogTopYYs)){
+		canColideLane4 = true;
+	}
+	if ((3.8 > frogBottomYYs) && (2.2 < frogBottomYYs) || (3.8 > frogTopYYs) && (2.2 < frogTopYYs)){
+		canColideLane5 = true;
+	}
+
+	for (MobileObj* o : objectsMobileLane1)
+	{
+		//XXs check
+		//soma das dimensões têm de ser maiores que a distância para haver colisão
+		if (canColideLane1){
+			if (((frogWeigth / 2 + o->getWidth() / 2) > fabs((frogXXs - o->getPositionXXs()))))
+			{
+				laneDir = getLane1Direction();
+				return o->getVelocity();
+			}
+		}
+	}
+
+	for (MobileObj* o : objectsMobileLane2)
+	{
+		//XXs check
+		//soma das dimensões têm de ser maiores que a distância para haver colisão
+		if (canColideLane2){
+			if (((frogWeigth / 2 + o->getWidth() / 2) > fabs((frogXXs - o->getPositionXXs()))))
+			{
+				laneDir = getLane2Direction();
+				return o->getVelocity();
+			}
+		}
+	}
+
+	for (MobileObj* o : objectsMobileLane3)
+	{
+		//XXs check
+		//soma das dimensões têm de ser maiores que a distância para haver colisão
+		if (canColideLane3){
+			if (((frogWeigth / 2 + o->getWidth() / 2) > fabs((frogXXs - o->getPositionXXs()))))
+			{
+				laneDir = getLane3Direction();
+				return o->getVelocity();
+			}
+		}
+	}
+
+	for (MobileObj* o : objectsMobileLane4)
+	{
+		//XXs check
+		//soma das dimensões têm de ser maiores que a distância para haver colisão
+		if (canColideLane4){
+			if (((frogWeigth / 2 + o->getWidth() / 2) > fabs((frogXXs - o->getPositionXXs()))))
+			{
+				laneDir = getLane4Direction();
+				return o->getVelocity();
+			}
+		}
+	}
+
+	for (MobileObj* o : objectsMobileLane5)
+	{
+		//XXs check
+		//soma das dimensões têm de ser maiores que a distância para haver colisão
+		if (canColideLane5){
+			if (((frogWeigth / 2 + o->getWidth() / 2) > fabs((frogXXs - o->getPositionXXs()))))
+			{
+				laneDir = getLane5Direction();
+				return o->getVelocity();
+			}
+		}
+	}
+
+	return 0.0f;
 }
 
 void ManagerObj::update(float dt, Frog* frog) {
@@ -321,7 +434,9 @@ void ManagerObj::update(float dt, Frog* frog) {
 
 		o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() > (lateralDireita + 4)){
-			o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
+			do {
+				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
+			} while (laneCollision(objectsMobileLane1, o));
 		}
 		/*
 		if (o->getPositionXXs() > (lateralDireita + 4)){
@@ -345,7 +460,9 @@ void ManagerObj::update(float dt, Frog* frog) {
 
 		o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() < (lateralEsquerda - 4)){
-			o->setPositionXXs(lateralDireita + 4 + (rand() % 10));
+			do {
+				o->setPositionXXs(lateralDireita + 4 + (rand() % 10));
+			} while (laneCollision(objectsMobileLane2, o));
 		}
 		/*
 		if (o->getPositionXXs() < (lateralEsquerda - 4)){
@@ -366,7 +483,9 @@ void ManagerObj::update(float dt, Frog* frog) {
 
 		o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() > (lateralDireita + 4)){
-			o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
+			do {
+				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
+			} while (laneCollision(objectsMobileLane3, o));
 		}
 		/*
 		if (o->getPositionXXs() > (lateralDireita + 4)){
@@ -386,7 +505,9 @@ void ManagerObj::update(float dt, Frog* frog) {
 
 		o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() > (lateralDireita + 4)){
-			o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
+			do {
+				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
+			} while (laneCollision(objectsMobileLane4, o));
 		}
 		/*
 		if (o->getPositionXXs() > (lateralDireita + 4)){
@@ -407,7 +528,9 @@ void ManagerObj::update(float dt, Frog* frog) {
 
 		o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() > (lateralDireita + 4)){
-			o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
+			do {
+				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
+			} while (laneCollision(objectsMobileLane5, o));
 		}
 		/*
 		if (o->getPositionXXs() > (lateralDireita + 4)){
@@ -428,7 +551,9 @@ void ManagerObj::update(float dt, Frog* frog) {
 
 		o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() > (lateralDireita + 4)){
-			o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
+			do {
+				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
+			} while (laneCollision(objectsMobileLane6, o));
 		}
 		/*
 		if (o->getPositionXXs() > (lateralDireita + 4)){
@@ -449,7 +574,9 @@ void ManagerObj::update(float dt, Frog* frog) {
 		o->multiplyVelocity(dificuldade);
 
 		if (o->getPositionXXs() < (lateralEsquerda - 4)){
-			o->setPositionXXs(lateralDireita + 4 + (rand() % 10));
+			do {
+				o->setPositionXXs(lateralDireita + 4 + (rand() % 10));
+			} while (laneCollision(objectsMobileLane7, o));
 		}
 
 		/*
@@ -471,7 +598,9 @@ void ManagerObj::update(float dt, Frog* frog) {
 		o->multiplyVelocity(dificuldade);
 
 		if (o->getPositionXXs() > (lateralDireita + 4)){
-			o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
+			do {
+				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
+			} while (laneCollision(objectsMobileLane8, o));
 		}
 		/*
 		if (o->getPositionXXs() > (lateralDireita + 4)){
@@ -639,3 +768,38 @@ void ManagerObj::updateValidPositions(int lane,float objectXXs){
 
 
 }*/
+
+Vector ManagerObj::getLane1Direction()
+{
+	float dirLane1[] = { 1, 0.0, 0.0 };
+	Vector dir(dirLane1, 3);
+	return dir;
+}
+
+Vector ManagerObj::getLane2Direction()
+{
+	float dirLane2[] = { -1, 0.0, 0.0 };
+	Vector dir(dirLane2, 3);
+	return dir;
+}
+
+Vector ManagerObj::getLane3Direction()
+{
+	float dirLane3[] = { 1, 0.0, 0.0 };
+	Vector dir(dirLane3, 3);
+	return dir;
+}
+
+Vector ManagerObj::getLane4Direction()
+{
+	float dirLane4[] = { 1, 0.0, 0.0 };
+	Vector dir(dirLane4, 3);
+	return dir;
+}
+
+Vector ManagerObj::getLane5Direction()
+{
+	float dirLane5[] = { 1, 0.0, 0.0 };
+	Vector dir(dirLane5, 3);
+	return dir;
+}

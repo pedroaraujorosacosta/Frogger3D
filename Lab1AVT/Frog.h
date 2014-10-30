@@ -1,16 +1,20 @@
 #ifndef __FROG_H__
 #define __FROG_H__
 
-#include "Blocker.h"
 #include "Cube.h"
 #include "Sphere.h"
+#include "MobileObj.h"
 
-class Frog : public Blocker {
+class Frog : public MobileObj {
 
 	Sphere *body;
 	Sphere *eyes;
 
 	int life;
+
+	const float FROG_VELOCITY = 0.3f;
+	const float FROG_W = 1.4f;
+	const float FROG_H = 1.0f;
 protected:
 	void init();
 public:

@@ -73,10 +73,8 @@ void Game::init(int argc, char* argv[])
 	vsfl->load("arial");
 
 	uiWinID = vsfl->genSentence();
-	vsfl->prepareSentence(uiWinID, "You won! Congrats!");
 
 	uiLoseID = vsfl->genSentence();
-	vsfl->prepareSentence(uiLoseID, "You lost! Try again!");
 
 	//game state
 	this->gameState = PLAYING; 
@@ -151,16 +149,32 @@ void Game::renderHUD()
 
 	setProgramIndex(1);
 
-	unsigned int sentenceID;
-	sentenceID = vsfl->genSentence();
+	unsigned int livesSentenceID;
+	livesSentenceID = vsfl->genSentence();
 	sprintf_s(str, "Lives: %d", frog->getLife());
-	vsfl->prepareSentence(sentenceID, str);
+	vsfl->prepareSentence(livesSentenceID, str);
 
 	vsfl->setColor(1.0f, 0.0f, 0.0f, 1.0f);
-	vsfl->renderSentence(30, 10, sentenceID);
+	vsfl->renderSentence(30, 10, livesSentenceID);
+
+	unsigned int pointsSentenceID;
+	pointsSentenceID = vsfl->genSentence();
+	sprintf_s(str, "Points: %d", gamePoints);
+	vsfl->prepareSentence(pointsSentenceID, str);
+	vsfl->renderSentence(winX/2+winX/4, 10, pointsSentenceID);
+
+	if (gameState == WIN)
+	{
+		vsfl->prepareSentence(uiWinID, "You won! Congrats!");
+		vsfl->renderSentence(0.35f*winX, 0.45f*winY, uiWinID);
+	}
+	else if (gameState == LOSE)
+	{
+		vsfl->prepareSentence(uiLoseID, "You lost! Try again!");
+		vsfl->renderSentence(0.35f*winX, 0.45f*winY, uiLoseID);
+	}
 }
 
-void Game::reset() {}
 void Game::winGame() {
 	this->gameState = WIN;
 	this->gamePoints = 10000000 / (glutGet(GLUT_ELAPSED_TIME) - startTime);
@@ -186,10 +200,13 @@ void Game::reset()
 
 void Game::update(float dt) 
 {
-	managerObj->update(dt,frog); 
-	//corre primeiro e diz se houve um crash
-	frog->update(dt);
-	//se houver um crash o frog vai fazer update para o inicio
+	if (gameState == PLAYING)
+	{
+		managerObj->update(dt, frog);
+		//corre primeiro e diz se houve um crash
+		frog->update(dt);
+		//se houver um crash o frog vai fazer update para o inicio
+	}
 }
 
 void Game::reshape(int w, int h)
@@ -512,31 +529,39 @@ void Game::keyboard(unsigned char key, int x, int y)
 		switch (key) {
 		case 'q':
 		case 'Q':
-		if (frog->getPositionYYs() < 13.5)
-			frog->move(front);
-		else
-			frog->setPositionYYs(13.5);
+			if (isGamePlaying()) {
+				if (frog->getPositionYYs() < 13.5)
+					frog->move(front);
+				else
+					frog->setPositionYYs(13.5);
+			}
 			break;
 		case 'a':
 		case 'A':
-		if (frog->getPositionYYs() > -13.5)
-			frog->move(back);
-		else
-			frog->setPositionYYs(-13.5);
+			if (isGamePlaying()) {
+				if (frog->getPositionYYs() > -13.5)
+					frog->move(back);
+				else
+					frog->setPositionYYs(-13.5);
+			}
 			break;
 		case 'o':
 		case 'O':
-		if (frog->getPositionXXs() > -19)
-			frog->move(left);
-		else
-			frog->setPositionXXs(-19);
+			if (isGamePlaying()) {
+				if (frog->getPositionXXs() > -19)
+					frog->move(left);
+				else
+					frog->setPositionXXs(-19);
+			}
 			break;
 		case 'p':
 		case 'P':
-		if (frog->getPositionXXs() < 19)
-			frog->move(right);
-		else
-			frog->setPositionXXs(19);
+			if (isGamePlaying()) {
+				if (frog->getPositionXXs() < 19)
+					frog->move(right);
+				else
+					frog->setPositionXXs(19);
+			}
 		break;
 	case 'r':
 	case 'R':
@@ -641,3 +666,22 @@ Light* Game::getSpotLight()
 	return managerLight->getSpotLight();
 }
  
+ManagerObj* Game::getManagerObj()
+{
+	return managerObj;
+}
+
+bool Game::isGameWon()
+{
+	return gameState == WIN;
+}
+
+bool Game::isGameLost()
+{
+	return gameState == LOSE;
+}
+
+bool Game::isGamePlaying()
+{
+	return gameState == PLAYING;
+}

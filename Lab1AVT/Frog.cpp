@@ -4,8 +4,10 @@
 #include <iostream>
 #include "Light.h"
 #include "Vector.h"
+#include "ManagerObj.h"
+#include "Vector.h"
 
-Frog::Frog(float *position, Game *game, float velocity, float *direction, int life) : Blocker(position, game, velocity, direction)
+Frog::Frog(float *position, Game *game, float velocity, float *direction, int life) : MobileObj(position, game, velocity, direction, 1.4f, 1.0f)
 {
 	init();
 	createBufferObjects();
@@ -20,10 +22,14 @@ Frog::~Frog()
 
 void Frog::update(float dt)
 {
-	if (velocity > 0.0f)
+	Vector laneDir(3);
+	ManagerObj *managerObj = game->getManagerObj();
+	float laneVel = managerObj->getRiverLaneVelocity(laneDir);
+
+	if (velocity > 0.0f || fabs(laneVel) > 0.0f)
 	{
 		for (int i = 0; i < 3; i++)
-			position[i] += direction[i] * velocity;
+			position[i] += direction[i] * velocity + laneDir.v[i] * laneVel * dt;
 
 		// adjust the miner's spot light
 		Light *spot = game->getSpotLight();
@@ -39,7 +45,7 @@ void Frog::update(float dt)
 		spot->setPosition(newSpotPos);
 
 		// Check bounds
-		if (position[1] > 13)
+		if (position[1] > 12 && !game->isGameWon())
 			game->winGame();
 		else if (position[1] < -13)
 			this->velocity = 0;
@@ -59,12 +65,12 @@ void Frog::move(float *direction)
 
 	for (int i = 0; i < 3; i++)
 		this->direction[i] = direction[i];
-	velocity = 0.08;
+	velocity = FROG_VELOCITY;
 }
 
 void Frog::move()
 {
-	velocity = 0.08;
+	velocity = FROG_VELOCITY;
 }
 
 void Frog::stop() 

@@ -6,7 +6,7 @@
 #include "Cylinder.h"
 #include <iostream>
 
-Car::Car(float *position, Game *game, float velocity, float *direction) : Blocker(position, game, velocity, direction)
+Car::Car(float *position, Game *game, float velocity, float *direction) : MobileObj(position, game, velocity, direction, 1.2f, 0.8f)
 {
 	init();
 	createBufferObjects();
@@ -32,7 +32,7 @@ void Car::draw(){
 	modelview->push();
 	//puts the car on the right position
 	modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
-	modelview->scaleMatrix(1.2f, 0.8f, 0.5f);
+	modelview->scaleMatrix(carW, carH, 0.5f);
 	
 	if (direction[0] != 0.0)
 		modelview->rotateMatrix(0.0f, 0.0f, 1.0f, 90);

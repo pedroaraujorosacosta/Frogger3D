@@ -35,6 +35,7 @@ protected:
 	GLuint VboId[4];
 	Game *game;
 	struct Material mat;
+
 	virtual void init();
 
 	void sendMaterials();
