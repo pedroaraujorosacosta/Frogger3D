@@ -2,14 +2,16 @@
 #define __CAR_H__
 
 #include "Blocker.h"
-#include "Cube.h"
-#include "Torus.h"
+
+class Torus;
+class Sphere;
+class Cylinder;
 
 class Car : public Blocker {
 
-	Cube *body;
+	Cylinder *body;
 	Torus *wheels;
-
+	Sphere *cabin;
 
 protected:
 	void init();

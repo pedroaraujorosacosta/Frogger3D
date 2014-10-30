@@ -44,12 +44,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\freeglut\include\;..\glew-1.11.0\include;..\glm\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\freeglut\include\;..\glew-1.11.0\include;..\glm\glm;..\tinyxml\include;..\DevIL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\freeglut\lib;..\glew-1.11.0\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freeglut.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\freeglut\lib;..\glew-1.11.0\lib\Release\Win32;..\tinyxml\lib;..\DevIL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freeglut.lib;glew32.lib;tinyxmld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -74,6 +74,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="FloatingLog.cpp" />
+    <ClCompile Include="FontLib.cpp" />
     <ClCompile Include="Frog.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="IComponent.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="FloatingLog.h" />
+    <ClInclude Include="FontLib.h" />
     <ClInclude Include="Frog.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="IComponent.h" />
@@ -129,14 +131,20 @@
     <ClInclude Include="vsShaderLib.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="fontshade.frag" />
+    <None Include="fontshade.vert" />
     <None Include="pointlight.frag" />
     <None Include="pointlight.vert" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="arial.tga" />
     <Image Include="grass.tga" />
     <Image Include="ground.tga" />
     <Image Include="stone.tga" />
     <Image Include="water.tga" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="arial.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

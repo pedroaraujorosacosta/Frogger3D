@@ -99,6 +99,9 @@
     <ClCompile Include="TGA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FontLib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -185,15 +188,24 @@
     <ClInclude Include="TGA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FontLib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="pointlight.frag" />
     <None Include="pointlight.vert" />
+    <None Include="fontshade.frag" />
+    <None Include="fontshade.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="water.tga" />
     <Image Include="stone.tga" />
     <Image Include="grass.tga" />
     <Image Include="ground.tga" />
+    <Image Include="arial.tga" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="arial.xml" />
   </ItemGroup>
 </Project>

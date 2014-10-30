@@ -18,6 +18,7 @@
 #include "Vector.h"
 #include "Light.h"
 #include "TGA.h"
+#include "FontLib.h"
 #include <cctype>
 
 #define LIFES 5
@@ -68,6 +69,15 @@ void Game::init(int argc, char* argv[])
 	TGA_Texture(TextureArray, "ground.tga", 1);
 	TGA_Texture(TextureArray, "grass.tga", 2);
 
+	vsfl = new VSFontLib(this);
+	vsfl->load("arial");
+
+	uiWinID = vsfl->genSentence();
+	vsfl->prepareSentence(uiWinID, "You won! Congrats!");
+
+	uiLoseID = vsfl->genSentence();
+	vsfl->prepareSentence(uiLoseID, "You lost! Try again!");
+
 	//game state
 	this->gameState = PLAYING; 
 }
@@ -100,7 +110,7 @@ void Game::draw() {
 	modelViewStack.push();
 
 	projectionStack.push();
-	
+
 	cam->setCamera();
 
 	setProgramIndex(0);
@@ -116,11 +126,11 @@ void Game::draw() {
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[2]);
 
-	
+
 	managerObj->draw();
-	
+
 	if (frog->getLife() > 0)
-		frog->draw();
+	frog->draw();
 	else
 		this->gameState = LOSE;
 
@@ -129,10 +139,28 @@ void Game::draw() {
 	projectionStack.pop();
 	modelViewStack.pop();
 
-	//glBindTexture(GL_TEXTURE_2D, 0);
+	// Render the UI
+	renderHUD();
+
 	glutSwapBuffers();
 }
 
+void Game::renderHUD()
+{
+	char str[256];
+
+	setProgramIndex(1);
+
+	unsigned int sentenceID;
+	sentenceID = vsfl->genSentence();
+	sprintf_s(str, "Lives: %d", frog->getLife());
+	vsfl->prepareSentence(sentenceID, str);
+
+	vsfl->setColor(1.0f, 0.0f, 0.0f, 1.0f);
+	vsfl->renderSentence(30, 10, sentenceID);
+}
+
+void Game::reset() {}
 void Game::winGame() {
 	this->gameState = WIN;
 	this->gamePoints = 10000000 / (glutGet(GLUT_ELAPSED_TIME) - startTime);
@@ -149,7 +177,7 @@ void Game::reset()
 	frog->setLife(LIFES);
 	this->gamePoints = 0;
 	this->gameState = PLAYING;
-	
+
 	//velocidades dos objetos
 	managerObj->reset();
 
@@ -221,12 +249,14 @@ void Game::setupOpenGL() {
 }
 
 
-void Game::createShaderPrograms()
+void Game::createShaderPrograms() 
 {
 	createShaderProgram(0);
+	createShaderProgram(1);
 
 	checkOpenGLError("ERROR: Could not create shaders.");
 }
+
 void Game::loadShader(int pIndex, unsigned int ShaderType, char *filename)
 {
 	if (ShaderType == VSShaderLib::VERTEX_SHADER)
@@ -262,11 +292,11 @@ void Game::createShaderProgram(int pIndex)
 		loadShader(0, VSShaderLib::VERTEX_SHADER, "pointlight.vert");
 		loadShader(0, VSShaderLib::FRAGMENT_SHADER, "pointlight.frag");
 		break;
-/*	case 1:
-		loadShader(1, VSShaderLib::VERTEX_SHADER, "dirdifambspec.vert");
-		loadShader(1, VSShaderLib::FRAGMENT_SHADER, "dirdifambspec.frag");
+	case 1:
+		loadShader(1, VSShaderLib::VERTEX_SHADER, "fontshade.vert");
+		loadShader(1, VSShaderLib::FRAGMENT_SHADER, "fontshade.frag");
 		break;
-	case 2:
+		/*	case 2:
 		loadShader(2, VSShaderLib::VERTEX_SHADER, "spotlight.vert");
 		loadShader(2, VSShaderLib::FRAGMENT_SHADER, "spotlight.frag");
 		break;*/
@@ -388,6 +418,9 @@ void Game::cleanup()
 
 	if (frog) { delete frog; frog = 0; }
 	if (cam) { delete cam; cam = 0; }
+
+	vsfl->deleteSentence(uiWinID);
+	vsfl->deleteSentence(uiLoseID);
 }
 
 void Game::createBufferObjects() {
@@ -414,7 +447,7 @@ Matrix Game::getPVM()
 	return *projectionStack.getTop() * *modelViewStack.getTop();
 }
 
-GLuint Game::getPVMid()
+GLuint Game::getPVMid() 
 {
 	return pvm_uniformId[pIndex];
 }
@@ -444,23 +477,23 @@ GLuint Game::getLPosID()
 	return lPos_uniformId[pIndex];
 }
 
-void Game::keyboardUp(unsigned char key, int x, int y)
+void Game::keyboardUp(unsigned char key, int x, int y) 
 {
 	if (tolower(key) == tolower(keyDown))
 	{
 		keyDown = '\0';
 
-	switch (key) {
-	case 'q':
-	case 'Q':
-	case 'a':
-	case 'A':
-	case 'o':
-	case 'O':
-	case 'p':
-	case 'P':
-		frog->stop();
-		break;
+		switch (key) {
+		case 'q':
+		case 'Q':
+		case 'a':
+		case 'A':
+		case 'o':
+		case 'O':
+		case 'p':
+		case 'P':
+			frog->stop();
+			break;
 		}
 	}
 }
@@ -468,7 +501,7 @@ void Game::keyboardUp(unsigned char key, int x, int y)
 void Game::keyboard(unsigned char key, int x, int y)
 {
 	float front[3] = { 0.0, 1.0, 0.0 };
-	float back[3] = { 0.0, -1.0, 0.0 };
+	float back[3] = { 0.0, -1.0, 0.0 }; 
 	float left[3] = { -1.0, 0.0, 0.0 };
 	float right[3] = { 1.0, 0.0, 0.0 };
 
@@ -476,32 +509,32 @@ void Game::keyboard(unsigned char key, int x, int y)
 	{
 		keyDown = key;
 
-	switch (key) {
-	case 'q':
-	case 'Q':
+		switch (key) {
+		case 'q':
+		case 'Q':
 		if (frog->getPositionYYs() < 13.5)
-		frog->move(front);
+			frog->move(front);
 		else
 			frog->setPositionYYs(13.5);
-		break;
-	case 'a':
-	case 'A':
+			break;
+		case 'a':
+		case 'A':
 		if (frog->getPositionYYs() > -13.5)
-		frog->move(back);
+			frog->move(back);
 		else
 			frog->setPositionYYs(-13.5);
-		break;
-	case 'o':
-	case 'O':
+			break;
+		case 'o':
+		case 'O':
 		if (frog->getPositionXXs() > -19)
-		frog->move(left);
+			frog->move(left);
 		else
 			frog->setPositionXXs(-19);
-		break;
-	case 'p':
-	case 'P':
+			break;
+		case 'p':
+		case 'P':
 		if (frog->getPositionXXs() < 19)
-		frog->move(right);
+			frog->move(right);
 		else
 			frog->setPositionXXs(19);
 		break;
@@ -511,29 +544,30 @@ void Game::keyboard(unsigned char key, int x, int y)
 		break;
 	case '0':
 		this->winGame();
-		break;
-	case '1':
-		glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
-		cam->topCameraMode();
-		break;
-	case '2':
-		glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
-		cam->topCameraPerspectiveMode();
-		break;
-	case '3':
-		glutSetCursor(GLUT_CURSOR_NONE);
-		cam->FPSCameraMode();
-		break;
+			break;
+		case '1':
+			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+			cam->topCameraMode();
+			break;
+		case '2':
+			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+			cam->topCameraPerspectiveMode();
+			break;
+		case '3':
+			glutSetCursor(GLUT_CURSOR_NONE);
+			cam->FPSCameraMode();
+			break;
 		case 'n':
 		case 'N':
 			managerLight->toggleDirectional();
+			managerLight->toggleSpotLight();
 			break;
 		case 'c':
 		case 'C':
 			managerLight->togglePointLights();
 			break;
+		}
 	}
-}
 }
 
 void Game::mouseFunc(int button, int state, int x, int y)
@@ -584,10 +618,10 @@ void Game::mouseMotionFun(int x, int y)
 
 void Game::passiveMouseFunc(int x, int y)
 {
-
+	
 }
 
-Stack* Game::getModelViewStack()
+Stack* Game::getModelViewStack() 
 {
 	return &modelViewStack;
 }
