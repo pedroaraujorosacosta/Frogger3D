@@ -11,6 +11,8 @@ class Frog : public Blocker {
 	Sphere *eyes;
 
 	int life;
+
+	const float FROG_VELOCITY = 0.3f;
 protected:
 	void init();
 public:

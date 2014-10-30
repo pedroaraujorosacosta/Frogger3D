@@ -59,12 +59,12 @@ void Frog::move(float *direction)
 
 	for (int i = 0; i < 3; i++)
 		this->direction[i] = direction[i];
-	velocity = 0.08;
+	velocity = FROG_VELOCITY;
 }
 
 void Frog::move()
 {
-	velocity = 0.08;
+	velocity = FROG_VELOCITY;
 }
 
 void Frog::stop() 

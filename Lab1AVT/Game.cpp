@@ -160,7 +160,6 @@ void Game::renderHUD()
 	vsfl->renderSentence(30, 10, sentenceID);
 }
 
-void Game::reset() {}
 void Game::winGame() {
 	this->gameState = WIN;
 	this->gamePoints = 10000000 / (glutGet(GLUT_ELAPSED_TIME) - startTime);
