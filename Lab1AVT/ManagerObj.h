@@ -32,6 +32,8 @@ class ManagerObj : public Manager
 
 
 
+
+
 	//frog collision variables
 	float frogXXs;
 	float frogYYs;
@@ -41,11 +43,16 @@ class ManagerObj : public Manager
 
 	float frogTopYYs;
 	float frogBottomYYs;
+	float frogRigthXXs;
+	float frogLeftXXs;
 
 	float carWeigth;
 	float busWeigth;
 	float logWeigth;
 	float turtleWeigth;
+
+	//para o random start
+	int randomIndex;
 
 	//Optimization variables
 	bool canColideLane1;
@@ -56,6 +63,11 @@ class ManagerObj : public Manager
 	bool canColideLane7;
 	bool canColideLane8;
 	bool canColideLane4;
+
+	//vector de vector
+	bool** validPositions;
+
+	
 
 	//Checking the river
 	bool onSurface;
@@ -75,12 +87,22 @@ public:
 	void setLateralEsquerda(float _lateralEsquerda);
 	void setLateralDireita(float _lateralDireita);
 
+	float ositionGenerator();
+	float validateRandomPosition();
+
 	float getLane1Velocity();
 	float getLane2Velocity();
 	float getLane3Velocity();
 	float getLane4Velocity();
 	float getLane5Velocity();
 	float getLane6Velocity();
+	float getLane7Velocity();
+	float getLane8Velocity();
+
+	int validateRandomPosition(int lane, int randomIndex);
+	int getRandomStartPosition(int randomIndex);
+	void updateValidPositions(int lane, float objectXXs);
+
 };
 
 #endif
