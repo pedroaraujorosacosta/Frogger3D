@@ -4,6 +4,7 @@
 #include "Blocker.h"
 #include "Cube.h"
 #include "Sphere.h"
+#include "Cylinder.h"
 
 class Torus;
 
@@ -11,6 +12,7 @@ class Bus : public Blocker {
 
 	Cube *body;
 	Torus *wheels;
+	Cylinder *bumper;
 
 
 protected:
