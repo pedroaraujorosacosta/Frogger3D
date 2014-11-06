@@ -112,7 +112,7 @@ void ManagerLight::init()
 	spot->setPosition(lSpotPos);
 	spot->setDirection(lSpotDir);
 	spot->setCutoff(0.5f);
-	spot->setExponent(1.0f);
+	spot->setExponent(0.1f);
 	spotLight = spot;
 	lights.push_back(spot);
 }

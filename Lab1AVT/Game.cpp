@@ -52,6 +52,7 @@ void Game::init(int argc, char* argv[])
 
 	managerObj = new ManagerObj(this);
 	managerLight = new ManagerLight(this);
+	managerLight->toggleSpotLight();
 
 	float posFrog[] = { 3.0, -13.0, -2.0 };
 	float directionFrog[3] = { 0.0, 1.0, 0.0 };

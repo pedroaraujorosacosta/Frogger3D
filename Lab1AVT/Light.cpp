@@ -207,7 +207,7 @@ void Light::illuminate()
 		// Linear attenuation
 		stringStream << "Lights[" << numLight << "].linearAttenuation";
 		lightID = glGetUniformLocation(game->getShader(), stringStream.str().c_str());
-		glUniform1f(lightID, 0.1f);
+		glUniform1f(lightID, 0.0f);
 		stringStream.str("");
 		stringStream.clear();
 
