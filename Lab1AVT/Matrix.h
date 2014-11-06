@@ -9,7 +9,10 @@
 
 class Matrix {
 public:
-	std::vector<float> m;
+	//std::vector<float> m;
+	float *m;
+	int size;
+
 	Matrix(int size = 4);
 	Matrix(float *o, int size);
 	Matrix(Matrix &other);
