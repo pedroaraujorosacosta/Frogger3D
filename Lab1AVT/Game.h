@@ -66,7 +66,7 @@ class Game : IComponent {
 	bool isLeftButtonDown;
 	bool isRightButtonDown;
 	char keyDown;
-	GLuint TextureArray[2];
+	GLuint TextureArray[4];
 	unsigned int uiWinID;
 	unsigned int uiLoseID;
 

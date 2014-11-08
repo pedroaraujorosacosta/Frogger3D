@@ -13,21 +13,30 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Textures">
+      <UniqueIdentifier>{54cf5ec7-4f8c-4d6e-98db-c6ec6cc64f66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{e19b1dff-342d-4d60-a07d-b2de476a5265}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fonts">
+      <UniqueIdentifier>{c24df226-3242-41c1-aaf8-d209a0342eab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Math">
+      <UniqueIdentifier>{0e1af5b0-da5c-475e-811b-e2736e9ee8bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Basic Geometry">
+      <UniqueIdentifier>{c14acca4-3f50-44a8-9ee2-6fec34feb803}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries">
+      <UniqueIdentifier>{be351b53-9e43-4cea-bb22-f67f87c63d37}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Stack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Matrix.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Object.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Cube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
@@ -40,9 +49,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Road.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MobileObj.cpp">
@@ -75,25 +81,46 @@
     <ClCompile Include="ManagerObj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Torus.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Cylinder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Source Files\Basic Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Cylinder.cpp">
+      <Filter>Source Files\Basic Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Source Files\Basic Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Torus.cpp">
+      <Filter>Source Files\Basic Geometry</Filter>
+    </ClCompile>
     <ClCompile Include="Vector.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Math</Filter>
     </ClCompile>
     <ClCompile Include="vsShaderLib.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Libraries</Filter>
     </ClCompile>
     <ClCompile Include="TGA.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Libraries</Filter>
     </ClCompile>
     <ClCompile Include="FontLib.cpp">
+      <Filter>Source Files\Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="Stack.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="BillboardObj.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Quad.cpp">
+      <Filter>Source Files\Basic Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -179,21 +206,50 @@
     <ClInclude Include="FontLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BillboardObj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Quad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="pointlight.frag" />
-    <None Include="pointlight.vert" />
-    <None Include="fontshade.frag" />
-    <None Include="fontshade.vert" />
+    <None Include="fontshade.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="fontshade.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="pointlight.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="pointlight.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="water.tga" />
-    <Image Include="stone.tga" />
-    <Image Include="grass.tga" />
-    <Image Include="ground.tga" />
-    <Image Include="arial.tga" />
+    <Image Include="grass.tga">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="water.tga">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="tree.tga">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="ground.tga">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="arial.tga">
+      <Filter>Fonts</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="arial.xml" />
+    <Xml Include="arial.xml">
+      <Filter>Fonts</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

@@ -65,10 +65,11 @@ void Game::init(int argc, char* argv[])
 	cam = new Camera(this, t, b, n, f, l, r, FOV, S);
 
 	//setup textures
-	glGenTextures(3, TextureArray);
+	glGenTextures(4, TextureArray);
 	TGA_Texture(TextureArray, "water.tga", 0);
 	TGA_Texture(TextureArray, "ground.tga", 1);
 	TGA_Texture(TextureArray, "grass.tga", 2);
+	TGA_Texture(TextureArray, "tree.tga", 3);
 
 	vsfl = new VSFontLib(this);
 	vsfl->load("arial");
@@ -125,6 +126,8 @@ void Game::draw() {
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[2]);
 
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[3]);
 
 	managerObj->draw();
 
@@ -132,6 +135,8 @@ void Game::draw() {
 	frog->draw();
 	else
 		this->gameState = LOSE;
+
+
 
 	resetProgram();
 

@@ -4,6 +4,7 @@
 uniform sampler2D texmap;
 uniform sampler2D texmap1;
 uniform sampler2D texmap2;
+uniform sampler2D texmap3;
 
 uniform int texMode;
 out vec4 colorOut;
@@ -47,8 +48,8 @@ in Data {
 
 void main() {
 	vec4 texel, texel1;
-	vec3 scatteredLight = vec3(0.0); 
-	vec3 reflectedLight = vec3(0.0);
+	vec4 scatteredLight = vec4(0.0); 
+	vec4 reflectedLight = vec4(0.0);
 
 	vec3 Normal = normalize(DataIn.normal);
 	vec3 EyeDirection = normalize(DataIn.eye);
@@ -66,6 +67,10 @@ void main() {
 	} else 	if(texMode == 3) // modulate Phong color with texel color
 	{
 		texel = texture(texmap2, DataIn.tex_coord);  // grass.tga
+		colorOut = texel;
+	} else 	if(texMode == 4) // modulate Phong color with texel color
+	{
+		texel = texture(texmap3, DataIn.tex_coord);  // tree.tga
 		colorOut = texel;
 	}
 
@@ -111,11 +116,13 @@ void main() {
 		scatteredLight.x += Lights[light].ambient.x * mat.ambient.x * attenuation + Lights[light].diffuse.x * mat.diffuse.x * diffuse * attenuation;
 		scatteredLight.y += Lights[light].ambient.y * mat.ambient.y * attenuation + Lights[light].diffuse.y * mat.diffuse.y * diffuse * attenuation;
 		scatteredLight.z += Lights[light].ambient.z * mat.ambient.z * attenuation + Lights[light].diffuse.z * mat.diffuse.z * diffuse * attenuation;
+		scatteredLight.w += mat.ambient.w * attenuation + mat.diffuse.w * diffuse * attenuation;
 		reflectedLight.x += Lights[light].specular.x * mat.specular.x * specular * attenuation;
 		reflectedLight.y += Lights[light].specular.y * mat.specular.y * specular * attenuation;
 		reflectedLight.z += Lights[light].specular.z * mat.specular.z * specular * attenuation;
+		reflectedLight.w += mat.specular.w * specular * attenuation;
 	}
 	
-	vec3 rgb = min(scatteredLight + reflectedLight, vec3(1.0));
-	colorOut *= vec4(rgb, 1.0);
+	vec4 rgba = min(scatteredLight + reflectedLight, vec4(1.0));
+	colorOut *= vec4(rgba);
 }

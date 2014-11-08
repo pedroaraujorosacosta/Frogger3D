@@ -62,6 +62,9 @@ void Object::sendMaterials()
 
 	loc = glGetUniformLocation(progID, "texmap2");
 	glUniform1i(loc, 2);
+
+	loc = glGetUniformLocation(progID, "texmap3");
+	glUniform1i(loc, 3);
 }
 
 void Object::sendDataToShader()

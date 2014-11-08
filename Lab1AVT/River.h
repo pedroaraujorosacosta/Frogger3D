@@ -3,11 +3,13 @@
 
 #include "Object.h"
 class Cube;
+class Tree;
 class River : public Object {
 
 	Cube *bankTop;
 	Cube *river;
 	Cube *bankBot;
+	Tree *tree;
 
 protected:
 	void init();
