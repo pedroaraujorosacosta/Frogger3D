@@ -17,6 +17,7 @@ public:
 	Matrix(float *o, int size);
 	Matrix(Matrix &other);
 	void printMatrix();
+	~Matrix();
 
 	Matrix& operator*=(const Matrix &m1);
 	Matrix& operator=(const Matrix &m1);

@@ -55,11 +55,9 @@ void FloatingLog::draw(){
 
 void FloatingLog::init() {
 	float o[3] = { 0.0, 0.0, 0.0 };
-	body = new Cylinder(o, game, 2.0 ,0.5, 10);
-
-
-	front = new Cylinder(o, game, 0.5, 0.6, 10);
-	back = new Cylinder(o, game, 0.5, 0.6, 10);
+	body = new Cylinder(o, game, 2.0 ,0.5, 6);
+	front = new Cylinder(o, game, 0.5, 0.6, 6);
+	back = new Cylinder(o, game, 0.5, 0.6, 6);
 
 	// set materials
 	float ambBody[] = { 0.1f, 0.1f, 0.1f, 1.0f };

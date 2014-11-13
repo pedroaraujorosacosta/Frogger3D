@@ -37,11 +37,11 @@ void River::draw(){
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	modelview->push();
-	modelview->scaleMatrix(40.0, 10.0, 1.0);
+		modelview->scaleMatrix(40.0, 10.0, 1.0);
 
-	river->setAmbient(ambRiver);
-	river->setDiffuse(diffRiver);
-	river->setSpecular(specRiver);
+		river->setAmbient(ambRiver);
+		river->setDiffuse(diffRiver);
+		river->setSpecular(specRiver);
 
 		river->setTexCount(1);
 		river->draw();
@@ -49,15 +49,15 @@ void River::draw(){
 	
 	// Remover este proximo river
 	modelview->push();
-	modelview->scaleMatrix(40.0, 10.0, 1.0);
-	modelview->translateMatrix(0.0, 0.0, -0.5);
+		modelview->scaleMatrix(40.0, 10.0, 1.0);
+		modelview->translateMatrix(0.0, 0.0, -0.5);
 
-	river->setAmbient(ambulanceRiver);
-	river->setDiffuse(ambulanceRiver);
-	river->setSpecular(ambulanceRiver);
+		river->setAmbient(ambulanceRiver);
+		river->setDiffuse(ambulanceRiver);
+		river->setSpecular(ambulanceRiver);
 
-	river->setTexCount(2);
-	river->draw();
+		river->setTexCount(2);
+		river->draw();
 	modelview->pop();
 	// Remover este ultimo river
 

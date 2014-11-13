@@ -57,7 +57,7 @@ void Turtle::init() {
 	float o[3] = { 0.0, 0.0, 0.0 };
 	head = new Sphere(o, game, 0.2 , 8);
 	shell = new Sphere(o, game, 0.2, 8);
-	body = new Torus(o, game, 0.1, 0.4, 10, 10);
+	body = new Torus(o, game, 0.1, 0.4, 6, 6);
 
 	// set materials
 	float ambHead[] = { 0.1f, 0.1f, 0.2f, 1.0f };
