@@ -26,6 +26,8 @@ void Frog::update(float dt)
 	ManagerObj *managerObj = game->getManagerObj();
 	float laneVel = managerObj->getRiverLaneVelocity(laneDir);
 
+
+
 	if (velocity > 0.0f || fabs(laneVel) > 0.0f)
 	{
 		for (int i = 0; i < 3; i++)
@@ -44,13 +46,25 @@ void Frog::update(float dt)
 		Vector newSpotPos(hNewSpotPos, 4);
 		spot->setPosition(newSpotPos);
 
-		// Check bounds
+		// Check bounds // bugged because it forgets the direction
 		if (position[1] > 12 && !game->isGameWon())
 			game->winGame();
-		else if (position[1] < -13)
+		else if (position[1] < -13)    
 			this->velocity = 0;
-		if ((position[0] > 19.5) || (position[0] < -19.5))
+		else if ((position[0] > 19.5) || (position[0] < -19.5))
 			this->velocity = 0;
+
+		/*
+		else if ((position[0] > 8.5) && (position[0] < 11.5))
+		this->velocity = 0;
+		else if ((position[0] > -1.5) && (position[0] < 1.5))
+		this->velocity = 0;
+		else if ((position[0] < -8.5) && (position[0] > -11.5))
+		this->velocity = 0;
+		*/
+
+
+	
 	}
 }
 
@@ -112,8 +126,8 @@ void Frog::draw(){
 
 void Frog::init() {
 	float o[3] = { 0.0, 0.0, 0.0 };
-	body = new Sphere(o, game, 0.6, 8);
-	eyes = new Sphere(o, game, 0.2, 8);
+	body = new Sphere(o, game, 0.6, 6);
+	eyes = new Sphere(o, game, 0.2, 6);
 
 	// set materials
 	float ambBody[] = { 0.2f, 0.15f, 0.1f, 1.0f };

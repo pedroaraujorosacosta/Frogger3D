@@ -21,6 +21,12 @@ Matrix::Matrix(float *o, int size)
 			//m.push_back(o[j + 4 * i]);
 }
 
+
+Matrix::~Matrix(){
+
+	delete[] m;
+}
+
 void Matrix::printMatrix()
 {
 	for (int i = 0; i < size; i++) {

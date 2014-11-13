@@ -308,6 +308,7 @@ VSFontLib::prepareRender(float x, float y)
 
 	//// translate to cursor position
 	mView->translateMatrix((float)x, (float)y, 0.0f);
+
 }
 
 
@@ -326,10 +327,12 @@ VSFontLib::restoreRender()
 
 	Stack *proj = game->getProjectionStack();
 	// restore previous projection matrix
+	proj->pop();//LoadIdentity
 	proj->pop();
 
 	Stack *mView = game->getModelViewStack();
 	// restore previous model and view matrices
+	mView->pop();//LoadIdentity
 	mView->pop();
 }
 
