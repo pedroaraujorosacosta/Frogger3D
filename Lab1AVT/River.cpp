@@ -21,10 +21,10 @@ River::~River()
 
 void River::draw(){
 
-	float ambulanceRiver[] = { 0.1f, 0.1f, 0.2f, 1.0f };
-	float ambRiver[] = { 0.1f, 0.1f, 0.2f, 0.1f };
-	float diffRiver[] = { 0.3f, 0.3f, 0.8f, 0.1f };
-	float specRiver[] = { 0.1f, 0.1f, 0.8f, 0.1f };
+	float ambulanceRiver[] = { 1.0f, 1.0f, 1.0f, 0.09f };
+	float ambRiver[] = { 0.0f, 0.5f, 0.9f, 1.0f };
+	float diffRiver[] = { 0.0f, 0.5f, 0.9f, 1.0f };
+	float specRiver[] = { 0.0f, 0.5f, 0.9f, 1.0f };
 
 	Stack* modelview = game->getModelViewStack();
 
@@ -33,34 +33,32 @@ void River::draw(){
 
 	modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	modelview->push();
-		modelview->scaleMatrix(40.0, 10.0, 1.0);
+	modelview->scaleMatrix(40.0, 10.0, 1.0);
+	modelview->translateMatrix(0.0, 0.0, -0.5);
 
-		river->setAmbient(ambRiver);
-		river->setDiffuse(diffRiver);
-		river->setSpecular(specRiver);
-
-		river->setTexCount(1);
+	river->setAmbient(ambRiver);
+	river->setDiffuse(diffRiver);
+	river->setSpecular(specRiver);
 		river->draw();
 	modelview->pop();
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	// Remover este proximo river
 	modelview->push();
-		modelview->scaleMatrix(40.0, 10.0, 1.0);
-		modelview->translateMatrix(0.0, 0.0, -0.5);
+	modelview->scaleMatrix(40.0, 10.0, 1.0);
+	//modelview->translateMatrix(0.0, 0.0, -0.5);
 
-		river->setAmbient(ambulanceRiver);
-		river->setDiffuse(ambulanceRiver);
-		river->setSpecular(ambulanceRiver);
+	river->setAmbient(ambulanceRiver);
+	river->setDiffuse(ambulanceRiver);
+	river->setSpecular(ambulanceRiver);
 
-		river->setTexCount(2);
-		river->draw();
+	river->setTexCount(1);
+	river->draw();
 	modelview->pop();
 	// Remover este ultimo river
-
 	
 	modelview->push();
 	modelview->scaleMatrix(40.0, 2.0, 1.0);

@@ -42,11 +42,11 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	}
 	*/
 
+	
 	float posRiver[] = { 0.0, 7, -3.0 };
 	objects.push_back(new River(posRiver, game));
 	float posroad[] = { 0.0, -7, -3.0 };
 	objects.push_back(new Road(posroad, game));
-
 
 	//LANE 1
 	float posFloatingLog1[] = { -5.0, 11.0, -2.5 };
@@ -61,6 +61,8 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	objectsMobileLane1.push_back(new FloatingLog(posFloatingLog1, game, getLane1Velocity(), dirFloatingLog1));
 	objectsMobileLane1.push_back(new FloatingLog(posFloatingLog2, game, getLane1Velocity(), dirFloatingLog2));
 	objectsMobileLane1.push_back(new FloatingLog(posFloatingLog3, game, getLane1Velocity(), dirFloatingLog3));
+
+
 
 	//LANE 2
 
@@ -145,8 +147,7 @@ ManagerObj::~ManagerObj() {
 }
 
 void ManagerObj::draw() {
-	for (Object* o : objects)
-		o->draw();
+	
 	for (MobileObj* o : objectsMobileLane1)
 		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
 			o->draw();
@@ -165,11 +166,15 @@ void ManagerObj::draw() {
 	for (MobileObj* o : objectsMobileLane8)
 		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
 			o->draw();
+	
 
 	//bridge test
 	for (MobileObj* o : objectsMobileLane4)
 		o->draw();
 	for (MobileObj* o : objectsMobileLane5)
+		o->draw();
+
+	for (Object* o : objects)
 		o->draw();
 
 
