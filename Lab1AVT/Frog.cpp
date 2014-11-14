@@ -27,12 +27,96 @@ void Frog::update(float dt)
 	float laneVel = managerObj->getRiverLaneVelocity(laneDir);
 
 
+	//ZZs have no use for the boundaries
+	position[2] += direction[2] * velocity + laneDir.v[2] * laneVel * dt;
 
+	//Boundaries check before update
+	float newXXsPosition = position[0] + direction[0] * velocity + laneDir.v[0] * laneVel * dt;
+	float newYYsPosition = position[1] + direction[1] * velocity + laneDir.v[1] * laneVel * dt;
+
+	// Check bounds on the direction it needs to go
+	if (this->direction[0] == 1){
+
+		if (newXXsPosition >= 19)
+			this->velocity = 0; //stop and dont update the position
+		else if ((newXXsPosition >= 8.4) && (position[0] < 8.4) &&
+						 				( ((position[1] > -2.1) && (position[1] < 0.5)) ||
+										  (position[1] < -11.4)))
+			this->velocity = 0; //stop and dont update the position
+		else if ((newXXsPosition >= -1.2) && (position[0] < 1.2) &&
+										( ((position[1] > -2.1) && (position[1] < 0.5)) ||
+									   	  (position[1] < -11.4)))
+			this->velocity = 0; //stop and dont update the position
+		else if ((newXXsPosition >= -11.4) && (position[0] < -11.4) &&
+										( ((position[1] > -2.1) && (position[1] < 0.5)) ||
+										  (position[1] < -11.4)))
+			this->velocity = 0; //stop and dont update the position
+		else{
+			position[0] = newXXsPosition;//if boundaries check out, update
+			position[1] = newYYsPosition;
+		}
+	
+	}
+	else if (this->direction[0] == -1){
+	
+		if (newXXsPosition <= -19)
+			this->velocity = 0; //stop and dont update the position
+		else if ((newXXsPosition <= -8.4) && (position[0] > -8.4) &&
+										( ((position[1] > -2.1) && (position[1] < 0.5)) ||
+										  (position[1] < -11.4)))
+			this->velocity = 0; //stop and dont update the position
+		else if ((newXXsPosition <= 1.2) && (position[0] > 1.2) &&
+										( ((position[1] > -2.1) && (position[1] < 0.5)) ||
+										  (position[1] < -11.4)))
+			this->velocity = 0; //stop and dont update the position
+		else if ((newXXsPosition <= 11.4) && (position[0] > 11.4) &&
+										( ((position[1] > -2.1) && (position[1] < 0.5)) ||
+										  (position[1] < -11.4)))
+			this->velocity = 0; //stop and dont update the position
+		else{
+			position[0] = newXXsPosition;//if boundaries check out, update
+			position[1] = newYYsPosition;
+		}
+	}
+	else if (this->direction[1] == 1){
+
+		if (newYYsPosition >= 12 && !game->isGameWon())
+			game->winGame(); //game has been won!
+		else if ((newYYsPosition >= -2.1) && (position[1] < -2.1) && 
+										 ( ((position[0] > 8.4) && (position[0] < 11.4)) || 
+										   ((position[0] > -1.5) && (position[0] < 1.2)) ||
+										   ((position[0] > -11.4) && (position[0] < -8.4)) ))
+			this->velocity = 0; //stop and dont update the position
+		else{
+			position[0] = newXXsPosition;//if boundaries check out, update
+			position[1] = newYYsPosition;
+		}
+	}
+	else if (this->direction[1] == -1){
+	
+		if (newYYsPosition <= -13.5)
+			this->velocity = 0; //stop and dont update the position
+		else if ((newYYsPosition <= 0.5) && (position[1] > 0.5) &&
+								( ((position[0] > 8.4) && (position[0] < 11.4)) ||
+								  ((position[0] > -1.5) && (position[0] < 1.2)) ||
+								  ((position[0] > -11.4) && (position[0] < -8.4))))
+			this->velocity = 0; //stop and dont update the position
+		else if ((newYYsPosition <= -11.4) && (position[1] > -11.4) &&
+								( ((position[0] > 8.4) && (position[0] < 11.4)) ||
+								  ((position[0] > -1.5) && (position[0] < 1.2)) ||
+								  ((position[0] > -11.4) && (position[0] < -8.4))))
+			this->velocity = 0; //stop and dont update the position
+		else{
+			position[0] = newXXsPosition;//if boundaries check out, update
+			position[1] = newYYsPosition;
+		}
+	}
+
+
+
+	//if there is movement compute light
 	if (velocity > 0.0f || fabs(laneVel) > 0.0f)
 	{
-		for (int i = 0; i < 3; i++)
-			position[i] += direction[i] * velocity + laneDir.v[i] * laneVel * dt;
-
 		// adjust the miner's spot light
 		Light *spot = game->getSpotLight();
 		
@@ -45,25 +129,6 @@ void Frog::update(float dt)
 		for (int i = 0; i < 3; i++) hNewSpotPos[i] = position[i] + 0.5*direction[i];
 		Vector newSpotPos(hNewSpotPos, 4);
 		spot->setPosition(newSpotPos);
-
-		// Check bounds // bugged because it forgets the direction
-		if (position[1] > 12 && !game->isGameWon())
-			game->winGame();
-		else if (position[1] < -13)    
-			this->velocity = 0;
-		else if ((position[0] > 19.5) || (position[0] < -19.5))
-			this->velocity = 0;
-
-		/*
-		else if ((position[0] > 8.5) && (position[0] < 11.5))
-		this->velocity = 0;
-		else if ((position[0] > -1.5) && (position[0] < 1.5))
-		this->velocity = 0;
-		else if ((position[0] < -8.5) && (position[0] > -11.5))
-		this->velocity = 0;
-		*/
-
-
 	
 	}
 }

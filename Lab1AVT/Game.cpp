@@ -536,37 +536,25 @@ void Game::keyboard(unsigned char key, int x, int y)
 		case 'q':
 		case 'Q':
 			if (isGamePlaying()) {
-				if (frog->getPositionYYs() < 13.5)
 					frog->move(front);
-				else
-					frog->setPositionYYs(13.5);
 			}
 			break;
 		case 'a':
 		case 'A':
 			if (isGamePlaying()) {
-				if (frog->getPositionYYs() > -13.5)
 					frog->move(back);
-				else
-					frog->setPositionYYs(-13.5);
 			}
 			break;
 		case 'o':
 		case 'O':
 			if (isGamePlaying()) {
-				if (frog->getPositionXXs() > -19)
 					frog->move(left);
-				else
-					frog->setPositionXXs(-19);
 			}
 			break;
 		case 'p':
 		case 'P':
 			if (isGamePlaying()) {
-				if (frog->getPositionXXs() < 19)
 					frog->move(right);
-				else
-					frog->setPositionXXs(19);
 			}
 		break;
 	case 'r':

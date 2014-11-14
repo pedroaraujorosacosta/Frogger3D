@@ -660,7 +660,7 @@ float ManagerObj::getLane1Velocity() {
 }
 float ManagerObj::getLane2Velocity() {
 
-	return 1.2 * dificuldade;
+	return 0.8 * dificuldade;
 }
 float ManagerObj::getLane3Velocity() {
 
