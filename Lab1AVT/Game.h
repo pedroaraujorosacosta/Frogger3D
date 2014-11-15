@@ -68,6 +68,7 @@ class Game : IComponent {
 	char *FragShader;
 	bool isLeftButtonDown;
 	bool isRightButtonDown;
+	bool isFogOn;
 	char keyDown;
 	GLuint TextureArray[4];
 	unsigned int uiWinID;
@@ -90,6 +91,7 @@ class Game : IComponent {
 	void renderHUD();
 	void setAlphaTest(AlphaTest alphaTest);
 	void setFog();
+	void clearFog();
 
 public:
 	Game(int WinX, int WinY);
