@@ -58,13 +58,6 @@ void Game::init(int argc, char* argv[])
 	float directionFrog[3] = { 0.0, 1.0, 0.0 };
 	frog = new Frog(posFrog, this, 0.0, directionFrog, LIFES);
 
-	/*
-	  Remover isto, foi so para testar o operador< dos objectos, para depois fazer o sort.
-	Frog fr(posFrog, this, 0.0, directionFrog, LIFES);
-	float posR[] = { 3.0, -13.1, -2.0 };
-	River riv(posR, this);
-	std::cout << (fr < riv) << std::endl;*/
-
 	// setup camera
 	S = tan(FOV*0.5*(M_PI / 180)) * n;
 	r = aspectRatio * S, l = -r;
@@ -138,6 +131,8 @@ void Game::draw() {
 
 	// activate alpha test to draw opaques only
 	setAlphaTest(AT_OPAQUE);
+
+	setFog();
 
 	managerObj->draw();
 
@@ -727,4 +722,21 @@ int Game::getStartTime()
 Camera* Game::getCamera()
 {
 	return cam;
+}
+
+void Game::setFog()
+{
+	float frogPosf[4] = { frog->getPositionXXs(), frog->getPositionYYs(), frog->getPositionZZs(), 1.0f };
+	Vector frogPos(frogPosf, 4);
+	Vector frosCamPos = getVM() * frogPos;
+	GLuint loc = glGetUniformLocation(getShader(), "frogPos");
+	glUniform3fv(loc, 1, frosCamPos.v);
+
+	float fogColor[4] = { 0.5f, 0.6f, 0.7f, 1.0f };
+	loc = glGetUniformLocation(getShader(), "fogColor");
+	glUniform4fv(loc, 1, fogColor);
+
+	float fogDensity = 0.2f;
+	loc = glGetUniformLocation(getShader(), "fogDensity");
+	glUniform1f(loc, fogDensity);
 }

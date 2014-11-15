@@ -11,6 +11,9 @@ uniform sampler2D texmap2;
 uniform sampler2D texmap3;
 
 uniform int texMode;
+uniform vec3 frogPos;
+uniform vec4 fogColor;
+uniform float fogDensity;
 out vec4 colorOut;
 
 struct Materials {
@@ -49,6 +52,11 @@ in Data {
 	vec3 pos;
 	vec2 tex_coord;
 } DataIn;
+
+vec4 applyFog(in vec4 rgba, in float distance) {
+	float fogAmount = exp(-(distance * fogDensity));
+	return mix(rgba, fogColor, (1.0 - fogAmount));
+}
 
 void main() {
 	vec4 texel, texel1;
@@ -148,6 +156,7 @@ void main() {
 	}
 	
 	colorOut *= vec4(rgba);
-	
+	float distance = length(DataIn.pos - frogPos);
+	colorOut = applyFog(colorOut, distance);
 	
 }

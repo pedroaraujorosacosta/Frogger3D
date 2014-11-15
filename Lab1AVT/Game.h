@@ -89,6 +89,7 @@ class Game : IComponent {
 	void loadShader(int pIndex, unsigned int ShaderType, char *filename);
 	void renderHUD();
 	void setAlphaTest(AlphaTest alphaTest);
+	void setFog();
 
 public:
 	Game(int WinX, int WinY);
