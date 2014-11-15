@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 #include "Object.h"
 #include "MobileObj.h"
@@ -58,11 +59,15 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	float posFloatingLog3[] = { 8.0, 11.0, -2.5 };
 	float dirFloatingLog3[] = { 1, 0.0, 0.0 };
 
-	objectsMobileLane1.push_back(new FloatingLog(posFloatingLog1, game, getLane1Velocity(), dirFloatingLog1));
-	objectsMobileLane1.push_back(new FloatingLog(posFloatingLog2, game, getLane1Velocity(), dirFloatingLog2));
-	objectsMobileLane1.push_back(new FloatingLog(posFloatingLog3, game, getLane1Velocity(), dirFloatingLog3));
-
-
+	FloatingLog *fLog1 = new FloatingLog(posFloatingLog1, game, getLane1Velocity(), dirFloatingLog1);
+	FloatingLog *fLog2 = new FloatingLog(posFloatingLog2, game, getLane1Velocity(), dirFloatingLog2);
+	FloatingLog *fLog3 = new FloatingLog(posFloatingLog3, game, getLane1Velocity(), dirFloatingLog3);
+	objectsMobileLane1.push_back(fLog1);
+	objectsMobileLane1.push_back(fLog2);
+	objectsMobileLane1.push_back(fLog3);
+	objects.push_back(fLog1);
+	objects.push_back(fLog2);
+	objects.push_back(fLog3);
 
 	//LANE 2
 
@@ -74,10 +79,16 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 
 	float posTurtle3[] = { -4, 9, -2.5 };
 	float dirTurtle3[] = { -1, 0.0, 0.0 };
-
-	objectsMobileLane2.push_back(new Turtle(posTurtle1, game, getLane2Velocity(), dirTurtle1));
-	objectsMobileLane2.push_back(new Turtle(posTurtle2, game, getLane2Velocity(), dirTurtle2));
-	objectsMobileLane2.push_back(new Turtle(posTurtle3, game, getLane2Velocity(), dirTurtle3));
+	
+	Turtle *turtle1 = new Turtle(posTurtle1, game, getLane2Velocity(), dirTurtle1);
+	Turtle *turtle2 = new Turtle(posTurtle2, game, getLane2Velocity(), dirTurtle2);
+	Turtle *turtle3 = new Turtle(posTurtle3, game, getLane2Velocity(), dirTurtle3);
+	objectsMobileLane2.push_back(turtle1);
+	objectsMobileLane2.push_back(turtle2);
+	objectsMobileLane2.push_back(turtle3);
+	objects.push_back(turtle1);
+	objects.push_back(turtle2);
+	objects.push_back(turtle3);
 
 	//LANE 3
 
@@ -90,31 +101,42 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	float posFloatingLog6[] = { -2.0, 7.0, -2.5 };
 	float dirFloatingLog6[] = { 1, 0.0, 0.0 };
 
-	objectsMobileLane3.push_back(new FloatingLog(posFloatingLog4, game, getLane3Velocity(), dirFloatingLog4));
-	objectsMobileLane3.push_back(new FloatingLog(posFloatingLog5, game, getLane3Velocity(), dirFloatingLog5));
-	objectsMobileLane3.push_back(new FloatingLog(posFloatingLog6, game, getLane3Velocity(), dirFloatingLog6));
+	FloatingLog *fLog4 = new FloatingLog(posFloatingLog4, game, getLane3Velocity(), dirFloatingLog4);
+	FloatingLog *fLog5 = new FloatingLog(posFloatingLog5, game, getLane3Velocity(), dirFloatingLog5);
+	FloatingLog *fLog6 = new FloatingLog(posFloatingLog6, game, getLane3Velocity(), dirFloatingLog6);
+	objectsMobileLane3.push_back(fLog4);
+	objectsMobileLane3.push_back(fLog5);
+	objectsMobileLane3.push_back(fLog6);
+	objects.push_back(fLog4);
+	objects.push_back(fLog5);
+	objects.push_back(fLog6);
 
 	//BRIDGE new Lane 4
 
 	float posFloatingLog7[] = { 0.0, 5.0, -2.5 };
 	float dirFloatingLog7[] = { 1, 0.0, 0.0 };
 
-
-	objectsMobileLane4.push_back(new FloatingLog(posFloatingLog7, game, getLane4Velocity(), dirFloatingLog4));
+	FloatingLog *fLog7 = new FloatingLog(posFloatingLog7, game, getLane4Velocity(), dirFloatingLog4);
+	objectsMobileLane4.push_back(fLog7);
+	objects.push_back(fLog7);
 
 	//BRIDGE new Lane 5
 
 	float posFloatingLog8[] = { 0.0, 3.0, -2.5 };
 	float dirFloatingLog8[] = { 1, 0.0, 0.0 };
 
-	objectsMobileLane5.push_back(new FloatingLog(posFloatingLog8, game, getLane5Velocity(), dirFloatingLog4));
+	FloatingLog *fLog8 = new FloatingLog(posFloatingLog8, game, getLane5Velocity(), dirFloatingLog4);
+	objectsMobileLane5.push_back(fLog8);
+	objects.push_back(fLog8);
 
 	//LANE 4
 
 	float posBus[] = { lateralEsquerda, -3, -1.8 };
 	float dirBus[] = { 1, 0.0, 0.0 };
 
-	objectsMobileLane6.push_back(new Bus(posBus, game, getLane6Velocity(), dirBus));
+	Bus *bus1 = new Bus(posBus, game, getLane6Velocity(), dirBus);
+	objectsMobileLane6.push_back(bus1);
+	objects.push_back(bus1);
 
 	//LANE 5
 
@@ -124,9 +146,12 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	float posCar2[] = { -2.0, -5, -1.8 };
 	float dirCar2[] = { -1, 0.0, 0.0 };
 
-
-	objectsMobileLane7.push_back(new Car(posCar1, game, getLane7Velocity(), dirCar1));
-	objectsMobileLane7.push_back(new Car(posCar2, game, getLane7Velocity(), dirCar2));
+	Car *car1 = new Car(posCar1, game, getLane7Velocity(), dirCar1);
+	Car *car2 = new Car(posCar2, game, getLane7Velocity(), dirCar2);
+	objectsMobileLane7.push_back(car1);
+	objectsMobileLane7.push_back(car2);
+	objects.push_back(car1);
+	objects.push_back(car2);
 
 	//LANE 6
 
@@ -136,10 +161,12 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	float posCar4[] = { lateralEsquerda, -7.0, -1.8 };
 	float dirCar4[] = { 1, 0.0, 0.0 };
 
-	objectsMobileLane8.push_back(new Car(posCar3, game, getLane8Velocity(), dirCar3));
-	objectsMobileLane8.push_back(new Car(posCar4, game, getLane8Velocity(), dirCar4));
-
-
+	Car *car3 = new Car(posCar3, game, getLane8Velocity(), dirCar3);
+	Car *car4 = new Car(posCar4, game, getLane8Velocity(), dirCar4);
+	objectsMobileLane8.push_back(car3);
+	objectsMobileLane8.push_back(car4);
+	objects.push_back(car3);
+	objects.push_back(car4);
 }
 
 ManagerObj::~ManagerObj() {
@@ -147,41 +174,11 @@ ManagerObj::~ManagerObj() {
 }
 
 void ManagerObj::draw() {
-	
-	for (MobileObj* o : objectsMobileLane1)
-		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
-			o->draw();
-	for (MobileObj* o : objectsMobileLane2)
-		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
-			o->draw();
-	for (MobileObj* o : objectsMobileLane3)
-		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
-			o->draw();
-	for (MobileObj* o : objectsMobileLane6)
-		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
-			o->draw();
-	for (MobileObj* o : objectsMobileLane7)
-		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
-			o->draw();
-	for (MobileObj* o : objectsMobileLane8)
-		if ((o->getPositionXXs() < 20) && (o->getPositionXXs()  > -20))
-			o->draw();
-	
-
-	//bridge test
-	for (MobileObj* o : objectsMobileLane4)
-		o->draw();
-	for (MobileObj* o : objectsMobileLane5)
-		o->draw();
-
 	for (Object* o : objects)
 		o->draw();
-
-
 }
 
 void ManagerObj::init(){
-
 
 }
 
@@ -326,7 +323,7 @@ float ManagerObj::getRiverLaneVelocity(Vector &laneDir)
 void ManagerObj::update(float dt, Frog* frog) {
 
 	int currentTime = glutGet(GLUT_ELAPSED_TIME);
-	dificuldade = currentTime / 5000 + 1;
+	dificuldade = (currentTime - game->getStartTime()) / 5000 + 1;
 
 
 	//frog collision variables
@@ -388,7 +385,8 @@ void ManagerObj::update(float dt, Frog* frog) {
 		canColideLane8 = true;
 	}
 
-
+	// sort objects (so translucids appear ordered according to position relative to camera)
+	std::sort(objects.begin(), objects.end(), comparatorObjects);
 
 	//colision variables for the random //to be changed *******************************************************
 
@@ -426,7 +424,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 	*/
 
 	for (MobileObj* o : objectsMobileLane1){
-		o->update(dt);
+		//o->update(dt);
 		
 
 		//XXs check
@@ -456,7 +454,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 	}
 	//fazer update às posições válidas para o random
 	for (MobileObj* o : objectsMobileLane2){
-		o->update(dt);
+		//o->update(dt);
 
 		if (canColideLane2){
 			if (((frogWeigth / 2 + turtleWeigth / 2) > fabs((frogXXs - o->getPositionXXs()))))
@@ -479,7 +477,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 
 	}
 	for (MobileObj* o : objectsMobileLane3){
-		o->update(dt);
+		//o->update(dt);
 
 		if (canColideLane3){
 			if (((frogWeigth / 2 + logWeigth / 2) > fabs((frogXXs - o->getPositionXXs()))))
@@ -501,7 +499,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 	}
 
 	for (MobileObj* o : objectsMobileLane4){
-		o->update(dt);
+		//o->update(dt);
 
 		if (canColideLane4){
 			if (((frogWeigth / 2 + logWeigth / 2) > fabs((frogXXs - o->getPositionXXs()))))
@@ -524,7 +522,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 	}
 
 	for (MobileObj* o : objectsMobileLane5){
-		o->update(dt);
+		//o->update(dt);
 
 		if (canColideLane5){
 			if (((frogWeigth / 2 + logWeigth / 2) > fabs((frogXXs - o->getPositionXXs()))))
@@ -547,7 +545,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 	}
 
 	for (MobileObj* o : objectsMobileLane6){
-		o->update(dt);
+		//o->update(dt);
 
 		if (canColideLane6){
 			if ((frogWeigth / 2 + busWeigth / 2) > fabs((frogXXs - o->getPositionXXs())))
@@ -569,7 +567,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 
 	}
 	for (MobileObj* o : objectsMobileLane7){
-		o->update(dt);
+		//o->update(dt);
 
 		if (canColideLane7){
 			if ((frogWeigth / 2 + carWeigth / 2) > fabs((frogXXs - o->getPositionXXs())))
@@ -593,7 +591,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 
 	}
 	for (MobileObj* o : objectsMobileLane8){
-		o->update(dt);
+		//o->update(dt);
 		
 		if (canColideLane8){
 			if ((frogWeigth / 2 + carWeigth / 2) > fabs((frogXXs - o->getPositionXXs())))

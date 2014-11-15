@@ -1,6 +1,8 @@
 #ifndef __CAMERA_H__
 #define __CAMERA_H__
 
+#include "Vector.h"
+
 #define M_PI atan(1.0f)*4
 
 class Game;
@@ -48,5 +50,7 @@ public:
 	bool isFacingRight();
 	bool isFacingFront();
 	bool isFacingBack();
+
+	Vector getEye();
 };
 #endif

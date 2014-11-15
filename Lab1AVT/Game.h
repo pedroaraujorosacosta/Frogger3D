@@ -25,6 +25,8 @@ class VSFontLib;
 class Game : IComponent {
 
 	enum GameState {WIN, LOSE, PLAYING};
+	// specifies what type of alpha test we want. AT_NONE for no alpha testing, AT_OPAQUE to pass opaque fragments only, etc.
+	enum AlphaTest {AT_NONE, AT_OPAQUE, AT_TRANSLUCID}; 
 
 	int winX;
 	int winY;
@@ -54,7 +56,7 @@ class Game : IComponent {
 
 	int pIndex;
 	GLuint programId[3];
-	GLuint VertexShaderId, FragmentShaderId;
+	GLuint VertexShaderId[3], FragmentShaderId[3];
 	//GLuint UniformId;
 	GLint pvm_uniformId[3];
 	GLint vm_uniformId[3];
@@ -75,7 +77,8 @@ class Game : IComponent {
 	void setupOpenGL();
 	void createShaderPrograms();
 	bool readShaderProgram(const char *filename, char **output);
-	void destroyShaderProgram();
+	void destroyShaderPrograms();
+	void destroyShaderProgram(int pIndex);
 	void checkProgramLinkage(GLuint programId, GLuint vertexShaderId, GLuint fragmentShaderId);
 	void checkShaderCompilation(GLuint shaderId);
 	unsigned int getStreamSize(std::ifstream &ifs);
@@ -85,6 +88,7 @@ class Game : IComponent {
 	void createShaderProgram(int pIndex);
 	void loadShader(int pIndex, unsigned int ShaderType, char *filename);
 	void renderHUD();
+	void setAlphaTest(AlphaTest alphaTest);
 
 public:
 	Game(int WinX, int WinY);
@@ -118,9 +122,11 @@ public:
 	GLuint getLPosID();
 	Light* getSpotLight();
 	ManagerObj* getManagerObj();
+	Camera* getCamera();
 	bool isGameWon();
 	bool isGameLost();
 	bool isGamePlaying();
+	int getStartTime();
 
 	void winGame();
 

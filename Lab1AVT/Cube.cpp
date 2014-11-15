@@ -2,8 +2,10 @@
 #include "Stack.h"
 #include "Game.h"
 
-Cube::Cube(float *position, Game *game) : Object(position, game) 
+Cube::Cube(float *position, Game *game, bool isRepeatTexture, float factorX) : Object(position, game)
 {
+	this->isRepeatTexture = isRepeatTexture;
+	repeatFactorX = factorX;
 	init();
 	createBufferObjects();
 }
@@ -18,6 +20,7 @@ void Cube::draw(){
 	//then, puts the unitary cube in the right position
 	modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
 	//puts the unitary cube in the origin of the referencial
+	modelview->scaleMatrix(scale[0], scale[1], scale[2]);
 	modelview->translateMatrix(-0.5, -0.5, -0.5);
 
 	sendDataToShader();
@@ -136,10 +139,49 @@ void Cube::init() {
 		1.0f, 1.0f,
 	};
 
+	float texsRepeatCube[] = {
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		repeatFactorX, 0.0f,
+		repeatFactorX, 1.0f,
+
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		repeatFactorX, 0.0f,
+		repeatFactorX, 1.0f,
+
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		repeatFactorX, 0.0f,
+		repeatFactorX, 1.0f,
+
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		repeatFactorX, 0.0f,
+		repeatFactorX, 1.0f,
+
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		repeatFactorX, 0.0f,
+		repeatFactorX, 1.0f,
+
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		repeatFactorX, 0.0f,
+		repeatFactorX, 1.0f,
+	};
+
 	this->texCoords = new float[2 * verticeCount];
 
-	for (int i = 0; i < verticeCount * 2; i++) {
-		texCoords[i] = texs[i];
+	if (!isRepeatTexture) {
+		for (int i = 0; i < verticeCount * 2; i++) {
+			texCoords[i] = texs[i];
+		}
+	}
+	else {
+		for (int i = 0; i < verticeCount * 2; i++) {
+			texCoords[i] = texsRepeatCube[i];
+		}
 	}
 
 	unsigned int faces[] = {

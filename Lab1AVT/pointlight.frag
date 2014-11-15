@@ -1,6 +1,10 @@
 #version 330
 
+const int ALPHA_TEST_NONE = 0;
+const int ALPHA_TEST_OPAQUE = 1;
+const int ALPHA_TEST_TRANS = 2;
 
+uniform int alphaTest;
 uniform sampler2D texmap;
 uniform sampler2D texmap1;
 uniform sampler2D texmap2;
@@ -74,6 +78,13 @@ void main() {
 		colorOut = texel;
 	}
 
+	// do an early alpha test (we can cull some of the textured fragments early)
+	if(alphaTest == ALPHA_TEST_OPAQUE) 
+	{
+		if(colorOut.w < 1.0)
+			discard;
+	}
+
 	// for all lights
 	for (int light = 0; light < MaxLights; ++light) {
 		if (! Lights[light].isEnabled)
@@ -124,5 +135,19 @@ void main() {
 	}
 	
 	vec4 rgba = min(scatteredLight + reflectedLight, vec4(1.0));
+	// do the alpha test again
+	if(alphaTest == ALPHA_TEST_OPAQUE) 
+	{
+		if(rgba.w < 1.0)
+			discard;
+	} 
+	else if(alphaTest == ALPHA_TEST_TRANS) 
+	{
+		if(rgba.w == 1.0)
+			discard;
+	}
+	
 	colorOut *= vec4(rgba);
+	
+	
 }

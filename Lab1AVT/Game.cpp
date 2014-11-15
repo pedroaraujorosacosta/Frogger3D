@@ -58,6 +58,13 @@ void Game::init(int argc, char* argv[])
 	float directionFrog[3] = { 0.0, 1.0, 0.0 };
 	frog = new Frog(posFrog, this, 0.0, directionFrog, LIFES);
 
+	/*
+	  Remover isto, foi so para testar o operador< dos objectos, para depois fazer o sort.
+	Frog fr(posFrog, this, 0.0, directionFrog, LIFES);
+	float posR[] = { 3.0, -13.1, -2.0 };
+	River riv(posR, this);
+	std::cout << (fr < riv) << std::endl;*/
+
 	// setup camera
 	S = tan(FOV*0.5*(M_PI / 180)) * n;
 	r = aspectRatio * S, l = -r;
@@ -66,10 +73,10 @@ void Game::init(int argc, char* argv[])
 
 	//setup textures
 	glGenTextures(4, TextureArray);
-	TGA_Texture(TextureArray, "water.tga", 0);
-	TGA_Texture(TextureArray, "ground.tga", 1);
-	TGA_Texture(TextureArray, "grass.tga", 2);
-	TGA_Texture(TextureArray, "tree.tga", 3);
+	TGA_Texture(TextureArray, "water.tga", 0, true);
+	TGA_Texture(TextureArray, "ground.tga", 1, true);
+	TGA_Texture(TextureArray, "grass.tga", 2, true);
+	TGA_Texture(TextureArray, "tree.tga", 3, false);
 
 	vsfl = new VSFontLib(this);
 	vsfl->load("arial");
@@ -129,14 +136,28 @@ void Game::draw() {
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[3]);
 
+	// activate alpha test to draw opaques only
+	setAlphaTest(AT_OPAQUE);
+
 	managerObj->draw();
 
 	if (frog->getLife() > 0)
-	frog->draw();
+		frog->draw();
 	else
 		this->gameState = LOSE;
 
+	// activate alpha test to draw translucids only
+	setAlphaTest(AT_TRANSLUCID);
 
+	managerObj->draw();
+
+	if (frog->getLife() > 0)
+		frog->draw();
+	else
+		this->gameState = LOSE;
+
+	// deactivate alpha test
+	setAlphaTest(AT_NONE);
 
 	resetProgram();
 
@@ -286,24 +307,26 @@ void Game::loadShader(int pIndex, unsigned int ShaderType, char *filename)
 	{
 		if (readShaderProgram(filename, &VtxShader))
 		{
-			VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
-			glShaderSource(VertexShaderId, 1, &VtxShader, 0);
-			glAttachShader(programId[pIndex], VertexShaderId);
-			glCompileShader(VertexShaderId);
-			checkShaderCompilation(VertexShaderId);
+			VertexShaderId[pIndex] = glCreateShader(GL_VERTEX_SHADER);
+			glShaderSource(VertexShaderId[pIndex], 1, &VtxShader, 0);
+			glAttachShader(programId[pIndex], VertexShaderId[pIndex]);
+			glCompileShader(VertexShaderId[pIndex]);
+			checkShaderCompilation(VertexShaderId[pIndex]);
 		}
 	}
 	else
 	{
 		if (readShaderProgram(filename, &FragShader))
 		{
-			FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-			glShaderSource(FragmentShaderId, 1, &FragShader, 0);
-			glAttachShader(programId[pIndex], FragmentShaderId);
-			glCompileShader(FragmentShaderId);
-			checkShaderCompilation(FragmentShaderId);
+			FragmentShaderId[pIndex] = glCreateShader(GL_FRAGMENT_SHADER);
+			glShaderSource(FragmentShaderId[pIndex], 1, &FragShader, 0);
+			glAttachShader(programId[pIndex], FragmentShaderId[pIndex]);
+			glCompileShader(FragmentShaderId[pIndex]);
+			checkShaderCompilation(FragmentShaderId[pIndex]);
 		}
 	}
+	if (FragShader) { delete FragShader; FragShader = 0; }
+	if (VtxShader) { delete VtxShader; VtxShader = 0; }
 }
 
 void Game::createShaderProgram(int pIndex)
@@ -331,7 +354,7 @@ void Game::createShaderProgram(int pIndex)
 	glBindAttribLocation(programId[pIndex], VSShaderLib::TEXTURE_COORD_ATTRIB, "texCoord");
 
 	glLinkProgram(programId[pIndex]);
-	checkProgramLinkage(programId[pIndex], VertexShaderId, FragmentShaderId);
+	checkProgramLinkage(programId[pIndex], VertexShaderId[pIndex], FragmentShaderId[pIndex]);
 
 	pvm_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_pvm");
 	vm_uniformId[pIndex] = glGetUniformLocation(programId[pIndex], "m_viewModel");
@@ -417,15 +440,21 @@ void Game::checkProgramLinkage(GLuint programId, GLuint vertexShaderId, GLuint f
 	}
 }
 
-void Game::destroyShaderProgram()
+void Game::destroyShaderPrograms()
+{
+	destroyShaderProgram(0);
+	destroyShaderProgram(1);
+}
+
+void Game::destroyShaderProgram(int pIndex)
 {
 	glUseProgram(0);
-	glDetachShader(programId[0], VertexShaderId);
-	glDetachShader(programId[0], FragmentShaderId);
+	glDetachShader(programId[pIndex], VertexShaderId[pIndex]);
+	glDetachShader(programId[pIndex], FragmentShaderId[pIndex]);
 
-	glDeleteShader(FragmentShaderId);
-	glDeleteShader(VertexShaderId);
-	glDeleteProgram(programId[0]);
+	glDeleteShader(FragmentShaderId[pIndex]);
+	glDeleteShader(VertexShaderId[pIndex]);
+	glDeleteProgram(programId[pIndex]);
 
 	checkOpenGLError("ERROR: Could not destroy shaders.");
 }
@@ -436,7 +465,7 @@ void Game::cleanup()
 	// TODO: apagar estas duas linhas seguintes
 	/*if (FragShader) { delete FragShader; FragShader = 0; }
 	if (VtxShader) { delete VtxShader; VtxShader = 0; }*/
-	destroyShaderProgram();
+	destroyShaderPrograms();
 	destroyBufferObjects();
 
 	if (frog) { delete frog; frog = 0; }
@@ -678,4 +707,24 @@ bool Game::isGameLost()
 bool Game::isGamePlaying()
 {
 	return gameState == PLAYING;
+}
+
+void Game::setAlphaTest(AlphaTest alphaTest)
+{
+	GLuint loc = glGetUniformLocation(getShader(), "alphaTest");
+	glUniform1i(loc, alphaTest);
+	if (alphaTest == AT_TRANSLUCID)
+		glDepthMask(GL_FALSE);
+	else
+		glDepthMask(GL_TRUE);
+}
+
+int Game::getStartTime()
+{
+	return startTime;
+}
+
+Camera* Game::getCamera()
+{
+	return cam;
 }

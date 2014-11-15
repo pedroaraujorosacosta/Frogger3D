@@ -15,7 +15,9 @@ public:
 	Vector(const Vector& other);
 	~Vector();
 	void normalize();
+	float magnitude();
 	void printVector();
 	Vector& operator=(const Vector &v1);
+	Vector operator-(const Vector &v1);
 };
 #endif

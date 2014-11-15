@@ -28,7 +28,6 @@ class ManagerObj : public Manager
 	std::vector<MobileObj*> objectsMobileLane6;
 	std::vector<MobileObj*> objectsMobileLane7;
 	std::vector<MobileObj*> objectsMobileLane8;
-	std::vector<Object*> translucentObjs;
 
 	//frog collision variables
 	float frogXXs;

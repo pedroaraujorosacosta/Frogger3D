@@ -26,12 +26,18 @@ void BillboardObj::draw(){
 	modelview->push();
 	//then, puts the unitary cube in the right position
 	modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
-	//puts the quad in the origin of the referencial
-	modelview->translateMatrix(-0.5, 0.0, -0.5);
 
+	//puts the quad in the origin
 	modelview->push();
 	quad->setTexCount(mat.texCount);
-	quad->draw();
+		quad->draw();
+	modelview->pop();
+
+	modelview->push();
+	//puts the quad in the origin
+	modelview->rotateMatrix(0.0f, 0.0f, 1.0f, 180);
+	quad->setTexCount(mat.texCount);
+		quad->draw();
 	modelview->pop();
 
 	sendDataToShader();
@@ -40,7 +46,8 @@ void BillboardObj::draw(){
 
 void BillboardObj::init() 
 {
-	quad = new Quad(position, game);
+	float o[3] = { 0.0f, 0.0f, 0.0f };
+	quad = new Quad(o, game);
 
 	// set materials
 	float ambQuad[] = { 1.0f, 1.0f, 1.0f, 1.0f };

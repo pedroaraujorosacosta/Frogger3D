@@ -17,8 +17,9 @@ void Quad::draw(){
 	modelview->push();
 	//then, puts the unitary cube in the right position
 	modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
+	modelview->scaleMatrix(scale[0], scale[1], scale[2]);
 	//puts the unitary cube in the origin of the referencial
-	modelview->translateMatrix(-0.5, -0.5, -0.5);
+	modelview->translateMatrix(-0.5f, 0.0f, -0.5f);
 
 	sendDataToShader();
 	modelview->pop();

@@ -5,6 +5,8 @@
 #include "Object.h"
 #include "Matrix.h"
 #include "Game.h"
+#include "Vector.h"
+#include "Camera.h"
 
 #include <gl\glew.h>
 #include <GL\freeglut.h>
@@ -12,7 +14,10 @@
 
 Object::Object(float *position, Game *game) {
 	for (int i = 0; i < 3; i++)
+	{
 		this->position[i] = position[i];
+		scale[i] = 1.0f;
+	}
 	this->game = game;
 }
 
@@ -396,4 +401,37 @@ void Object::setShininess(float shininess)
 void Object::setTexCount(int texCount)
 {
 	mat.texCount = texCount;
+}
+
+bool Object::operator<(Object &rhs)
+{
+	Vector lhsV = Vector(position, 3);
+
+	Vector rhsV = Vector(rhs.position, 3);
+
+	// do this relative to camera coordinate system.
+	Matrix vm = game->getVM();
+	return (vm * lhsV).magnitude() < (vm * rhsV).magnitude();
+}
+
+bool comparatorObjects(Object *lhs, Object *rhs) 
+{ 
+	Vector lhsV = Vector(lhs->position, 3);
+
+	Vector rhsV = Vector(rhs->position, 3);
+
+	// do this relative to camera coordinate system.
+	/*Matrix vm = lhs->game->getVM();
+	return (vm * lhsV).magnitude() < (vm * rhsV).magnitude();*/
+	Camera *cam = lhs->game->getCamera();
+	Vector lhsDist = lhsV - cam->getEye();
+	Vector rhsDist = rhsV - cam->getEye();
+	return lhsDist.magnitude() < rhsDist.magnitude();
+}
+
+void Object::setScale(float sx, float sy, float sz)
+{
+	scale[0] = sx;
+	scale[1] = sy;
+	scale[2] = sz;
 }

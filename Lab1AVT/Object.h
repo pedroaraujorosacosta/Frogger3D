@@ -24,6 +24,7 @@ class Object : public IComponent
 
 protected:
 	float position[3];
+	float scale[3];
 	bool active;
 	float *vertices;
 	float *normals;
@@ -58,6 +59,11 @@ public:
 	void setEmissive(float *emissive);
 	void setShininess(float shininess);
 	void setTexCount(int texCount);
+
+	void setScale(float sx, float sy, float sz);
+
+	bool operator<(Object &rhs);
+	friend bool comparatorObjects(Object *lhs, Object *rhs);
 
 	float getPositionXXs(){
 		return position[0];

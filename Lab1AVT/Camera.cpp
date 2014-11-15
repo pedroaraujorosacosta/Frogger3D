@@ -187,3 +187,8 @@ bool Camera::isFacingBack()
 	float back[] = { 0.0f, -1.0f, 0.0f };
 	return true;
 }
+
+Vector Camera::getEye()
+{
+	return Vector(eye, 3);
+}

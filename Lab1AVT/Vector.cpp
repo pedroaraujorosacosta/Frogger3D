@@ -40,6 +40,14 @@ float Vector::norm(float *vector, int size)
 	return sqrt(norm);
 }
 
+float Vector::magnitude()
+{
+	float norm = 0;
+	for (int i = 0; i < size; i++)
+		norm += v[i] * v[i];
+
+	return sqrt(norm);
+}
 
 void Vector::normalize()
 {
@@ -60,5 +68,12 @@ Vector& Vector::operator=(const Vector &v1)
 	for (int i = 0; i < v1.size; i++)
 		v[i] = v1.v[i];
 	return *this;
+}
+
+Vector Vector::operator-(const Vector &v1)
+{
+	float resultf[3] = { v[0] - v1.v[0], v[1] - v1.v[1], v[2] - v1.v[2] };
+	Vector result(resultf, 3);
+	return result;
 }
 

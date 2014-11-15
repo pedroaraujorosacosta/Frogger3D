@@ -122,7 +122,7 @@ void Road::init() {
 	float o[3] = { 0.0, 0.0, 0.0 };
 
 	side = new Cube(o, this->game);
-	road = new Cube(o, this->game);
+	road = new Cube(o, this->game, true, 2.0f);
 	lampPost = new Cube(o, this->game);
 	lampadaTopo = new Sphere(o, this->game, 1, 4);
 

@@ -16,7 +16,7 @@ typedef struct tImageTGA
 } tImageTGA;
 
 
-void TGA_Texture(unsigned int *textureArray, char *strFileName, int ID);
+void TGA_Texture(unsigned int *textureArray, char *strFileName, int ID, bool mipMaps);
 
 tImageTGA *Load_TGA(char *filename);
 bool readFile(const char *filename, char **output);
