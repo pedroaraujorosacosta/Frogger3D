@@ -33,6 +33,7 @@ class Game : IComponent {
 	double aspectRatio;
 	Stack modelViewStack;
 	Stack projectionStack;
+	double time;
 	double startTime;
 	int windowHandle;
 	unsigned int frameCount;
@@ -82,8 +83,7 @@ class Game : IComponent {
 	void checkProgramLinkage(GLuint programId, GLuint vertexShaderId, GLuint fragmentShaderId);
 	void checkShaderCompilation(GLuint shaderId);
 	unsigned int getStreamSize(std::ifstream &ifs);
-	void createBufferObjects();
-	void destroyBufferObjects();
+	void destroyTextureObjects();
 	void resetProgram();
 	void createShaderProgram(int pIndex);
 	void loadShader(int pIndex, unsigned int ShaderType, char *filename);

@@ -9,7 +9,6 @@
 
 class Matrix {
 public:
-	//std::vector<float> m;
 	float *m;
 	int size;
 
@@ -25,7 +24,6 @@ public:
 	friend Matrix operator*(Matrix lhs, const Matrix &rhs);
 	void transposeMatrix();
 	Matrix invertMatrix();
-	//Matrix multMatrix(Matrix &m1, Matrix &m2);
 	int sizeofMatrix();
 };
 

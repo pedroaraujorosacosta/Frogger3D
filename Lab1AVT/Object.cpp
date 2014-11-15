@@ -36,6 +36,10 @@ Object::~Object() {
 	glDeleteVertexArrays(1, &VaoId);
 	checkOpenGLError("ERROR: Could not destroy VAOs and VBOs.");
 
+	delete[] vertices;
+	delete[] normals;
+	delete[] texCoords;
+	delete[] faceIndex;
 }
 
 void Object::draw() {
@@ -177,12 +181,9 @@ float * Object::circularProfile(float minAngle, float maxAngle, float radius, in
 	float step = (maxAngle - minAngle) / divisions;
 
 	for (int i = 0, k = -1; i < divisions + 3; ++i, ++k) {
-
 		p[i * 2] = radius * cos(minAngle + k * step) + transX;
 		p[i * 2 + 1] = radius * sin(minAngle + k * step) + transY;
-		//		printf("%f %f\n", p[i*2], p[i * 2 + 1]);
 	}
-
 
 	return p;
 }
@@ -421,8 +422,6 @@ bool comparatorObjects(Object *lhs, Object *rhs)
 	Vector rhsV = Vector(rhs->position, 3);
 
 	// do this relative to camera coordinate system.
-	/*Matrix vm = lhs->game->getVM();
-	return (vm * lhsV).magnitude() < (vm * rhsV).magnitude();*/
 	Camera *cam = lhs->game->getCamera();
 	Vector lhsDist = lhsV - cam->getEye();
 	Vector rhsDist = rhsV - cam->getEye();

@@ -14,7 +14,6 @@ class MobileObj;
 
 class ManagerObj : public Manager
 {
-
 	float dificuldade;
 	float lateralEsquerda;
 	float lateralDireita;
@@ -74,7 +73,7 @@ public:
 	~ManagerObj();
 	void draw();
 	void reset();
-	void update(float dt,Frog* frog);
+	void update(float dt, Frog* frog);
 
 	void setDificuldade(float _dificuldade);
 	void setLateralEsquerda(float _lateralEsquerda);

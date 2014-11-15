@@ -170,7 +170,8 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 }
 
 ManagerObj::~ManagerObj() {
-
+	for (Object* o : objects)
+		delete o;
 }
 
 void ManagerObj::draw() {

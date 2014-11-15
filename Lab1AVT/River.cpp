@@ -14,7 +14,8 @@ River::River(float *position, Game *game) : Object(position, game)
 
 River::~River()
 {
-
+	for (Object *o : objects)
+		delete o;
 }
 
 void River::draw(){

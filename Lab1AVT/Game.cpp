@@ -45,7 +45,6 @@ void Game::init(int argc, char* argv[])
 	setupGLEW();
 	setupOpenGL();
 	createShaderPrograms();
-	createBufferObjects();
 	//x esquerda - direita
 	//y cima - baixo
 	//z near - far -> nao afecta sem perspective
@@ -81,14 +80,6 @@ void Game::init(int argc, char* argv[])
 	//game state
 	this->gameState = PLAYING; 
 }
-
-// light direction
-float ldir[4] = { 1.0f, 1.0f, -1.0f, 0.0f };
-Vector lightDir(ldir, 4);
-float lpos[4] = { 0.0f, 0.0f, 14.0f, 1.0f };
-Vector lightPos(lpos, 4);
-float sdir[4] = { -4.0f, -6.0f, -2.0f, 0.0f };
-Vector spotDir(sdir, 4);
 
 void Game::setProgramIndex(int pIndex)
 {
@@ -218,6 +209,8 @@ void Game::reset()
 	managerObj->reset();
 
 	startTime = glutGet(GLUT_ELAPSED_TIME);
+	//modelViewStack.cleanGarbage();
+	//projectionStack.cleanGarbage();
 }
 
 void Game::update(float dt) 
@@ -229,6 +222,15 @@ void Game::update(float dt)
 		frog->update(dt);
 		//se houver um crash o frog vai fazer update para o inicio
 	}
+
+	// clean the stacks every minute
+	/*time += dt;
+	if ( time > 60.0f ) 
+	{
+		time = 0;
+		modelViewStack.cleanGarbage();
+		projectionStack.cleanGarbage();
+	}*/
 }
 
 void Game::reshape(int w, int h)
@@ -243,6 +245,7 @@ void Game::setupGLUT(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
 	startTime = glutGet(GLUT_ELAPSED_TIME);
+	time = 0.0f;
 
 	glutInitContextVersion(3, 3);
 	glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
@@ -337,10 +340,6 @@ void Game::createShaderProgram(int pIndex)
 		loadShader(1, VSShaderLib::VERTEX_SHADER, "fontshade.vert");
 		loadShader(1, VSShaderLib::FRAGMENT_SHADER, "fontshade.frag");
 		break;
-		/*	case 2:
-		loadShader(2, VSShaderLib::VERTEX_SHADER, "spotlight.vert");
-		loadShader(2, VSShaderLib::FRAGMENT_SHADER, "spotlight.frag");
-		break;*/
 	}
 
 	glBindFragDataLocation(programId[pIndex], 0, "colorOut");
@@ -457,25 +456,22 @@ void Game::destroyShaderProgram(int pIndex)
 void Game::cleanup()
 {
 	if (shader) { delete shader; shader = 0; }
-	// TODO: apagar estas duas linhas seguintes
-	/*if (FragShader) { delete FragShader; FragShader = 0; }
-	if (VtxShader) { delete VtxShader; VtxShader = 0; }*/
 	destroyShaderPrograms();
-	destroyBufferObjects();
+	destroyTextureObjects();
 
 	if (frog) { delete frog; frog = 0; }
 	if (cam) { delete cam; cam = 0; }
 
 	vsfl->deleteSentence(uiWinID);
 	vsfl->deleteSentence(uiLoseID);
+	if (vsfl) { delete vsfl; vsfl = 0; }
+
+	if (managerLight) {	delete managerLight; managerLight = 0; }
+	if (managerObj) { delete managerObj; managerObj = 0; }
 }
 
-void Game::createBufferObjects() {
-	//TODO chamar Object para todos os objects
-}
-
-void Game::destroyBufferObjects() {
-	//TODO chamar ~Object para todos os objects
+void Game::destroyTextureObjects() {
+	glDeleteTextures(4, TextureArray);
 }
 
 void Game::timer(int value) {

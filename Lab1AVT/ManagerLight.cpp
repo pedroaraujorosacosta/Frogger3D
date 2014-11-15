@@ -12,7 +12,8 @@ ManagerLight::ManagerLight(Game *game) : Manager(game)
 }
 
 ManagerLight::~ManagerLight() {
-
+	for (Light *light : lights)
+		delete light;
 }
 
 void ManagerLight::illuminate() {

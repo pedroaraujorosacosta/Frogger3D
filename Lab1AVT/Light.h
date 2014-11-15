@@ -28,6 +28,7 @@ private:
 
 public:
 	Light(int num, LightType type, Game *game);
+	~Light();
 
 	void update(float dt);
 	void draw();

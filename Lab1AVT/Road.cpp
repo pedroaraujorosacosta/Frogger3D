@@ -186,5 +186,4 @@ void Road::init() {
 	lampadaTopo->setEmissive(emissivePost2);
 	lampadaTopo->setShininess(shininessPost2);
 	lampadaTopo->setTexCount(texcountPost2);
-
 }

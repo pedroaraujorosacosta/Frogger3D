@@ -12,7 +12,6 @@ FloatingLog::FloatingLog(float *position, Game *game, float velocity, float *dir
 FloatingLog::~FloatingLog()
 {
 	delete body;
-
 	delete front;
 	delete back;
 }

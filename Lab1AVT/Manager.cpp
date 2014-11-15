@@ -2,12 +2,10 @@
 #include <string>
 
 #include "Game.h"
-
 #include "Manager.h"
 
 
 Manager::Manager(Game *game) {
-
 	this->game = game;
 }
 
@@ -20,7 +18,6 @@ void Manager::draw() {
 }
 
 void Manager::init(){
-
 
 }
 

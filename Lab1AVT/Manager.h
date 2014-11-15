@@ -6,13 +6,10 @@ class Game;
 
 class Manager
 {
-
-
 protected:
 
 	bool active;
 	Game *game;
-
 
 	virtual void init();
 

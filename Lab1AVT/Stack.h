@@ -2,12 +2,15 @@
 #define __STACK_H__
 
 #include <stack>
+#include <vector>
 
 class Matrix;
 
 class Stack 
 {
 	std::stack<Matrix*> s;
+	std::vector<Matrix*> garbage;
+
 	static float dotProduct(float *u, float *v, int size);
 	float norm(float *vector, int size);
 	void normalize(float *vector, int size);
@@ -18,6 +21,7 @@ public:
 	void loadIdentity();
 	void loadMatrix(Matrix* matrix);
 	void cleanStack();
+	void cleanGarbage();
 	void push();
 	void pop();
 	void printStack();

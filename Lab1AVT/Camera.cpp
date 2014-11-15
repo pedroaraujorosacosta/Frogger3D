@@ -100,7 +100,7 @@ void Camera::setCamera() {
 		setAt(atX, atY, atZ);
 		setUp(0.0f, 0.0f, 1.0f);
 
-		game->getProjectionStack()->perspective(l, r, b, t, n, f); //TODO
+		game->getProjectionStack()->perspective(l, r, b, t, n, f);
 		break;
 	default:
 		break;

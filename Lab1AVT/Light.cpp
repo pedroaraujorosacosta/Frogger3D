@@ -19,6 +19,15 @@ Light::Light(int num, LightType type, Game *game)
 	this->game = game;
 }
 
+Light::~Light()
+{
+	delete amb;
+	delete dif;
+	delete spec;
+	delete pos;
+	delete dir;
+}
+
 void Light::setAmbient(Vector amb)
 {
 	*(this->amb) = amb;

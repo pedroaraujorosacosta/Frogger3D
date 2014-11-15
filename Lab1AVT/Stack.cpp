@@ -32,6 +32,16 @@ void Stack::cleanStack(){
 		s.pop();
 		if(m!=0) delete m;
 	}
+	cleanGarbage();
+}
+
+void Stack::cleanGarbage()
+{
+	printf("Cleaned a stack!");
+	for (Matrix *m : garbage) {
+		if (m != 0) delete m;
+	}
+	garbage.clear();
 }
 
 
@@ -41,7 +51,9 @@ void Stack::push(){
 }
 
 void Stack::pop(){
+	Matrix *m = s.top();
 	s.pop();
+	if (m != 0) delete m;
 }
 
 Matrix* Stack::getTop() {
@@ -76,8 +88,10 @@ void Stack::translateMatrix(float tx, float ty, float tz) {
 	
 	Matrix* nova = new Matrix(4);
 	(*nova) = *s.top() * *tMatrix;
+	garbage.push_back(s.top());
 	s.pop();
 	loadMatrix(nova);
+
 }
 
 
@@ -94,6 +108,7 @@ void Stack::scaleMatrix(float sx, float sy, float sz) {
 
 	Matrix* nova = new Matrix(4);
 	(*nova)= *s.top() * *sMatrix;
+	garbage.push_back(s.top());
 	s.pop();
 	loadMatrix(nova);
 }
@@ -121,6 +136,7 @@ void Stack::rotateMatrix(float x, float y, float z, float alpha) {
 
 	Matrix* nova = new Matrix(4);
 	(*nova) = *s.top() * *rMatrix;
+	garbage.push_back(s.top());
 	s.pop();
 	loadMatrix(nova);
 }
@@ -147,6 +163,7 @@ void Stack::perspective(float left, float right, float bottom, float top, float 
 
 	Matrix* nova = new Matrix(4);
 	(*nova) = *s.top() * *sMatrix;
+	garbage.push_back(s.top());
 	s.pop();
 	loadMatrix(nova);
 
@@ -238,6 +255,7 @@ void Stack::lookAt(float eyex, float eyey, float eyez,
 
 	Matrix* nova = new Matrix(4);
 	(*nova) = *s.top() * *vMatrix;
+	garbage.push_back(s.top());
 	s.pop();
 	loadMatrix(nova);
 }
@@ -274,6 +292,7 @@ void Stack::lookAt(float *right, float *up, float *eye, float *lookPoint)
 
 	Matrix* nova = new Matrix(4);
 	(*nova)= *s.top() * *vMatrix;
+	garbage.push_back(s.top());
 	s.pop();
 	loadMatrix(nova);
 }
@@ -301,6 +320,7 @@ void Stack::orthogonal(float left, float right, float bottom, float top, float n
 
 	Matrix* nova = new Matrix(4);
 	(*nova) = *s.top() * *sMatrix;
+	garbage.push_back(s.top());
 	s.pop();
 	loadMatrix(nova);
 }
