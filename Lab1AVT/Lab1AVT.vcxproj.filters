@@ -141,6 +141,12 @@
     <ClCompile Include="Flare.cpp">
       <Filter>Source Files\Flare</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -246,6 +252,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Flare.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PartycleSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
