@@ -81,6 +81,9 @@ void Game::init(int argc, char* argv[])
 
 	//game state
 	this->gameState = PLAYING; 
+
+	//Flare it all!
+	flare = new Flare();
 }
 
 void Game::setProgramIndex(int pIndex)
@@ -155,6 +158,9 @@ void Game::draw() {
 
 	// Render the UI
 	renderHUD();
+
+	// Draw flare
+	flare->draw(this);
 
 	glutSwapBuffers();
 }

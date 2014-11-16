@@ -9,6 +9,8 @@
 #include <fstream>
 #include <vector>
 
+
+
 #define MY_VERTEX_COORD_ATTRIB 0
 #define MY_NORMAL_ATTRIB 1
 #define MY_TEXTURE_COORD_ATTRIB 2
@@ -21,6 +23,7 @@ class VSShaderLib;
 class ManagerLight;
 class Light;
 class VSFontLib;
+class Flare;
 
 class Game : IComponent {
 
@@ -73,6 +76,8 @@ class Game : IComponent {
 	GLuint TextureArray[4];
 	unsigned int uiWinID;
 	unsigned int uiLoseID;
+
+	Flare* flare;
 
 	void setupGLUT(int argc, char* argv[]);
 	void setupGLEW();

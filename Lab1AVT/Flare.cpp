@@ -1,8 +1,13 @@
-#include <GL/glut.h>
 #include <stdio.h>
 #include <math.h>
-#include "Flare.h"
+#include <stdlib.h>
+#include <memory.h>
 
+#include <string.h>
+
+#include "Flare.h"
+#include "Quad.h"
+#include "Game.h"
 
 
 typedef struct TEXTURE_DEF
@@ -243,8 +248,7 @@ void loadFlareFile(FLARE_DEF *flare, char *filename)
 			unsigned int    a = 0, r = 0, g = 0, b = 0;
 
 			fgets(buf, sizeof(buf), f);
-			if (sscanf_s(buf, "%s %lf %lf ( %d %d %d %d )",
-				name, &dDist, &dSize, &a, &r, &g, &b))
+			if (sscanf_s(buf, "%s %lf %lf ( %d %d %d %d )", name, _countof(name), &dDist, &dSize, &a, &r, &g, &b))
 			{
 				flare->element[n].texture = TM_getNamedTexture(name);
 				flare->element[n].fDistance = (float)dDist;
@@ -281,7 +285,7 @@ Flare::Flare() {
 	else
 		nBackground = BACK_COLOUR0;
 
-	newFlare(0);
+	newFlare(1);
 }
 
 void        TM_purgeTextures(void)
@@ -298,4 +302,146 @@ void        TM_purgeTextures(void)
 
 Flare::~Flare() {
 	TM_purgeTextures();
+}
+
+
+void    FLARE_render(FLARE_DEF *flare, int lx, int ly, int cx, int cy, Game* game)
+{
+	int     dx, dy;          // Screen coordinates of "destination"
+	int     px, py;          // Screen coordinates of flare element
+	int     maxflaredist, flaredist, flaremaxsize, flarescale;
+	int     width, height, alpha;    // Piece parameters;
+	int     i;
+	FLARE_ELEMENT_DEF    *element;
+
+	// Compute how far off-center the flare source is.
+	maxflaredist = isqrt(cx*cx + cy*cy);
+	flaredist = isqrt((lx - cx)*(lx - cx) +
+		(ly - cy)*(ly - cy));
+	flaredist = (maxflaredist - flaredist);
+	flaremaxsize = (int)(glutGet(GLUT_WINDOW_WIDTH)* flare->fMaxSize);
+	flarescale = (int)(glutGet(GLUT_WINDOW_WIDTH) * flare->fScale);
+
+	// Destination is opposite side of centre from source
+	dx = cx + (cx - lx);
+	dy = cy + (cy - ly);
+
+	// Render each element.
+	for (i = 0; i < flare->nPieces; ++i)
+	{
+		element = &flare->element[i];
+
+		// Position is interpolated along line between start and destination.
+		px = (int)((1.0f - element->fDistance)*lx + element->fDistance*dx);
+		py = (int)((1.0f - element->fDistance)*ly + element->fDistance*dy);
+
+		// Piece size are 0 to 1; flare size is proportion of
+		// screen width; scale by flaredist/maxflaredist.
+		width = (int)((flaredist*flarescale*element->fSize) / maxflaredist);
+
+		// Width gets clamped, to allows the off-axis flares
+		// to keep a good size without letting the elements get
+		// too big when centered.
+		if (width > flaremaxsize)
+		{
+			width = flaremaxsize;
+		}
+
+		// Flare elements are square (round) so height is just
+		// width scaled by aspect ratio.
+		height = HEIGHTFROMWIDTH(width);
+		alpha = (flaredist*(element->argb >> 24)) / maxflaredist;
+
+		Stack* modelview = game->getModelViewStack();
+
+		if (width > 1)
+		{
+			//unsigned int    argb = (alpha << 24) | (element->argb & 0x00ffffff);
+			float pos[3] = { px - width / 2, py - height / 2, 0.0 };
+			Quad* quad = new Quad(pos, game);
+			float color[4] = { 1.0, 1.0, 1.0, 0.0};
+			quad->setAmbient(color);
+			quad->setDiffuse(color);
+			quad->setSpecular(color);
+			quad->setTexCount(2);
+			//element->texture!!!
+			modelview->push();
+				quad->draw();
+			modelview->pop();
+			//drawQuad(px - width / 2, py - height / 2, width, height, element->texture, argb);
+		}
+	}
+}
+
+int     xFlare = 10;
+int     yFlare = 10;
+
+void render(Game* game)
+{
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	float pos[3] = { 0.0f, 0.0f, 0.0f };
+	Quad *quad = new Quad(pos, game);
+
+	float color1[4] = { 1.0, 1.0, 1.0, 1.0 };
+	float color2[4] = { 1.0, 0.4, 0.4, 1.0 };
+	float color3[4] = { 1.0, 0.0, 0.0, 0.0 };
+	float color4[4] = { 1.0, 1.0, 1.0, 0.8 };
+
+	Stack* modelview = game->getModelViewStack();
+
+	switch (nBackground)
+	{
+	case BACK_TEXTURED:
+		//texBack
+		quad->setTexCount(1);
+		quad->setAmbient(color1);
+		quad->setDiffuse(color1);
+		quad->setSpecular(color1);
+		modelview->push();
+			quad->draw();
+		modelview->pop();
+		//drawQuad( 0, 0, SCREENwidth, SCREENheight, texBack, 0xffffffff );
+		break;
+	case BACK_COLOUR0:
+		quad->setTexCount(0);
+		quad->setAmbient(color2);
+		quad->setDiffuse(color2);
+		quad->setSpecular(color2);
+		modelview->push();
+			quad->draw();
+		modelview->pop();
+		// drawQuad( 0, 0, SCREENwidth, SCREENheight, NULL, 0xff6060ff );
+		break;
+	case BACK_COLOUR1:
+		quad->setTexCount(0);
+		quad->setAmbient(color3);
+		quad->setDiffuse(color3);
+		quad->setSpecular(color3);
+		modelview->push();
+			quad->draw();
+		modelview->pop();
+		//drawQuad( 0, 0, SCREENwidth, SCREENheight, NULL, 0xff000000 );
+		break;
+	}
+
+	Quad* quad2 = new Quad(pos, game);
+	if (bShowSun)
+		//texSun
+		quad2->setTexCount(2);
+		quad2->setAmbient(color4);
+		quad2->setDiffuse(color4);
+		quad2->setSpecular(color4);
+		modelview->push();
+			quad->draw();
+		modelview->pop();
+		//drawQuad(xFlare - SUNWIDTH / 2, yFlare - SUNHEIGHT / 2, SUNWIDTH, SUNHEIGHT, texSun, 0xffffffe0);
+
+		FLARE_render(&renderFlare, xFlare, yFlare, glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2, game);
+}
+
+void Flare::draw(Game* game)
+{
+	render(game);
 }
