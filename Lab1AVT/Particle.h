@@ -3,26 +3,30 @@
 
 #include "BillboardObj.h"
 
+class Game;
+
 class Particle : public BillboardObj {
 
 	float pos[3];
 	float v[3];
 	float a[3];
-	float size;
 	float rgba[4];
 	float life;
-	float decay;
-	const float MAXLIFE;
-
+	float fade;
+	const float MAXLIFE = 1.0;
+	GLuint texname;
+	Game* game;
 
 
 public:
-	Particle(float* pos, float *v, float* a, float size, float* rgba, float life, float decay, Game* game, int width, int height);
+	Particle(float* pos, Game* game, int width, int height);
 	void reset();
 	void update(float dt);
 	bool isAlive();
 	void respawn(float posX, float posY, float posZ);
-
+	void LoadTexture(const char * bitmap_file);
+	void init();
+	void draw();
 };
 
 #endif
