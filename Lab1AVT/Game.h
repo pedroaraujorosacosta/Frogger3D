@@ -74,7 +74,7 @@ class Game : IComponent {
 	bool isFogOn;
 	bool isFlareOn;
 	char keyDown;
-	GLuint TextureArray[4];
+	GLuint TextureArray[5];
 	unsigned int uiWinID;
 	unsigned int uiLoseID;
 
@@ -139,7 +139,7 @@ public:
 	int getStartTime();
 
 	void winGame();
-
+	void LoadBMPTexture(unsigned int *textureArray, const char * bitmap_file, int ID);
 };
 
 #endif

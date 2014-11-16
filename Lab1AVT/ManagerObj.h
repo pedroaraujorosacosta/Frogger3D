@@ -11,6 +11,8 @@
 
 class Object;
 class MobileObj;
+class Particle;
+class ParticleSystem;
 
 class ManagerObj : public Manager
 {
@@ -63,6 +65,9 @@ class ManagerObj : public Manager
 
 	//Checking the river
 	bool onSurface;
+
+	Particle* p;
+	ParticleSystem *ps;
 
 protected:
 

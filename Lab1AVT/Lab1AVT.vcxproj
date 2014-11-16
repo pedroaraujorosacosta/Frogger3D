@@ -78,6 +78,7 @@
     <ClCompile Include="FontLib.cpp" />
     <ClCompile Include="Frog.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="glbmp.c" />
     <ClCompile Include="IComponent.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
@@ -89,6 +90,8 @@
     <ClCompile Include="Models.cpp" />
     <ClCompile Include="Monkey.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="River.cpp" />
     <ClCompile Include="Road.cpp" />
@@ -118,6 +121,7 @@
     <ClInclude Include="FontLib.h" />
     <ClInclude Include="Frog.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="glbmp.h" />
     <ClInclude Include="IComponent.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="ManagerLight.h" />
@@ -128,6 +132,8 @@
     <ClInclude Include="Monkey.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ManagerObj.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="PartycleSystem.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="River.h" />
     <ClInclude Include="Road.h" />
@@ -159,6 +165,7 @@
     <Image Include="arial.tga" />
     <Image Include="grass.tga" />
     <Image Include="ground.tga" />
+    <Image Include="particula.bmp" />
     <Image Include="tree.tga" />
     <Image Include="water.tga" />
   </ItemGroup>

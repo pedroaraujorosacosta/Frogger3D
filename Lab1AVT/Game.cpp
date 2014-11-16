@@ -21,6 +21,7 @@
 #include "FontLib.h"
 #include "Flare.h"
 #include <cctype>
+#include "glbmp.h" 
 
 #define LIFES 5
 
@@ -66,11 +67,14 @@ void Game::init(int argc, char* argv[])
 	cam = new Camera(this, t, b, n, f, l, r, FOV, S);
 
 	//setup textures
-	glGenTextures(4, TextureArray);
+	glGenTextures(5, TextureArray);
 	TGA_Texture(TextureArray, "water.tga", 0, true);
 	TGA_Texture(TextureArray, "ground.tga", 1, true);
 	TGA_Texture(TextureArray, "grass.tga", 2, true);
 	TGA_Texture(TextureArray, "tree.tga", 3, false);
+	//TGA_Texture(TextureArray, "particula.bmp", 4, false);
+	LoadBMPTexture(TextureArray, "particula.bmp", 4);
+	
 
 	vsfl = new VSFontLib(this);
 	vsfl->load("arial");
@@ -124,6 +128,9 @@ void Game::draw() {
 
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[3]);
+
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[4]);
 
 	// activate alpha test to draw opaques only
 	setAlphaTest(AT_OPAQUE);
@@ -805,4 +812,30 @@ void Game::clearFog()
 	float fogDensity = 0.0f;
 	GLuint loc = glGetUniformLocation(getShader(), "fogDensity");
 	glUniform1f(loc, fogDensity);
+}
+
+void Game::LoadBMPTexture(unsigned int *textureArray, const char * bitmap_file, int ID)
+{
+
+	glbmp_t bitmap;     //object to fill with data from glbmp
+
+	//try to load the specified file--if it fails, dip out
+	if (!glbmp_LoadBitmap(bitmap_file, 0, &bitmap))
+	{
+		fprintf(stderr, "Error loading bitmap file: %s\n", bitmap_file);
+		exit(1);
+	}
+
+		
+	glBindTexture(GL_TEXTURE_2D, textureArray[ID]);
+	//copy data from bitmap into texture
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bitmap.width, bitmap.height,
+		0, GL_RGB, GL_UNSIGNED_BYTE, bitmap.rgb_data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	
+	//free the bitmap
+	glbmp_FreeBitmap(&bitmap);
 }
