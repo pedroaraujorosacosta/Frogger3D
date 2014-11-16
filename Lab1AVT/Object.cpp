@@ -11,6 +11,7 @@
 #include <gl\glew.h>
 #include <GL\freeglut.h>
 #include "vsShaderLib.h"
+#include "Models.h"
 
 Object::Object(float *position, Game *game) {
 	for (int i = 0; i < 3; i++)
@@ -433,4 +434,10 @@ void Object::setScale(float sx, float sy, float sz)
 	scale[0] = sx;
 	scale[1] = sy;
 	scale[2] = sz;
+}
+
+void Object::loadObjectFromFile(std::string filename)
+{
+	objLoader loader;
+	loader.load(filename.c_str(), &vertices, &normals, &texCoords, &faceIndex, &verticeCount, &faceCount);
 }

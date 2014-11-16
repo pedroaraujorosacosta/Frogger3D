@@ -34,6 +34,9 @@
     <Filter Include="Source Files\Flare">
       <UniqueIdentifier>{a4cb1d2d-dcff-4908-a295-ffc5c7f60ad9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{a8cf4a07-6a91-480f-8528-9b75c567fa56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -124,6 +127,15 @@
       <Filter>Source Files\Basic Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Models.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="textureLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Monkey.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Flare.cpp">
@@ -224,6 +236,15 @@
     <ClInclude Include="Tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Models.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="textureLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Monkey.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Flare.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -281,5 +302,10 @@
     <Xml Include="arial.xml">
       <Filter>Fonts</Filter>
     </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="monkey.obj">
+      <Filter>Models</Filter>
+    </Object>
   </ItemGroup>
 </Project>

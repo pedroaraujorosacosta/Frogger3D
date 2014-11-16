@@ -65,6 +65,8 @@ public:
 	bool operator<(Object &rhs);
 	friend bool comparatorObjects(Object *lhs, Object *rhs);
 
+	void loadObjectFromFile(std::string filename);
+
 	float getPositionXXs(){
 		return position[0];
 	}
