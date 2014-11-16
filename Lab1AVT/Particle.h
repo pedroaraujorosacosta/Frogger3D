@@ -8,7 +8,7 @@ class Quad;
 
 class Particle : public BillboardObj {
 
-	float pos[3];
+
 	float v[3];
 	float a[3];
 	float rgba[4];

@@ -30,9 +30,9 @@ void Particle::init()
 	v = 0.8*frand() + 0.2;
 	phi = frand()*M_PI;
 	theta = 2.0*frand()*M_PI;
-	pos[0] = 0.0f;
-	pos[1] = 15.0f;
-	pos[2] = 0.0f;
+	position[0] = 0.0f;
+	position[1] = 15.0f;
+	position[2] = 0.0f;
 	this->v[0] = v * cos(theta) * sin(phi);
 	this->v[1] = v * cos(phi);
 	this->v[2] = v * sin(theta) * sin(phi);
@@ -62,7 +62,7 @@ void Particle::draw() {
 		Stack* modelview = game->getModelViewStack();
 
 		modelview->push();
-		modelview->translateMatrix(this->pos[0], this->pos[1], this->pos[2]);
+		modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
 		quad->draw();
 		modelview->pop();
 	}
@@ -77,15 +77,15 @@ void Particle::update(float dt)
 {
 	float delta;
 	delta = dt * 0.00378;
-	pos[0] += v[0] * delta;
-	pos[1] += v[1] * delta;
-	pos[2] += v[2] * delta;
+	position[0] += v[0] * delta;
+	position[1] += v[1] * delta;
+	position[2] += v[2] * delta;
 	v[0] += a[0] * delta;
 	v[1] += a[1] * delta;
 	v[2] += a[2] * delta;
 	life -= fade;
 	rgba[3] = life;
-	std::cout << pos[0] << " " << pos[1] << " " << pos[2] << std::endl;
+	//std::cout << position[0] << " " << position[1] << " " << position[2] << std::endl;
 	//glutPostRedisplay();
 	//glutTimerFunc(33, update, 1);
 }
@@ -96,9 +96,9 @@ void Particle::respawn(float posX, float posY, float posZ)
 	double v = 0.8f * frand() + 0.2f;
 	double phi = frand()*M_PI;
 	double theta = 2.0f*frand()*M_PI;
-	pos[0] = posX;
-	pos[1] = posY;
-	pos[2] = posZ;
+	position[0] = posX;
+	position[1] = posY;
+	position[2] = posZ;
 	this->v[0] = v * cos(theta) * sin(phi);
 	this->v[1] = v * sin(theta) * sin(phi);
 	this->v[2] = v * cos(phi);
