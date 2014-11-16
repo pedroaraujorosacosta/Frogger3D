@@ -62,7 +62,7 @@ void Particle::draw() {
 		Stack* modelview = game->getModelViewStack();
 
 		modelview->push();
-		modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
+		modelview->translateMatrix(this->pos[0], this->pos[1], this->pos[2]);
 		quad->draw();
 		modelview->pop();
 	}

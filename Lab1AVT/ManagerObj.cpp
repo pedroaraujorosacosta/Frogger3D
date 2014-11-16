@@ -173,7 +173,7 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	float pos[3] = { 0.0, 0.0, 1.0 };
 	p = new Particle(pos, game, 1, 1);
 
-	ps = new ParticleSystem(game, 10, 10, 1.0);
+	ps = new ParticleSystem(game, 50, 10, 1.0);
 }
 
 ManagerObj::~ManagerObj() {
@@ -538,7 +538,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 	}
 		
 
-	ps->update(0.2);
+	ps->update(50.0);
 }
 
 
