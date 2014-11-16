@@ -85,12 +85,15 @@
     <ClCompile Include="ManagerObj.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="MobileObj.cpp" />
+    <ClCompile Include="Models.cpp" />
+    <ClCompile Include="Monkey.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="River.cpp" />
     <ClCompile Include="Road.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Stack.cpp" />
+    <ClCompile Include="textureLoader.cpp" />
     <ClCompile Include="TGA.cpp" />
     <ClCompile Include="Torus.cpp" />
     <ClCompile Include="Tree.cpp" />
@@ -118,6 +121,8 @@
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MobileObj.h" />
+    <ClInclude Include="Models.h" />
+    <ClInclude Include="Monkey.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ManagerObj.h" />
     <ClInclude Include="Quad.h" />
@@ -125,6 +130,7 @@
     <ClInclude Include="Road.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Stack.h" />
+    <ClInclude Include="textureLoader.h" />
     <ClInclude Include="TGA.h" />
     <ClInclude Include="Torus.h" />
     <ClInclude Include="Tree.h" />
@@ -147,6 +153,9 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="arial.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="monkey.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

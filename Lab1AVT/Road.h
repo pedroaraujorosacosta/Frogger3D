@@ -4,6 +4,7 @@
 #include "Object.h"
 #include "Cube.h"
 #include "Sphere.h"
+#include "Monkey.h"
 
 class Road : public Object {
 
@@ -11,6 +12,7 @@ class Road : public Object {
 	Cube *road;
 	Cube *lampPost;
 	Sphere *lampadaTopo;
+	Monkey *obj;
 	
 protected:
 	void init();

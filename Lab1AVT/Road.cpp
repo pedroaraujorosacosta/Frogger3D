@@ -26,6 +26,13 @@ void Road::draw(){
 
 	modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
 
+
+	/*modelview->push();
+	modelview->translateMatrix(0.0f, -1.0f, 2.5f);
+	obj->draw();
+	modelview->pop();*/
+
+
 	modelview->push();
 	modelview->scaleMatrix(40.0, 10.0, 1.0);
 	road->setTexCount(2);
@@ -186,4 +193,17 @@ void Road::init() {
 	lampadaTopo->setEmissive(emissivePost2);
 	lampadaTopo->setShininess(shininessPost2);
 	lampadaTopo->setTexCount(texcountPost2);
+
+
+	/*float ambMonkey[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	float diffMonkey[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	float specMonkey[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	float emissiveMonkey[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float shininessMonkey = 100.0f;
+	obj = new Monkey(o, game);
+	obj->setAmbient(ambMonkey);
+	obj->setDiffuse(diffMonkey);
+	obj->setSpecular(specMonkey);
+	obj->setEmissive(emissiveMonkey);
+	obj->setShininess(shininessMonkey);*/
 }
