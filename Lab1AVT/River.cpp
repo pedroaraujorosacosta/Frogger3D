@@ -41,12 +41,14 @@ void River::update(float dt)
 }
 
 void River::init() {
+	
 	// init trees
 	float dir[3] = { 0.0, -1.0, 0.0 };
+
 	float tree1f[3] = { 0.0f, -6.0f, 1.0f };
 	Tree *tree1 = new Tree(tree1f, game, dir, 1.0, 1.0);
 	objects.push_back(tree1);
-
+	
 	float tree2f[3] = { 8.0f, -6.0f, 1.0f };
 	Tree *tree2 = new Tree(tree2f, game, dir, 1.0, 1.0);
 	objects.push_back(tree2);
@@ -66,7 +68,7 @@ void River::init() {
 	float tree6f[3] = { -8.0f, 6.0f, 1.0f };
 	Tree *tree6 = new Tree(tree6f, game, dir, 1.0, 1.0);
 	objects.push_back(tree6);
-
+	
 	// init river
 	float riverPos[3] = { 0.0f, 0.0f, -0.5f };
 	Cube *river = new Cube(riverPos, game);

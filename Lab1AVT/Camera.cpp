@@ -192,3 +192,8 @@ Vector Camera::getEye()
 {
 	return Vector(eye, 3);
 }
+
+float* Camera::getCameraPosition(){
+
+	return eye;
+}

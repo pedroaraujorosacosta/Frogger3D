@@ -50,7 +50,8 @@ public:
 	bool isFacingRight();
 	bool isFacingFront();
 	bool isFacingBack();
-
+	
+	float* getCameraPosition();
 	Vector getEye();
 };
 #endif
