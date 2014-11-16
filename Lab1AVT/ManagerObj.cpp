@@ -13,6 +13,8 @@
 #include "FloatingLog.h"
 #include "Bus.h"
 #include "Car.h"
+#include "Particle.h"
+#include "PartycleSystem.h"
 
 #include "ManagerObj.h"
 
@@ -167,6 +169,11 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	objectsMobileLane8.push_back(car4);
 	objects.push_back(car3);
 	objects.push_back(car4);
+
+	float pos[3] = { 0.0, 0.0, 1.0 };
+	p = new Particle(pos, game, 1, 1);
+
+	ps = new ParticleSystem(game, 10, 10, 1.0);
 }
 
 ManagerObj::~ManagerObj() {
@@ -177,6 +184,8 @@ ManagerObj::~ManagerObj() {
 void ManagerObj::draw() {
 	for (Object* o : objects)
 		o->draw();
+
+	ps->draw();
 }
 
 void ManagerObj::init(){
@@ -639,9 +648,6 @@ void ManagerObj::update(float dt, Frog* frog) {
 	}
 
 	*/
-		
-
-
 }
 
 

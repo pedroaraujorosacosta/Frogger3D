@@ -4,6 +4,7 @@
 #include "BillboardObj.h"
 
 class Game;
+class Quad;
 
 class Particle : public BillboardObj {
 
@@ -16,6 +17,7 @@ class Particle : public BillboardObj {
 	const float MAXLIFE = 1.0;
 	GLuint texname;
 	Game* game;
+	Quad* quad;
 
 
 public:
@@ -24,7 +26,6 @@ public:
 	void update(float dt);
 	bool isAlive();
 	void respawn(float posX, float posY, float posZ);
-	void LoadTexture(const char * bitmap_file);
 	void init();
 	void draw();
 };

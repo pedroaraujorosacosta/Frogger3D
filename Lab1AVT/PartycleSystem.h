@@ -4,6 +4,7 @@
 #include <list>
 
 class Particle;
+class Game;
 
 class ParticleSystem {
 
@@ -13,9 +14,9 @@ private:
 	const unsigned int _MAXPARTICLES;
 	const unsigned int _MAXPARTSPEREXPL;
 	const unsigned int _MAXLIFE;
-
+	Game *game;
 public:
-	ParticleSystem(unsigned int maxParticles, unsigned int nPartsPerExpl, unsigned int maxLife);
+	ParticleSystem(Game* game, unsigned int maxParticles, unsigned int nPartsPerExpl, unsigned int maxLife);
 	~ParticleSystem();
 	void draw();
 	void reset();

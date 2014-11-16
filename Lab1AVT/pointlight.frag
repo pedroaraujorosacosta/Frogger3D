@@ -9,6 +9,7 @@ uniform sampler2D texmap;
 uniform sampler2D texmap1;
 uniform sampler2D texmap2;
 uniform sampler2D texmap3;
+uniform sampler2D texmap4;
 
 uniform int texMode;
 uniform vec3 frogPos;
@@ -83,6 +84,10 @@ void main() {
 	} else 	if(texMode == 4) // modulate Phong color with texel color
 	{
 		texel = texture(texmap3, DataIn.tex_coord);  // tree.tga
+		colorOut = texel;
+	} else 	if(texMode == 5) // modulate Phong color with texel color
+	{
+		texel = texture(texmap4, DataIn.tex_coord);  // particula.bmp
 		colorOut = texel;
 	}
 

@@ -1,9 +1,15 @@
 #include "PartycleSystem.h"
-#include "particle.h"
+#include "Particle.h"
 
-ParticleSystem::ParticleSystem(unsigned int maxParticles, unsigned int maxPartsPerExpl,
+ParticleSystem::ParticleSystem(Game* game, unsigned int maxParticles, unsigned int maxPartsPerExpl,
 	unsigned int maxLife) :_MAXPARTICLES(maxParticles), _MAXPARTSPEREXPL(maxPartsPerExpl), _MAXLIFE(maxLife)
 {
+	this->game = game;
+
+	for (int i = 0; i < maxParticles; i++) {
+		float pos[3] = { 1.0*i, 1.0*i, 1.0 };
+		_liveParticles.push_back(new Particle(pos, game, 1, 1));
+	}
 }
 
 ParticleSystem::~ParticleSystem()
@@ -70,12 +76,12 @@ void ParticleSystem::explode(float posX, float posY, float posZ)
 	while (rest > 0)
 	{
 		float pos[3] = { posX, posY, posZ };
-		Particle *p; // new Particle(pos, rand() % _MAXLIFE);
+		Particle *p = new Particle(pos, game, 1, 1);
 		float difuse[4] = { 1.0f, 0.4f, 0.0f, 1.0f };
-		//p->setDiffuse(difuse);
+		p->setDiffuse(difuse);
 		float specular[4] = { 1.0f, 0.4f, 0.0f, 1.0f };
-		//p->setSpecular(specular);
-		//p->setShininess(10.0f);
+		p->setSpecular(specular);
+		p->setShininess(10.0f);
 		_liveParticles.push_back(p);
 		rest--;
 	}

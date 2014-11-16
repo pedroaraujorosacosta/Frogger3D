@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include "Particle.h"
-#include "glbmp.h" 
 #include "Stack.h"
 #include "Game.h"
 
@@ -20,7 +19,6 @@ Particle::Particle(float* pos , Game* game, int width, int height)
 	//glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);	
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);*/
-	LoadTexture("particula.bmp");
 	init();
 }
 
@@ -50,26 +48,21 @@ void Particle::init()
 
 	life = MAXLIFE;		/* vida inicial */
 	fade = 0.005f;	    /* step de decréscimo da vida para cada iteração */
+
+	float pos[3] = { 0.0, 0.0, 0.0 };
+	quad = new Quad(pos, game);
+	quad->setAmbient(rgba);
+	quad->setDiffuse(rgba);
+	quad->setSpecular(rgba);
+	quad->setTexCount(5);
 }
 
 void Particle::draw() {
-	int i;
-
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texname);
 	if (isAlive()) {
-
-		/* A vida da partícula representa o canal alpha da cor. Como o blend está activo a cor final é a soma da cor rgb do fragmento multiplicada pelo
-		alpha com a cor do pixel destino */
-		float pos[3] = { 0.0, 0.0, 0.0 };
-		Quad* quad = new Quad(pos, game);
-		quad->setAmbient(rgba);
-		quad->setDiffuse(rgba);
-		quad->setSpecular(rgba);
-
 		Stack* modelview = game->getModelViewStack();
 
 		modelview->push();
+		modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
 		quad->draw();
 		modelview->pop();
 	}
@@ -113,28 +106,3 @@ bool Particle::isAlive()
 	return life > 0.0f;
 }
 
-void Particle::LoadTexture(const char * bitmap_file)
-{
-
-	glbmp_t bitmap;     //object to fill with data from glbmp
-
-	//try to load the specified file--if it fails, dip out
-	if (!glbmp_LoadBitmap(bitmap_file, 0, &bitmap))
-	{
-		fprintf(stderr, "Error loading bitmap file: %s\n", bitmap_file);
-		exit(1);
-	}
-
-	glGenTextures(1, &texname);
-	glBindTexture(GL_TEXTURE_2D, texname);
-	//copy data from bitmap into texture
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bitmap.width, bitmap.height,
-		0, GL_RGB, GL_UNSIGNED_BYTE, bitmap.rgb_data);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); /* não era necessário pois este comando é executado por omiss‹o */
-	//free the bitmap
-	glbmp_FreeBitmap(&bitmap);
-}
