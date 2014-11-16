@@ -28,7 +28,7 @@
 
 Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(30.0),
 	isLeftButtonDown(false), isRightButtonDown(false), frameCount(0), totalFrames(0), startTime(0.0), windowHandle(0),
-	pIndex(0), keyDown('\0'), isFogOn(true)
+	pIndex(0), keyDown('\0'), isFogOn(true), isFlareOn(true)
 {
 	winX = WinX;
 	winY = WinY;
@@ -83,7 +83,7 @@ void Game::init(int argc, char* argv[])
 	this->gameState = PLAYING; 
 
 	//Flare it all!
-	flare = new Flare();
+	flare = new Flare(this);
 }
 
 void Game::setProgramIndex(int pIndex)
@@ -151,18 +151,36 @@ void Game::draw() {
 	// deactivate alpha test
 	setAlphaTest(AT_NONE);
 
+	// Unbind all textures
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	resetProgram();
 
 	projectionStack.pop();
 	modelViewStack.pop();
 
+	// Draw flare
+	if (isFlareOn && cam->isInFPSMode())
+		drawFlare();
+
 	// Render the UI
 	renderHUD();
 
-	// Draw flare
-	flare->draw(this);
-
 	glutSwapBuffers();
+}
+
+void Game::drawFlare()
+{
+	setProgramIndex(2);
+
+	flare->draw();
 }
 
 void Game::renderHUD()
@@ -304,6 +322,7 @@ void Game::createShaderPrograms()
 {
 	createShaderProgram(0);
 	createShaderProgram(1);
+	createShaderProgram(2);
 
 	checkOpenGLError("ERROR: Could not create shaders.");
 }
@@ -349,6 +368,9 @@ void Game::createShaderProgram(int pIndex)
 		loadShader(1, VSShaderLib::VERTEX_SHADER, "fontshade.vert");
 		loadShader(1, VSShaderLib::FRAGMENT_SHADER, "fontshade.frag");
 		break;
+	case 2:
+		loadShader(2, VSShaderLib::VERTEX_SHADER, "lensshade.vert");
+		loadShader(2, VSShaderLib::FRAGMENT_SHADER, "lensshade.frag");
 	}
 
 	glBindFragDataLocation(programId[pIndex], 0, "colorOut");
@@ -618,6 +640,10 @@ void Game::keyboard(unsigned char key, int x, int y)
 		case 'F':
 			isFogOn = !isFogOn;
 			break;
+		case 'm':
+		case 'M':
+			isFlareOn = !isFlareOn;
+			break;
 		}
 	}
 }
@@ -647,6 +673,30 @@ void Game::mouseMotionFun(int x, int y)
 	const int MIDDLE_X = winX / 2;
 	const int MIDDLE_Y = winY / 2;
 
+	if (!warped)
+	{
+		// update flare
+		int xFlare;
+		int yFlare;
+		flare->getXYFlare(&xFlare, &yFlare);
+		xFlare -= newX - oldX;
+		yFlare += newY - oldY;
+
+		// clamp for windowed mode
+		if (xFlare >= winX)
+			xFlare = winX - 1;
+		if (xFlare < 0)
+			xFlare = 0;
+		if (yFlare >= winY)
+			yFlare = winY - 1;
+		if (yFlare < 0)
+			yFlare = 0;
+
+		flare->setXYFlare(xFlare, yFlare);
+
+	}
+
+	// update camera
 	int dx = newX - MIDDLE_X;
 	int dy = newY - MIDDLE_Y;
 

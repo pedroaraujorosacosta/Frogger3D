@@ -8,9 +8,24 @@
 #include "Flare.h"
 #include "Quad.h"
 #include "Game.h"
+#include "Matrix.h"
 
+#define NORMALIZED_X(x) (x) * 2.0f / glutGet(GLUT_WINDOW_WIDTH)
+#define NORMALIZED_Y(y) (y) * 2.0f / glutGet(GLUT_WINDOW_HEIGHT)
+#define FLARE_ERROR -1
 
-typedef struct TEXTURE_DEF
+struct TexturedQuads 
+{
+	GLuint texID;
+	int tUnit;
+	Quad *quad;
+	
+	TexturedQuads(GLuint texID, Quad *quad, int tUnit) { this->texID = texID; this->quad = quad; this->tUnit = tUnit; }
+};
+
+std::vector<TexturedQuads> quads;
+
+/*typedef struct TEXTURE_DEF
 {
 	char    *filename;
 	int     width;
@@ -18,7 +33,7 @@ typedef struct TEXTURE_DEF
 	void    *pixels;
 	unsigned char   *memory;        // file buffer; free this when done with texture
 }
-TEXTURE_DEF;
+TEXTURE_DEF;*/
 
 enum
 {
@@ -128,7 +143,37 @@ void TM_loadTextures(void)
 	}
 }
 
+GLuint Flare::TM_setTexture(TEXTURE_DEF *tex)
+{
+	GLuint texID;
 
+	if (tex)
+	{
+		glGenTextures(1, &texID);
+		glBindTexture(GL_TEXTURE_2D, texID);
+
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		
+		glTexImage2D(GL_TEXTURE_2D,
+			0,                  // level
+			GL_RGBA,			// components
+			tex->width,
+			tex->height,
+			0,                  // border
+			GL_RGBA,            // format
+			GL_UNSIGNED_BYTE,   //type
+			tex->pixels);
+
+		checkOpenGLError("Error loading flare texture");
+		return texID;
+	}
+	else
+		return FLARE_ERROR;
+}
 
 TEXTURE_DEF* TM_getNamedTexture(char *name)
 {
@@ -228,7 +273,6 @@ void loadFlareFile(FLARE_DEF *flare, char *filename)
 
 	memset(flare, 0, sizeof(FLARE_DEF));
 
-	//f = fopen(filename, "r");
 	errno_t err = -1;
 	err = fopen_s(&f, filename, "r");
 	if (f == NULL || err == -1)
@@ -248,7 +292,7 @@ void loadFlareFile(FLARE_DEF *flare, char *filename)
 			unsigned int    a = 0, r = 0, g = 0, b = 0;
 
 			fgets(buf, sizeof(buf), f);
-			if (sscanf_s(buf, "%s %lf %lf ( %d %d %d %d )", name, _countof(name), &dDist, &dSize, &a, &r, &g, &b))
+			if (sscanf_s(buf, "%s %lf %lf ( %d %d %d %d )", name, _countof(name), &dDist, &dSize, &a, &r, &g, &b) && !feof(f))
 			{
 				flare->element[n].texture = TM_getNamedTexture(name);
 				flare->element[n].fDistance = (float)dDist;
@@ -273,7 +317,11 @@ void newFlare(int bFromFile)
 		FLARE_randomize(&renderFlare, NPIECETEXTURES, flare_range(), FLARE_MAXSIZE, FLARE_MINCOLOUR, FLARE_MAXCOLOUR);
 }
 
-Flare::Flare() {
+Flare::Flare(Game *game) {
+
+	this->game = game;
+	xFlare = 10;
+	yFlare = 10;
 
 	TM_loadTextures();
 	texSun = TM_getNamedTexture("sun");
@@ -286,6 +334,61 @@ Flare::Flare() {
 		nBackground = BACK_COLOUR0;
 
 	newFlare(1);
+	
+	// TODO
+	
+	float pos[3] = { 0.0f, 0.0f, 0.0f };
+	// first, load all the textures and store their names
+	int numQuads = renderFlare.nPieces;
+	GLuint texID;
+	int tUnit = 0;
+	for (int i = 0; i < numQuads; i++)
+	{
+		if (!hasBeenLoaded(renderFlare.element[i].texture->filename))
+		{
+			texID = TM_setTexture(renderFlare.element[i].texture);
+			NamedTexture *nTex = new NamedTexture(renderFlare.element[i].texture->filename, texID, tUnit++);
+			texs.push_back(nTex);
+		}
+	}
+
+	// now create quads that reference those textures
+	for (int i = 0; i < numQuads; i++)
+	{
+		if (hasBeenLoaded(renderFlare.element[i].texture->filename))
+		{
+			getNamedTexture(renderFlare.element[i].texture->filename, &texID, &tUnit);
+			if (tUnit != FLARE_ERROR && texID != FLARE_ERROR)
+				quads.push_back(TexturedQuads(texID, new Quad(pos, game), tUnit));
+		}
+	}
+}
+
+void Flare::getNamedTexture(char *filename, GLuint *texID, int *tUnit)
+{
+	for (NamedTexture *tex : texs)
+		if (!strncmp(tex->filename, filename, strlen(tex->filename)))
+		{
+			*texID = tex->texID;
+			*tUnit = tex->tUnit;
+			return;
+		}
+	*tUnit = *texID = FLARE_ERROR;
+}
+
+bool Flare::hasBeenLoaded(char *filename)
+{
+	if (texs.empty())
+		return false;
+	else
+	{
+		for (NamedTexture *e : texs)
+		{
+			if (!strncmp(e->filename, filename, strlen(e->filename)))
+				return true;
+		}
+		return false;
+	}
 }
 
 void        TM_purgeTextures(void)
@@ -304,20 +407,42 @@ Flare::~Flare() {
 	TM_purgeTextures();
 }
 
+void drawQuad(Game *game, int index, float normOriginX, float normOriginY, float normWidth, float normHeight)
+{
+	GLint loc;
+	GLuint progID = game->getShader();
+	Stack* modelview = game->getModelViewStack();
+	GLuint texID = quads[index].texID;
+	int tUnit = quads[index].tUnit;
 
-void    FLARE_render(FLARE_DEF *flare, int lx, int ly, int cx, int cy, Game* game)
+	//Indicar aos samplers do GLSL quais os Texture Units a serem usados
+	loc = glGetUniformLocation(progID, "texUnit");
+	glUniform1i(loc, tUnit);
+
+	glActiveTexture(GL_TEXTURE0+tUnit);
+	glBindTexture(GL_TEXTURE_2D, texID);
+
+	modelview->push();
+	quads[index].quad->drawCustomQuad(normOriginX, normOriginY, normWidth, normHeight);
+	modelview->pop();
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void    FLARE_render(FLARE_DEF *flare, int lx, int ly, int cx, int cy, Game *game)
 {
 	int     dx, dy;          // Screen coordinates of "destination"
 	int     px, py;          // Screen coordinates of flare element
 	int     maxflaredist, flaredist, flaremaxsize, flarescale;
-	int     width, height, alpha;    // Piece parameters;
+	int     width, height;    // Piece parameters;
+	float   alpha;
 	int     i;
 	FLARE_ELEMENT_DEF    *element;
 
 	// Compute how far off-center the flare source is.
-	maxflaredist = isqrt(cx*cx + cy*cy);
-	flaredist = isqrt((lx - cx)*(lx - cx) +
-		(ly - cy)*(ly - cy));
+	maxflaredist = floor(sqrt(cx*cx + cy*cy));
+	flaredist = floor(sqrt((lx - cx)*(lx - cx) +
+		(ly - cy)*(ly - cy)));
 	flaredist = (maxflaredist - flaredist);
 	flaremaxsize = (int)(glutGet(GLUT_WINDOW_WIDTH)* flare->fMaxSize);
 	flarescale = (int)(glutGet(GLUT_WINDOW_WIDTH) * flare->fScale);
@@ -350,38 +475,42 @@ void    FLARE_render(FLARE_DEF *flare, int lx, int ly, int cx, int cy, Game* gam
 		// Flare elements are square (round) so height is just
 		// width scaled by aspect ratio.
 		height = HEIGHTFROMWIDTH(width);
-		alpha = (flaredist*(element->argb >> 24)) / maxflaredist;
+		alpha = (flaredist*((element->argb >> 24)/255.0f)) / maxflaredist;
 
 		Stack* modelview = game->getModelViewStack();
 
 		if (width > 1)
 		{
+			/* */
+			float centerOfQuadX = NORMALIZED_X(px);
+			float centerOfQuadY = NORMALIZED_Y(py);
+			float normOriginX = NORMALIZED_X(px - width / 2) - 1.0f;
+			float normOriginY = NORMALIZED_Y(py - height / 2) - 1.0f;
+			float normWidth = NORMALIZED_X(width);
+			float normHeight = NORMALIZED_Y(height);
+			/* */
 			//unsigned int    argb = (alpha << 24) | (element->argb & 0x00ffffff);
-			float pos[3] = { px - width / 2, py - height / 2, 0.0 };
-			Quad* quad = new Quad(pos, game);
-			float color[4] = { 1.0, 1.0, 1.0, 0.0};
-			quad->setAmbient(color);
-			quad->setDiffuse(color);
-			quad->setSpecular(color);
-			quad->setTexCount(2);
-			//element->texture!!!
-			modelview->push();
-				quad->draw();
-			modelview->pop();
-			//drawQuad(px - width / 2, py - height / 2, width, height, element->texture, argb);
+			
+			float color[4] = { 1.0, 1.0, 1.0, alpha};
+			quads[i].quad->setAmbient(color);
+			quads[i].quad->setDiffuse(color);
+			quads[i].quad->setSpecular(color);
+			quads[i].quad->setTexCount(0);
+
+			drawQuad(game, i, normOriginX, normOriginY, normWidth, normHeight);
 		}
 	}
 }
 
-int     xFlare = 10;
-int     yFlare = 10;
+int     xFlare = 400;
+int     yFlare = 300;
 
-void render(Game* game)
+void render(Game* game, int xFlare, int yFlare)
 {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	float pos[3] = { 0.0f, 0.0f, 0.0f };
+	/*float pos[3] = { 0.0f, 0.0f, 0.0f };
 	Quad *quad = new Quad(pos, game);
 
 	float color1[4] = { 1.0, 1.0, 1.0, 1.0 };
@@ -435,13 +564,37 @@ void render(Game* game)
 		quad2->setSpecular(color4);
 		modelview->push();
 			quad->draw();
-		modelview->pop();
+		modelview->pop();*/
 		//drawQuad(xFlare - SUNWIDTH / 2, yFlare - SUNHEIGHT / 2, SUNWIDTH, SUNHEIGHT, texSun, 0xffffffe0);
 
-		FLARE_render(&renderFlare, xFlare, yFlare, glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2, game);
+	FLARE_render(&renderFlare, xFlare, yFlare, glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2, game);
+	
+	glDisable(GL_BLEND);
 }
 
-void Flare::draw(Game* game)
+void Flare::draw()
 {
-	render(game);
+	render(game, xFlare, yFlare);
+}
+
+void Flare::update(float dt)
+{
+
+}
+
+void Flare::reset()
+{
+
+}
+
+void Flare::setXYFlare(int xFlare, int yFlare)
+{
+	this->xFlare = xFlare;
+	this->yFlare = yFlare;
+}
+
+void Flare::getXYFlare(int *xFlare, int *yFlare)
+{
+	*xFlare = this->xFlare;
+	*yFlare = this->yFlare;
 }

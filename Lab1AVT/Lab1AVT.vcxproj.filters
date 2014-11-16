@@ -31,9 +31,6 @@
     <Filter Include="Source Files\Libraries">
       <UniqueIdentifier>{be351b53-9e43-4cea-bb22-f67f87c63d37}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Flare">
-      <UniqueIdentifier>{a4cb1d2d-dcff-4908-a295-ffc5c7f60ad9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Models">
       <UniqueIdentifier>{a8cf4a07-6a91-480f-8528-9b75c567fa56}</UniqueIdentifier>
     </Filter>
@@ -139,14 +136,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Flare.cpp">
-      <Filter>Source Files\Flare</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
-    <Text Include="flare.txt">
-      <Filter>Source Files\Flare</Filter>
-    </Text>
+    <Text Include="flare.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cube.h">
@@ -262,23 +257,17 @@
     <None Include="pointlight.vert">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="back.raw">
-      <Filter>Source Files\Flare</Filter>
+    <None Include="back.raw" />
+    <None Include="crcl.raw" />
+    <None Include="flar.raw" />
+    <None Include="hxgn.raw" />
+    <None Include="ring.raw" />
+    <None Include="sun.raw" />
+    <None Include="lensshade.frag">
+      <Filter>Shaders</Filter>
     </None>
-    <None Include="crcl.raw">
-      <Filter>Source Files\Flare</Filter>
-    </None>
-    <None Include="flar.raw">
-      <Filter>Source Files\Flare</Filter>
-    </None>
-    <None Include="hxgn.raw">
-      <Filter>Source Files\Flare</Filter>
-    </None>
-    <None Include="ring.raw">
-      <Filter>Source Files\Flare</Filter>
-    </None>
-    <None Include="sun.raw">
-      <Filter>Source Files\Flare</Filter>
+    <None Include="lensshade.vert">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -302,10 +291,5 @@
     <Xml Include="arial.xml">
       <Filter>Fonts</Filter>
     </Xml>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="monkey.obj">
-      <Filter>Models</Filter>
-    </Object>
   </ItemGroup>
 </Project>

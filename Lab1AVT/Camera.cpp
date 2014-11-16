@@ -156,8 +156,8 @@ void Camera::updateDirection(int dx, int dy)
 	if (mode == FPS)
 	{
 		theta -= dx / 10;
-		/*if (theta > 90 || theta < -90)
-			theta += dx / 10;*/
+		theta = fmod(theta, 360);
+
 		phi += dy / 10;
 		if (phi > 90 || phi < -90)
 			phi -= dy / 10;

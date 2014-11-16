@@ -148,6 +148,8 @@
     <None Include="fontshade.frag" />
     <None Include="fontshade.vert" />
     <None Include="hxgn.raw" />
+    <None Include="lensshade.frag" />
+    <None Include="lensshade.vert" />
     <None Include="pointlight.frag" />
     <None Include="pointlight.vert" />
     <None Include="ring.raw" />
@@ -162,9 +164,6 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="arial.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="monkey.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

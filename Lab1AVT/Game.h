@@ -72,6 +72,7 @@ class Game : IComponent {
 	bool isLeftButtonDown;
 	bool isRightButtonDown;
 	bool isFogOn;
+	bool isFlareOn;
 	char keyDown;
 	GLuint TextureArray[4];
 	unsigned int uiWinID;
@@ -97,6 +98,7 @@ class Game : IComponent {
 	void setAlphaTest(AlphaTest alphaTest);
 	void setFog();
 	void clearFog();
+	void drawFlare();
 
 public:
 	Game(int WinX, int WinY);

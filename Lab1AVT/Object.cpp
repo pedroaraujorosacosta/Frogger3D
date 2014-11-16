@@ -22,8 +22,13 @@ Object::Object(float *position, Game *game) {
 	this->game = game;
 }
 
-Object::~Object() {
+Object::~Object() 
+{
+	destroyBufferObjects();
+}
 
+void Object::destroyBufferObjects()
+{
 	glDisableVertexAttribArray(MY_VERTEX_COORD_ATTRIB);
 	glDisableVertexAttribArray(MY_NORMAL_ATTRIB);
 	glDisableVertexAttribArray(MY_TEXTURE_COORD_ATTRIB);
