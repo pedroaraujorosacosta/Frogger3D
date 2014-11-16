@@ -606,7 +606,6 @@ void ManagerObj::applyStencil(){
 
 
 	
-	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_STENCIL_TEST);
 	glClearStencil(0x0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -623,5 +622,4 @@ void ManagerObj::applyStencil(){
 	glStencilFunc(GL_EQUAL,0x0, 0x1); //se 0x0 passar a 0x1, o stencil é invertido e imagem fica no cubo
 	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 	
-
 }

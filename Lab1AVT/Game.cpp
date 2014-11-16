@@ -141,6 +141,7 @@ void Game::draw() {
 	else
 		this->gameState = LOSE;
 
+	
 	// activate alpha test to draw translucids only
 	setAlphaTest(AT_TRANSLUCID);
 
