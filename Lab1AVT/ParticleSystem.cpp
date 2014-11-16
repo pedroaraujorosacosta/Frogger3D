@@ -7,7 +7,7 @@ ParticleSystem::ParticleSystem(Game* game, unsigned int maxParticles, unsigned i
 	this->game = game;
 
 	for (int i = 0; i < maxParticles; i++) {
-		float pos[3] = { 1.0*i, 1.0*i, 1.0 };
+		float pos[3] = { 1.0*i, 1.0*i, 3.0 };
 		_liveParticles.push_back(new Particle(pos, game, 1, 1));
 	}
 }

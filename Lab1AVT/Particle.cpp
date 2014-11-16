@@ -85,7 +85,11 @@ void Particle::update(float dt)
 	v[2] += a[2] * delta;
 	life -= fade;
 	rgba[3] = life;
+	std::cout << pos[0] << " " << pos[1] << " " << pos[2] << std::endl;
+	//glutPostRedisplay();
+	//glutTimerFunc(33, update, 1);
 }
+
 
 void Particle::respawn(float posX, float posY, float posZ)
 {

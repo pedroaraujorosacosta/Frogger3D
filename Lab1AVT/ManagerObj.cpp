@@ -356,14 +356,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 	canColideLane5 = false;
 
 	onSurface = false;
-	/*
-	//validPositions a false
-	for (int t = 0; t < 8; ++t) {
-		for (int i = 0; i < 5; ++i){
-			validPositions[t][i] = false;
-		}
-	}
-	*/
+
 	//YYS check
 	//river collision lanes to use
 
@@ -404,38 +397,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 		o->update(dt);
 	}
 
-	/*
-	//fazer update às posições válidas para o random
 	for (MobileObj* o : objectsMobileLane1){
-		updateValidPositions(1, o->getPositionXXs());
-	}
-	for (MobileObj* o : objectsMobileLane2){
-		updateValidPositions(2, o->getPositionXXs());
-	}
-	for (MobileObj* o : objectsMobileLane3){
-		updateValidPositions(3, o->getPositionXXs());
-	}
-	for (MobileObj* o : objectsMobileLane4){
-		updateValidPositions(1, o->getPositionXXs());
-	}
-	for (MobileObj* o : objectsMobileLane5){
-		updateValidPositions(1, o->getPositionXXs());
-	}
-	for (MobileObj* o : objectsMobileLane6){
-		updateValidPositions(6, o->getPositionXXs());
-	}
-	for (MobileObj* o : objectsMobileLane7){
-		updateValidPositions(7, o->getPositionXXs());
-	}
-	for (MobileObj* o : objectsMobileLane8){
-		updateValidPositions(8, o->getPositionXXs());
-	}
-
-	*/
-
-	for (MobileObj* o : objectsMobileLane1){
-		//o->update(dt);
-		
 
 		//XXs check
 		//soma das dimensões têm de ser maiores que a distância para haver colisão
@@ -451,20 +413,10 @@ void ManagerObj::update(float dt, Frog* frog) {
 				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
 			} while (laneCollision(objectsMobileLane1, o));
 		}
-		/*
-		if (o->getPositionXXs() > (lateralDireita + 4)){
-			randomIndex = validateRandomPosition(1, (rand() % 5));
-			o->setPositionXXs(-(getRandomStartPosition(randomIndex)));
-
-		}
-		*/
-
-
 
 	}
 	//fazer update às posições válidas para o random
 	for (MobileObj* o : objectsMobileLane2){
-		//o->update(dt);
 
 		if (canColideLane2){
 			if (((frogWeigth / 2 + turtleWeigth / 2) > fabs((frogXXs - o->getPositionXXs()))))
@@ -477,17 +429,8 @@ void ManagerObj::update(float dt, Frog* frog) {
 				o->setPositionXXs(lateralDireita + 4 + (rand() % 10));
 			} while (laneCollision(objectsMobileLane2, o));
 		}
-		/*
-		if (o->getPositionXXs() < (lateralEsquerda - 4)){
-			randomIndex = validateRandomPosition(2, (rand() % 4));
-			o->setPositionXXs((getRandomStartPosition(randomIndex)));
-		}
-		*/
-
-
 	}
 	for (MobileObj* o : objectsMobileLane3){
-		//o->update(dt);
 
 		if (canColideLane3){
 			if (((frogWeigth / 2 + logWeigth / 2) > fabs((frogXXs - o->getPositionXXs()))))
@@ -500,16 +443,9 @@ void ManagerObj::update(float dt, Frog* frog) {
 				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
 			} while (laneCollision(objectsMobileLane3, o));
 		}
-		/*
-		if (o->getPositionXXs() > (lateralDireita + 4)){
-			randomIndex = validateRandomPosition(3, (rand() % 5));
-			o->setPositionXXs(-(getRandomStartPosition(randomIndex)));
-		}
-		*/
 	}
 
 	for (MobileObj* o : objectsMobileLane4){
-		//o->update(dt);
 
 		if (canColideLane4){
 			if (((frogWeigth / 2 + logWeigth / 2) > fabs((frogXXs - o->getPositionXXs()))))
@@ -522,17 +458,10 @@ void ManagerObj::update(float dt, Frog* frog) {
 				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
 			} while (laneCollision(objectsMobileLane4, o));
 		}
-		/*
-		if (o->getPositionXXs() > (lateralDireita + 4)){
-			randomIndex = validateRandomPosition(4, (rand() % 5));
-			o->setPositionXXs((getRandomStartPosition(randomIndex)));
-		}
-		*/
 
 	}
 
 	for (MobileObj* o : objectsMobileLane5){
-		//o->update(dt);
 
 		if (canColideLane5){
 			if (((frogWeigth / 2 + logWeigth / 2) > fabs((frogXXs - o->getPositionXXs()))))
@@ -545,17 +474,10 @@ void ManagerObj::update(float dt, Frog* frog) {
 				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
 			} while (laneCollision(objectsMobileLane5, o));
 		}
-		/*
-		if (o->getPositionXXs() > (lateralDireita + 4)){
-			randomIndex = validateRandomPosition(5, (rand() % 5));
-			o->setPositionXXs((getRandomStartPosition(randomIndex)));
-		}
-		*/
 
 	}
 
 	for (MobileObj* o : objectsMobileLane6){
-		//o->update(dt);
 
 		if (canColideLane6){
 			if ((frogWeigth / 2 + busWeigth / 2) > fabs((frogXXs - o->getPositionXXs())))
@@ -568,16 +490,10 @@ void ManagerObj::update(float dt, Frog* frog) {
 				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
 			} while (laneCollision(objectsMobileLane6, o));
 		}
-		/*
-		if (o->getPositionXXs() > (lateralDireita + 4)){
-			randomIndex = validateRandomPosition(6, (rand() % 5));
-			o->setPositionXXs(-(getRandomStartPosition(randomIndex)));
-		}
-		*/
 
 	}
 	for (MobileObj* o : objectsMobileLane7){
-		//o->update(dt);
+		
 
 		if (canColideLane7){
 			if ((frogWeigth / 2 + carWeigth / 2) > fabs((frogXXs - o->getPositionXXs())))
@@ -592,16 +508,9 @@ void ManagerObj::update(float dt, Frog* frog) {
 			} while (laneCollision(objectsMobileLane7, o));
 		}
 
-		/*
-		if (o->getPositionXXs() < (lateralEsquerda - 4)){
-			randomIndex = validateRandomPosition(7, (rand() % 5));
-			o->setPositionXXs((getRandomStartPosition(randomIndex)));
-		}
-		*/
-
 	}
 	for (MobileObj* o : objectsMobileLane8){
-		//o->update(dt);
+	
 		
 		if (canColideLane8){
 			if ((frogWeigth / 2 + carWeigth / 2) > fabs((frogXXs - o->getPositionXXs())))
@@ -615,12 +524,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
 			} while (laneCollision(objectsMobileLane8, o));
 		}
-		/*
-		if (o->getPositionXXs() > (lateralDireita + 4)){
-			randomIndex = validateRandomPosition(8, (rand() % 5));
-			o->setPositionXXs(-(getRandomStartPosition(randomIndex)));
-		}
-		*/
+	
 
 	}
 
@@ -632,22 +536,9 @@ void ManagerObj::update(float dt, Frog* frog) {
 		if (!onSurface)
 			frog->killed();
 	}
-		/*
-		else if (frogOnLane1){
-			vel = { getLane1Velocity(), 0, 0 };
-			frog->move(vel);
-		}
-		else if (frogOnLane2){
-			vel = { getLane2Velocity(), 0, 0 };
-			frog->move(vel);
-		}
-		else if (frogOnLane3){
-			vel = { getLane3Velocity(), 0, 0 };
-			frog->move(vel);
-		}
-	}
+		
 
-	*/
+	ps->update(0.2);
 }
 
 
