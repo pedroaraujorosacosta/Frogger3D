@@ -14,6 +14,8 @@ class Particle : public BillboardObj {
 	float decay;
 	const float MAXLIFE;
 
+
+
 public:
 	Particle(float* pos, float *v, float* a, float size, float* rgba, float life, float decay, Game* game, int width, int height);
 	void reset();
