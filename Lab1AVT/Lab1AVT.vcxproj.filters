@@ -303,9 +303,4 @@
       <Filter>Fonts</Filter>
     </Xml>
   </ItemGroup>
-  <ItemGroup>
-    <Object Include="monkey.obj">
-      <Filter>Models</Filter>
-    </Object>
-  </ItemGroup>
 </Project>
