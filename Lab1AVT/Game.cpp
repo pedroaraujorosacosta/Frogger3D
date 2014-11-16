@@ -98,7 +98,7 @@ void Game::resetProgram()
 
 void Game::draw() {
 	++frameCount;
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	modelViewStack.push();
 
@@ -107,6 +107,10 @@ void Game::draw() {
 	cam->setCamera();
 
 	setProgramIndex(0);
+
+	
+	managerObj->applyStencil();
+
 
 	managerLight->illuminate();
 
@@ -121,6 +125,8 @@ void Game::draw() {
 
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[3]);
+
+
 
 	// activate alpha test to draw opaques only
 	setAlphaTest(AT_OPAQUE);

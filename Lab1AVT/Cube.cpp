@@ -2,7 +2,7 @@
 #include "Stack.h"
 #include "Game.h"
 
-Cube::Cube(float *position, Game *game, bool isRepeatTexture, float factorX) : Object(position, game)
+Cube::Cube(float *position, Game *game, bool isRepeatTexture, float factorX ) : Object(position, game)
 {
 	this->isRepeatTexture = isRepeatTexture;
 	repeatFactorX = factorX;

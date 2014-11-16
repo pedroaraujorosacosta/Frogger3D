@@ -3,11 +3,14 @@
 
 #include "Manager.h"
 #include "Vector.h"
+#include "Cube.h"
 
 #include <iostream>
 #include <sstream>
 #include <fstream>
 #include <vector>
+
+
 
 class Object;
 class MobileObj;
@@ -17,6 +20,8 @@ class ManagerObj : public Manager
 	float dificuldade;
 	float lateralEsquerda;
 	float lateralDireita;
+
+	Cube* stencilMaskCube;
 
 	std::vector<Object*> objects;
 	std::vector<MobileObj*> objectsMobileLane1;
@@ -103,6 +108,8 @@ public:
 
 	bool laneCollision(std::vector<MobileObj*> lane, MobileObj* obj);
 	float getRiverLaneVelocity(Vector &laneDir);
+
+	void applyStencil();
 };
 
 #endif
