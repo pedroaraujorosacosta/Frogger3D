@@ -19,6 +19,7 @@
 #include "Light.h"
 #include "TGA.h"
 #include "FontLib.h"
+#include "Flare.h"
 #include <cctype>
 
 #define LIFES 5
@@ -40,6 +41,7 @@ Game::~Game()
 
 void Game::init(int argc, char* argv[])
 {
+
 	shader = new VSShaderLib();
 	setupGLUT(argc, argv);
 	setupGLEW();

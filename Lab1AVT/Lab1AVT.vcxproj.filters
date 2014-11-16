@@ -31,6 +31,9 @@
     <Filter Include="Source Files\Libraries">
       <UniqueIdentifier>{be351b53-9e43-4cea-bb22-f67f87c63d37}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Flare">
+      <UniqueIdentifier>{a4cb1d2d-dcff-4908-a295-ffc5c7f60ad9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -123,9 +126,15 @@
     <ClCompile Include="Tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Flare.cpp">
+      <Filter>Source Files\Flare</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
+    <Text Include="flare.txt">
+      <Filter>Source Files\Flare</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cube.h">
@@ -215,6 +224,9 @@
     <ClInclude Include="Tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Flare.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="fontshade.frag">
@@ -228,6 +240,24 @@
     </None>
     <None Include="pointlight.vert">
       <Filter>Shaders</Filter>
+    </None>
+    <None Include="back.raw">
+      <Filter>Source Files\Flare</Filter>
+    </None>
+    <None Include="crcl.raw">
+      <Filter>Source Files\Flare</Filter>
+    </None>
+    <None Include="flar.raw">
+      <Filter>Source Files\Flare</Filter>
+    </None>
+    <None Include="hxgn.raw">
+      <Filter>Source Files\Flare</Filter>
+    </None>
+    <None Include="ring.raw">
+      <Filter>Source Files\Flare</Filter>
+    </None>
+    <None Include="sun.raw">
+      <Filter>Source Files\Flare</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
