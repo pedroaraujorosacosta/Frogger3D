@@ -6,7 +6,7 @@
 #include <math.h>
 #include "Stack.h"
 #include "Matrix.h"
-
+#include "flare.h"
 #include "Game.h"
 
 int WinX = 1000, WinY = 800;
@@ -123,6 +123,9 @@ void init(int argc, char* argv[])
 	game.init(argc, argv);
 	setupCallbacks();
 }
+
+
+
 
 int main(int argc, char* argv[])
 {

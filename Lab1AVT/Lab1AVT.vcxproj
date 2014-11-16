@@ -73,6 +73,7 @@
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Cylinder.cpp" />
+    <ClCompile Include="Flare.cpp" />
     <ClCompile Include="FloatingLog.cpp" />
     <ClCompile Include="FontLib.cpp" />
     <ClCompile Include="Frog.cpp" />
@@ -102,6 +103,7 @@
     <ClCompile Include="vsShaderLib.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="flare.txt" />
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +113,7 @@
     <ClInclude Include="Car.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Cylinder.h" />
+    <ClInclude Include="Flare.h" />
     <ClInclude Include="FloatingLog.h" />
     <ClInclude Include="FontLib.h" />
     <ClInclude Include="Frog.h" />
@@ -139,10 +142,16 @@
     <ClInclude Include="vsShaderLib.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="back.raw" />
+    <None Include="crcl.raw" />
+    <None Include="flar.raw" />
     <None Include="fontshade.frag" />
     <None Include="fontshade.vert" />
+    <None Include="hxgn.raw" />
     <None Include="pointlight.frag" />
     <None Include="pointlight.vert" />
+    <None Include="ring.raw" />
+    <None Include="sun.raw" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="arial.tga" />
