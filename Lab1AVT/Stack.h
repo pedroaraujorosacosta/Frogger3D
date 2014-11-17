@@ -11,10 +11,7 @@ class Stack
 	std::stack<Matrix*> s;
 	std::vector<Matrix*> garbage;
 
-	static float dotProduct(float *u, float *v, int size);
-	float norm(float *vector, int size);
-	void normalize(float *vector, int size);
-	void crossProduct(float *a, float*b, float* r);
+	static float norm(float *vector, int size);
 public:
 	Stack();
 	~Stack();
@@ -37,6 +34,10 @@ public:
 		float upx, float upy, float upz);
 	void lookAt(float *right, float *up, float *eye, float *lookPoint);
 	Matrix* getTop();
+
+	static float dotProduct(float *u, float *v, int size);
+	static void normalize(float *vector, int size);
+	static void crossProduct(float *a, float*b, float* r);
 };
 
 #endif

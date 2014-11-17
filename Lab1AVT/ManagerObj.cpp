@@ -15,7 +15,7 @@
 #include "Car.h"
 #include "Particle.h"
 #include "PartycleSystem.h"
-
+#include "Tree.h"
 #include "ManagerObj.h"
 
 
@@ -50,6 +50,33 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	objects.push_back(new River(posRiver, game));
 	float posroad[] = { 0.0, -7, -3.0 };
 	objects.push_back(new Road(posroad, game));
+
+	// Trees
+	// init trees
+	float dir[3] = { 0.0, -1.0, 0.0 };
+	float tree1f[3] = { 0.0f, 1.0f, -2.0f };
+	Tree *tree1 = new Tree(tree1f, game, dir, 1.0, 1.0);
+	objects.push_back(tree1);
+
+	float tree2f[3] = { 8.0f, 1.0f, -2.0f };
+	Tree *tree2 = new Tree(tree2f, game, dir, 1.0, 1.0);
+	objects.push_back(tree2);
+
+	float tree3f[3] = { -8.0f, 1.0f, -2.0f };
+	Tree *tree3 = new Tree(tree3f, game, dir, 1.0, 1.0);
+	objects.push_back(tree3);
+
+	float tree4f[3] = { 0.0f, 13.0f, -2.0f };
+	Tree *tree4 = new Tree(tree4f, game, dir, 1.0, 1.0);
+	objects.push_back(tree4);
+
+	float tree5f[3] = { 8.0f, 13.0f, -2.0f };
+	Tree *tree5 = new Tree(tree5f, game, dir, 1.0, 1.0);
+	objects.push_back(tree5);
+
+	float tree6f[3] = { -8.0f, 13.0f, -2.0f };
+	Tree *tree6 = new Tree(tree6f, game, dir, 1.0, 1.0);
+	objects.push_back(tree6);
 
 	//LANE 1
 	float posFloatingLog1[] = { -5.0, 11.0, -2.5 };
@@ -182,8 +209,8 @@ ManagerObj::~ManagerObj() {
 }
 
 void ManagerObj::draw() {
-	for (Object* o : objects)
-		o->draw();
+	for (std::vector<Object*>::reverse_iterator it = objects.rbegin(); it != objects.rend(); it++)
+		(*it)->draw();
 
 	ps->draw();
 }

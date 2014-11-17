@@ -52,5 +52,7 @@ public:
 	bool isFacingBack();
 
 	Vector getEye();
+	float getTheta();
+	float getPhi();
 };
 #endif

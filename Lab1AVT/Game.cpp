@@ -27,6 +27,8 @@
 
 #define CAPTION "Assignment 1"
 
+#define degToRad(x) ((x/180.0f) * M_PI)
+
 Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(30.0),
 	isLeftButtonDown(false), isRightButtonDown(false), frameCount(0), totalFrames(0), startTime(0.0), windowHandle(0),
 	pIndex(0), keyDown('\0'), isFogOn(true), isFlareOn(true)
@@ -680,7 +682,7 @@ void Game::mouseMotionFun(int x, int y)
 	const int MIDDLE_X = winX / 2;
 	const int MIDDLE_Y = winY / 2;
 
-	if (!warped)
+	/*if (!warped)
 	{
 		// update flare
 		int xFlare;
@@ -701,7 +703,7 @@ void Game::mouseMotionFun(int x, int y)
 
 		flare->setXYFlare(xFlare, yFlare);
 
-	}
+	}*/
 
 	// update camera
 	int dx = newX - MIDDLE_X;
@@ -719,7 +721,30 @@ void Game::mouseMotionFun(int x, int y)
 	}
 
 	if (isLeftButtonDown)
+	{
 		cam->updateDirection(dx, dy);
+		// update flare position
+		float theta = cam->getTheta();
+		float phi = cam->getPhi();
+		float dTheta = theta + 30;
+		float dPhi = phi - 30;
+		// if it's facing the directional light
+		if (abs(dTheta) < 4 && abs(dPhi) < 4)
+		{
+			float origin = fabs(sin(degToRad(3.0f)));
+			float length = 2*fabs(sin(degToRad(3.0f)));
+			float sx = (-sin(degToRad(dTheta)) + origin) / length;
+			float sy = (sin(degToRad(dPhi)) + origin) / length;
+
+			int flareX = (winX - 1) - sx*(winX - 1);
+			int flareY = (winY - 1) - sy*(winY - 1);
+			//std::cout << "fX " << atest << " flareY " << btext << std::endl;
+			flare->setXYFlare(flareX, flareY);
+		}
+		else {
+			flare->setXYFlare(-100, -100);
+		}
+	}
 
 	oldX = newX;
 	oldY = newY;
