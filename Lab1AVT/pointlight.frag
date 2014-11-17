@@ -87,7 +87,7 @@ void main() {
 		colorOut = texel;
 	} else 	if(texMode == 5) // modulate Phong color with texel color
 	{
-		texel = texture(texmap4, DataIn.tex_coord);  // particula.bmp
+		texel = texture(texmap4, DataIn.tex_coord);  // particula.tga
 		colorOut = texel;
 	}
 

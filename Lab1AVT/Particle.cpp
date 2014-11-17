@@ -41,9 +41,9 @@ void Particle::init()
 	a[2] = 0.0f;
 
 	/* tom amarelado que vai ser multiplicado pela textura que varia entre branco e preto */
-	rgba[0] = 0.882f;
-	rgba[1] = 0.552f;
-	rgba[2] = 0.211f;
+	rgba[0] = 1.0f /*0.882f*/;
+	rgba[1] = 1.0f /*0.552f*/;
+	rgba[2] = 1.0f /*0.211f*/;
 	rgba[3] = 1.0f;
 
 	life = MAXLIFE;		/* vida inicial */
@@ -54,6 +54,7 @@ void Particle::init()
 	quad->setAmbient(rgba);
 	quad->setDiffuse(rgba);
 	quad->setSpecular(rgba);
+	quad->setScale(4.0f, 4.0f, 4.0f);
 	quad->setTexCount(5);
 }
 

@@ -147,6 +147,9 @@
     <ClCompile Include="glbmp.c">
       <Filter>Source Files\Libraries</Filter>
     </ClCompile>
+    <ClCompile Include="TexLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -261,6 +264,9 @@
     <ClInclude Include="glbmp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TexLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="fontshade.frag">
@@ -305,6 +311,9 @@
       <Filter>Fonts</Filter>
     </Image>
     <Image Include="particula.bmp">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="particle.tga">
       <Filter>Textures</Filter>
     </Image>
   </ItemGroup>

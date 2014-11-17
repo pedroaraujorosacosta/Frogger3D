@@ -14,7 +14,6 @@
 #define MY_VERTEX_COORD_ATTRIB 0
 #define MY_NORMAL_ATTRIB 1
 #define MY_TEXTURE_COORD_ATTRIB 2
-//#define M_PI atan(1)*4
 
 class ManagerObj;
 class Camera;
@@ -24,6 +23,7 @@ class ManagerLight;
 class Light;
 class VSFontLib;
 class Flare;
+class ParticleSystem;
 
 class Game : IComponent {
 
@@ -79,6 +79,7 @@ class Game : IComponent {
 	unsigned int uiLoseID;
 
 	Flare* flare;
+	ParticleSystem *ps;
 
 	void setupGLUT(int argc, char* argv[]);
 	void setupGLEW();
@@ -99,6 +100,7 @@ class Game : IComponent {
 	void setFog();
 	void clearFog();
 	void drawFlare();
+	void drawParticleSystem();
 
 public:
 	Game(int WinX, int WinY);

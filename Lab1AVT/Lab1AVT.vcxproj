@@ -44,12 +44,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\freeglut\include\;..\glew-1.11.0\include;..\glm\glm;..\tinyxml\include;..\DevIL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\freeglut\include\;..\glew-1.11.0\include;..\glm\glm;..\tinyxml\include;..\DevIL\include;..\SOIL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\freeglut\lib;..\glew-1.11.0\lib\Release\Win32;..\tinyxml\lib;..\DevIL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freeglut.lib;glew32.lib;tinyxmld.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\freeglut\lib;..\glew-1.11.0\lib\Release\Win32;..\tinyxml\lib;..\DevIL\lib;..\SOIL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freeglut.lib;glew32.lib;tinyxmld.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -97,6 +97,7 @@
     <ClCompile Include="Road.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Stack.cpp" />
+    <ClCompile Include="TexLoader.cpp" />
     <ClCompile Include="textureLoader.cpp" />
     <ClCompile Include="TGA.cpp" />
     <ClCompile Include="Torus.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="Road.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Stack.h" />
+    <ClInclude Include="TexLoader.h" />
     <ClInclude Include="textureLoader.h" />
     <ClInclude Include="TGA.h" />
     <ClInclude Include="Torus.h" />
@@ -165,6 +167,7 @@
     <Image Include="arial.tga" />
     <Image Include="grass.tga" />
     <Image Include="ground.tga" />
+    <Image Include="particle.tga" />
     <Image Include="particula.bmp" />
     <Image Include="tree.tga" />
     <Image Include="water.tga" />

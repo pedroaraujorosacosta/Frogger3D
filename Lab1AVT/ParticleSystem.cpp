@@ -20,8 +20,11 @@ ParticleSystem::~ParticleSystem()
 
 void ParticleSystem::draw()
 {
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	for (std::list<Particle*>::iterator it = _liveParticles.begin(); it != _liveParticles.end(); it++)
 		(*it)->draw();
+	glDisable(GL_BLEND);
 }
 
 void ParticleSystem::reset()
