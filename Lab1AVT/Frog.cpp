@@ -184,10 +184,30 @@ void Frog::draw(){
 	modelview->translateMatrix(-0.3, 0.6, 0.0);
 	eyes->draw();
 	modelview->pop();
+	
+	glStencilFunc(GL_ALWAYS, 0x1, 0x1);
+	glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
+
+	modelview->translateMatrix(0.0, 0.0, -2.5);
+	body->draw();
+
+	modelview->push();
+	modelview->translateMatrix(0.3, 0.6, -0.0);
+	eyes->draw();
+	modelview->pop();
+
+	modelview->push();
+	modelview->translateMatrix(-0.3, 0.6, -0.0);
+	eyes->draw();
+	modelview->pop();
+
+	glStencilFunc(GL_EQUAL, 0x0, 0x1); //se 0x0 passar a 0x1, o stencil é invertido e imagem fica no cubo
+	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
 	sendDataToShader();
 	modelview->pop();
 }
+
 
 void Frog::init() {
 	float o[3] = { 0.0, 0.0, 0.0 };

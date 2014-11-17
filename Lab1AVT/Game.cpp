@@ -135,7 +135,7 @@ void Game::resetProgram()
 
 void Game::draw() {
 	++frameCount;
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	modelViewStack.push();
 
@@ -144,6 +144,10 @@ void Game::draw() {
 	cam->setCamera();
 
 	setProgramIndex(0);
+
+	
+	managerObj->applyStencil();
+
 
 	managerLight->illuminate();
 
@@ -177,6 +181,7 @@ void Game::draw() {
 	else
 		this->gameState = LOSE;
 
+	
 	// activate alpha test to draw translucids only
 	setAlphaTest(AT_TRANSLUCID);
 

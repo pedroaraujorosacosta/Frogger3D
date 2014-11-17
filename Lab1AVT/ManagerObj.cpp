@@ -23,6 +23,10 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	setLateralEsquerda(-20.0);
 	setLateralDireita(20.0);
 
+	//stencil
+	float positionCube[]{0.0, 1.0, -5.0};
+	this->stencilMaskCube = new Cube(positionCube, game, false,0);
+
 	//collision variables init
 	carWeigth = 1.2;
 	busWeigth = 2.4;
@@ -31,19 +35,7 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	frogHeigth = 1.0;
 	frogWeigth = 1.4; 
 
-	/*
-	validPositions = new bool*[8];
-	for (int t = 0; t < 8; ++t) {
-		validPositions[t] = new bool[5];
-	}
-	for (int t = 0; t < 8; ++t) {
-		for (int i = 0; i < 5; ++i){
-			validPositions[t][i] = false;
-		}
-	}
-	*/
 
-	
 	float posRiver[] = { 0.0, 7, -3.0 };
 	objects.push_back(new River(posRiver, game));
 	float posroad[] = { 0.0, -7, -3.0 };
@@ -374,7 +366,6 @@ void ManagerObj::update(float dt, Frog* frog) {
 	canColideLane5 = false;
 
 	onSurface = false;
-
 	//YYS check
 	//river collision lanes to use
 
@@ -409,12 +400,10 @@ void ManagerObj::update(float dt, Frog* frog) {
 	// sort objects (so translucids appear ordered according to position relative to camera)
 	std::sort(objects.begin(), objects.end(), comparatorObjects);
 
-	//colision variables for the random //to be changed *******************************************************
 
 	for (Object* o : objects){
 		o->update(dt);
 	}
-
 	for (MobileObj* o : objectsMobileLane1){
 
 		//XXs check
@@ -433,9 +422,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 		}
 
 	}
-	//fazer update às posições válidas para o random
 	for (MobileObj* o : objectsMobileLane2){
-
 		if (canColideLane2){
 			if (((frogWeigth / 2 + turtleWeigth / 2) > fabs((frogXXs - o->getPositionXXs()))))
 				onSurface = true;
@@ -447,6 +434,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 				o->setPositionXXs(lateralDireita + 4 + (rand() % 10));
 			} while (laneCollision(objectsMobileLane2, o));
 		}
+
 	}
 	for (MobileObj* o : objectsMobileLane3){
 
@@ -476,7 +464,6 @@ void ManagerObj::update(float dt, Frog* frog) {
 				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
 			} while (laneCollision(objectsMobileLane4, o));
 		}
-
 	}
 
 	for (MobileObj* o : objectsMobileLane5){
@@ -526,6 +513,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 			} while (laneCollision(objectsMobileLane7, o));
 		}
 
+
 	}
 	for (MobileObj* o : objectsMobileLane8){
 	
@@ -543,7 +531,6 @@ void ManagerObj::update(float dt, Frog* frog) {
 			} while (laneCollision(objectsMobileLane8, o));
 		}
 	
-
 	}
 
 	float vel[3];
@@ -603,88 +590,6 @@ float ManagerObj::getLane8Velocity() {
 	return 2 * dificuldade;
 }
 
-/*
-int ManagerObj::validateRandomPosition(int lane, int randomIndex){
-		
-	int laneArray = lane - 1;
-	
-	do{ randomIndex = ((randomIndex + 2) % 5); } while (validPositions[laneArray][randomIndex] == true);
-
-	//só deve haver 1 colisão com a parede da direita 
-	//validPositions[laneArray][randomIndex] = true;
-
-	//std::cout << randomIndex << ' ';
-
-	return randomIndex;
-}
-/*
-int ManagerObj::getRandomStartPosition(int randomIndex){
-
-
-	if (randomIndex == 0){
-		
-		//std::cout << 22 << std::endl;
-		return 22;
-	}
-	else if (randomIndex == 1){
-		//std::cout << 25.5 << std::endl;
-		return 25.5;
-	}
-	else if (randomIndex == 2){
-		 //std::cout << 29 << std::endl;
-		 return 29;
-	}
-	else if (randomIndex == 3){
-		//std::cout << 32.5 << std::endl;
-		return 32.5;
-	}
-	else if (randomIndex == 4){
-		 //std::cout << 35 << std::endl;
-		 return 35;
-	}
-	else //never here
-		return 0.0;
-		
-}
-/*
-void ManagerObj::updateValidPositions(int lane,float objectXXs){
-
-	float pos = fabs(objectXXs);
-	int laneArray = lane - 1;
-
-
-	//std::cout << std::endl << "new check"  << ' ' << "object position is" << objectXXs << ' ';
-	if ((pos > 19.5) && (pos < 24.1)){
-
-		validPositions[laneArray][0] = true;
-		//std::cout << "0 is" << validPositions[laneArray][0] << ' ';
-	}
-
-	if ((pos > 22.9) && (pos < 28.5)){
-		validPositions[laneArray][1] = true;
-		//std::cout << "1 is" << validPositions[laneArray][1] << ' ';
-	}
-
-	if ((pos > 25.4 && pos < 31.6)){
-		validPositions[laneArray][2] = true;
-		//std::cout << "2 is" << validPositions[laneArray][2] << ' ';
-	}
-
-
-	if ((pos > 28.9 && pos < 35.5)){
-		validPositions[laneArray][3] = true;
-		//std::cout << "3 is" << validPositions[laneArray][3] << ' ';
-	}
-
-
-	if ((pos > 30.4 && pos < 38.6)){
-		validPositions[laneArray][4] = true;
-		//std::cout << "4 is" << validPositions[laneArray][4] << ' ';
-	}
-
-
-}*/
-
 Vector ManagerObj::getLane1Direction()
 {
 	float dirLane1[] = { 1, 0.0, 0.0 };
@@ -718,4 +623,27 @@ Vector ManagerObj::getLane5Direction()
 	float dirLane5[] = { 1, 0.0, 0.0 };
 	Vector dir(dirLane5, 3);
 	return dir;
+}
+
+
+void ManagerObj::applyStencil(){
+
+
+	
+	glEnable(GL_STENCIL_TEST);
+	glClearStencil(0x0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glStencilFunc(GL_ALWAYS, 0x1, 0x1);
+	glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
+	
+
+
+	stencilMaskCube->setScale(2, 2, 2);
+	stencilMaskCube->draw();
+
+	
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glStencilFunc(GL_EQUAL,0x0, 0x1); //se 0x0 passar a 0x1, o stencil é invertido e imagem fica no cubo
+	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+	
 }
