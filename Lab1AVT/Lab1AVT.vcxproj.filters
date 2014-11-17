@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
@@ -18,135 +22,135 @@
     <Filter Include="Fonts">
       <UniqueIdentifier>{c24df226-3242-41c1-aaf8-d209a0342eab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Models">
-      <UniqueIdentifier>{a8cf4a07-6a91-480f-8528-9b75c567fa56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders\Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Shaders\Source Files\Math">
+    <Filter Include="Source Files\Math">
       <UniqueIdentifier>{0e1af5b0-da5c-475e-811b-e2736e9ee8bf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders\Source Files\Basic Geometry">
+    <Filter Include="Source Files\Basic Geometry">
       <UniqueIdentifier>{c14acca4-3f50-44a8-9ee2-6fec34feb803}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders\Source Files\Libraries">
+    <Filter Include="Source Files\Libraries">
       <UniqueIdentifier>{be351b53-9e43-4cea-bb22-f67f87c63d37}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders\Source Files\Flare">
-      <UniqueIdentifier>{a4cb1d2d-dcff-4908-a295-ffc5c7f60ad9}</UniqueIdentifier>
+    <Filter Include="Models">
+      <UniqueIdentifier>{a8cf4a07-6a91-480f-8528-9b75c567fa56}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IComponent.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="River.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Road.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MobileObj.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Car.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Frog.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Bus.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Turtle.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FloatingLog.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Manager.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ManagerLight.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ManagerObj.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Matrix.cpp">
-      <Filter>Shaders\Source Files\Math</Filter>
+      <Filter>Source Files\Math</Filter>
     </ClCompile>
     <ClCompile Include="Cube.cpp">
-      <Filter>Shaders\Source Files\Basic Geometry</Filter>
+      <Filter>Source Files\Basic Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Cylinder.cpp">
-      <Filter>Shaders\Source Files\Basic Geometry</Filter>
+      <Filter>Source Files\Basic Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Sphere.cpp">
-      <Filter>Shaders\Source Files\Basic Geometry</Filter>
+      <Filter>Source Files\Basic Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Torus.cpp">
-      <Filter>Shaders\Source Files\Basic Geometry</Filter>
+      <Filter>Source Files\Basic Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Vector.cpp">
-      <Filter>Shaders\Source Files\Math</Filter>
+      <Filter>Source Files\Math</Filter>
     </ClCompile>
     <ClCompile Include="vsShaderLib.cpp">
-      <Filter>Shaders\Source Files\Libraries</Filter>
+      <Filter>Source Files\Libraries</Filter>
     </ClCompile>
     <ClCompile Include="TGA.cpp">
-      <Filter>Shaders\Source Files\Libraries</Filter>
+      <Filter>Source Files\Libraries</Filter>
     </ClCompile>
     <ClCompile Include="FontLib.cpp">
-      <Filter>Shaders\Source Files\Libraries</Filter>
+      <Filter>Source Files\Libraries</Filter>
     </ClCompile>
     <ClCompile Include="Stack.cpp">
-      <Filter>Shaders\Source Files\Math</Filter>
+      <Filter>Source Files\Math</Filter>
     </ClCompile>
     <ClCompile Include="BillboardObj.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Quad.cpp">
-      <Filter>Shaders\Source Files\Basic Geometry</Filter>
+      <Filter>Source Files\Basic Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Tree.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Models.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="textureLoader.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Monkey.cpp">
-      <Filter>Shaders\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Flare.cpp">
-      <Filter>Shaders\Source Files\Flare</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="glbmp.c">
+      <Filter>Source Files\Libraries</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
-    <Text Include="flare.txt">
-      <Filter>Shaders\Source Files\Flare</Filter>
-    </Text>
+    <Text Include="flare.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cube.h">
@@ -248,6 +252,15 @@
     <ClInclude Include="Flare.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PartycleSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="glbmp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="fontshade.frag">
@@ -262,23 +275,17 @@
     <None Include="pointlight.vert">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="back.raw">
-      <Filter>Shaders\Source Files\Flare</Filter>
+    <None Include="back.raw" />
+    <None Include="crcl.raw" />
+    <None Include="flar.raw" />
+    <None Include="hxgn.raw" />
+    <None Include="ring.raw" />
+    <None Include="sun.raw" />
+    <None Include="lensshade.frag">
+      <Filter>Shaders</Filter>
     </None>
-    <None Include="crcl.raw">
-      <Filter>Shaders\Source Files\Flare</Filter>
-    </None>
-    <None Include="flar.raw">
-      <Filter>Shaders\Source Files\Flare</Filter>
-    </None>
-    <None Include="hxgn.raw">
-      <Filter>Shaders\Source Files\Flare</Filter>
-    </None>
-    <None Include="ring.raw">
-      <Filter>Shaders\Source Files\Flare</Filter>
-    </None>
-    <None Include="sun.raw">
-      <Filter>Shaders\Source Files\Flare</Filter>
+    <None Include="lensshade.vert">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -296,6 +303,9 @@
     </Image>
     <Image Include="arial.tga">
       <Filter>Fonts</Filter>
+    </Image>
+    <Image Include="particula.bmp">
+      <Filter>Textures</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

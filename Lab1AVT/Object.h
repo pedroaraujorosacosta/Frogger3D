@@ -42,6 +42,7 @@ protected:
 	void sendMaterials();
 	void sendDataToShader();
 	void createBufferObjects();
+	void destroyBufferObjects();
 public:
 	Object(float* position, Game *game);
 	~Object();
@@ -84,6 +85,11 @@ public:
 	}
 	void setPositionZZs(float positionZZs){
 		position[2] = positionZZs;
+	}
+	void setPosition(float x, float y, float z) {
+		position[0] = x;
+		position[1] = y;
+		position[2] = z;
 	}
 };
 

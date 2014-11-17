@@ -156,8 +156,10 @@ void Camera::updateDirection(int dx, int dy)
 	if (mode == FPS)
 	{
 		theta -= dx / 10;
-		/*if (theta > 90 || theta < -90)
-			theta += dx / 10;*/
+		theta = fmod(theta, 360);
+
+		//std::cout << "theta " << theta << " " << "phi " << phi << std::endl;
+
 		phi += dy / 10;
 		if (phi > 90 || phi < -90)
 			phi -= dy / 10;
@@ -193,7 +195,12 @@ Vector Camera::getEye()
 	return Vector(eye, 3);
 }
 
-float* Camera::getCameraPosition(){
+float Camera::getTheta()
+{
+	return theta;
+}
 
-	return eye;
+float Camera::getPhi()
+{
+	return phi;
 }

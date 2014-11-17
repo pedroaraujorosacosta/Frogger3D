@@ -13,8 +13,9 @@
 #include "FloatingLog.h"
 #include "Bus.h"
 #include "Car.h"
-
-
+#include "Particle.h"
+#include "PartycleSystem.h"
+#include "Tree.h"
 #include "ManagerObj.h"
 
 
@@ -41,6 +42,33 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	objects.push_back(new River(posRiver, game));
 	float posroad[] = { 0.0, -7, -3.0 };
 	objects.push_back(new Road(posroad, game));
+
+	// Trees
+	// init trees
+	float dir[3] = { 0.0, -1.0, 0.0 };
+	float tree1f[3] = { 0.0f, 1.0f, -2.0f };
+	Tree *tree1 = new Tree(tree1f, game, dir, 1.0, 1.0);
+	objects.push_back(tree1);
+
+	float tree2f[3] = { 8.0f, 1.0f, -2.0f };
+	Tree *tree2 = new Tree(tree2f, game, dir, 1.0, 1.0);
+	objects.push_back(tree2);
+
+	float tree3f[3] = { -8.0f, 1.0f, -2.0f };
+	Tree *tree3 = new Tree(tree3f, game, dir, 1.0, 1.0);
+	objects.push_back(tree3);
+
+	float tree4f[3] = { 0.0f, 13.0f, -2.0f };
+	Tree *tree4 = new Tree(tree4f, game, dir, 1.0, 1.0);
+	objects.push_back(tree4);
+
+	float tree5f[3] = { 8.0f, 13.0f, -2.0f };
+	Tree *tree5 = new Tree(tree5f, game, dir, 1.0, 1.0);
+	objects.push_back(tree5);
+
+	float tree6f[3] = { -8.0f, 13.0f, -2.0f };
+	Tree *tree6 = new Tree(tree6f, game, dir, 1.0, 1.0);
+	objects.push_back(tree6);
 
 	//LANE 1
 	float posFloatingLog1[] = { -5.0, 11.0, -2.5 };
@@ -160,6 +188,11 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	objectsMobileLane8.push_back(car4);
 	objects.push_back(car3);
 	objects.push_back(car4);
+
+	float pos[3] = { 0.0, 0.0, 1.0 };
+	p = new Particle(pos, game, 1, 1);
+
+	ps = new ParticleSystem(game, 50, 10, 1.0);
 }
 
 ManagerObj::~ManagerObj() {
@@ -168,8 +201,10 @@ ManagerObj::~ManagerObj() {
 }
 
 void ManagerObj::draw() {
-	for (Object* o : objects)
-		o->draw();
+	for (std::vector<Object*>::reverse_iterator it = objects.rbegin(); it != objects.rend(); it++)
+		(*it)->draw();
+
+	ps->draw();
 }
 
 void ManagerObj::init(){
@@ -379,8 +414,6 @@ void ManagerObj::update(float dt, Frog* frog) {
 		o->update(dt);
 	}
 	for (MobileObj* o : objectsMobileLane1){
-		//o->update(dt);
-		
 
 		//XXs check
 		//soma das dimensões têm de ser maiores que a distância para haver colisão
@@ -425,7 +458,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
 			} while (laneCollision(objectsMobileLane3, o));
 		}
-	}
+		}
 
 	for (MobileObj* o : objectsMobileLane4){
 
@@ -475,6 +508,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 	}
 	for (MobileObj* o : objectsMobileLane7){
 
+
 		if (canColideLane7){
 			if ((frogWeigth / 2 + carWeigth / 2) > fabs((frogXXs - o->getPositionXXs())))
 				frog->killed();
@@ -491,7 +525,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 
 	}
 	for (MobileObj* o : objectsMobileLane8){
-		//o->update(dt);
+		
 		
 		if (canColideLane8){
 			if ((frogWeigth / 2 + carWeigth / 2) > fabs((frogXXs - o->getPositionXXs())))
@@ -517,6 +551,8 @@ void ManagerObj::update(float dt, Frog* frog) {
 			frog->killed();
 	}
 
+
+	ps->update(50.0);
 }
 
 

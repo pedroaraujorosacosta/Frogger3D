@@ -480,28 +480,8 @@ VSFontLib::renderSentence(int x, int y, unsigned int index)
 
 void VSFontLib::matricesToGL()
 {
-	GLuint pvmID = game->getPVMid();
-	//GLuint vmID = game->getVMid();
-	//GLuint iVmID = game->getIVMid();
-
-	// send the VM matrix
-	/*Matrix vm = game->getVM();
-	float vmFloat[16];
-	for (int i = 0; i < 16; i++)
-		vmFloat[i] = vm.m[i];
-
-	glUniformMatrix4fv(vmID, 1, GL_TRUE, vmFloat);*/
-
-
-	// compute and send the normal matrix
-	/*Matrix iVm = vm.invertMatrix();
-	float iVmFloat[9];
-	for (int i = 0; i < 9; i++)
-		iVmFloat[i] = iVm.m[i];
-	glUniformMatrix3fv(iVmID, 1, GL_TRUE, iVmFloat);*/
-
-
 	// send the PVM matrix
+	GLuint pvmID = game->getPVMid();
 	Matrix pvmM = game->getPVM();
 	float pvmFloat[16];
 	for (int i = 0; i < 16; i++)

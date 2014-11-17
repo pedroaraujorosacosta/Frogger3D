@@ -9,6 +9,8 @@
 #include <fstream>
 #include <vector>
 
+
+
 #define MY_VERTEX_COORD_ATTRIB 0
 #define MY_NORMAL_ATTRIB 1
 #define MY_TEXTURE_COORD_ATTRIB 2
@@ -21,6 +23,7 @@ class VSShaderLib;
 class ManagerLight;
 class Light;
 class VSFontLib;
+class Flare;
 
 class Game : IComponent {
 
@@ -69,10 +72,13 @@ class Game : IComponent {
 	bool isLeftButtonDown;
 	bool isRightButtonDown;
 	bool isFogOn;
+	bool isFlareOn;
 	char keyDown;
-	GLuint TextureArray[4];
+	GLuint TextureArray[5];
 	unsigned int uiWinID;
 	unsigned int uiLoseID;
+
+	Flare* flare;
 
 	void setupGLUT(int argc, char* argv[]);
 	void setupGLEW();
@@ -92,6 +98,7 @@ class Game : IComponent {
 	void setAlphaTest(AlphaTest alphaTest);
 	void setFog();
 	void clearFog();
+	void drawFlare();
 
 public:
 	Game(int WinX, int WinY);
@@ -132,7 +139,7 @@ public:
 	int getStartTime();
 
 	void winGame();
-
+	void LoadBMPTexture(unsigned int *textureArray, const char * bitmap_file, int ID);
 };
 
 #endif

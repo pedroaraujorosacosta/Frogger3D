@@ -53,5 +53,7 @@ public:
 	
 	float* getCameraPosition();
 	Vector getEye();
+	float getTheta();
+	float getPhi();
 };
 #endif

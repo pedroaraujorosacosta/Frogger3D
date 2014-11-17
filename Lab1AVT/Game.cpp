@@ -21,14 +21,17 @@
 #include "FontLib.h"
 #include "Flare.h"
 #include <cctype>
+#include "glbmp.h" 
 
 #define LIFES 5
 
 #define CAPTION "Assignment 1"
 
+#define degToRad(x) ((x/180.0f) * M_PI)
+
 Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(30.0),
 	isLeftButtonDown(false), isRightButtonDown(false), frameCount(0), totalFrames(0), startTime(0.0), windowHandle(0),
-	pIndex(0), keyDown('\0'), isFogOn(true)
+	pIndex(0), keyDown('\0'), isFogOn(true), isFlareOn(true)
 {
 	winX = WinX;
 	winY = WinY;
@@ -66,11 +69,14 @@ void Game::init(int argc, char* argv[])
 	cam = new Camera(this, t, b, n, f, l, r, FOV, S);
 
 	//setup textures
-	glGenTextures(4, TextureArray);
+	glGenTextures(5, TextureArray);
 	TGA_Texture(TextureArray, "water.tga", 0, true);
 	TGA_Texture(TextureArray, "ground.tga", 1, true);
 	TGA_Texture(TextureArray, "grass.tga", 2, true);
 	TGA_Texture(TextureArray, "tree.tga", 3, false);
+	//TGA_Texture(TextureArray, "particula.bmp", 4, false);
+	LoadBMPTexture(TextureArray, "particula.bmp", 4);
+	
 
 	vsfl = new VSFontLib(this);
 	vsfl->load("arial");
@@ -81,6 +87,9 @@ void Game::init(int argc, char* argv[])
 
 	//game state
 	this->gameState = PLAYING; 
+
+	//Flare it all!
+	flare = new Flare(this);
 }
 
 void Game::setProgramIndex(int pIndex)
@@ -126,7 +135,8 @@ void Game::draw() {
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[3]);
 
-
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[4]);
 
 	// activate alpha test to draw opaques only
 	setAlphaTest(AT_OPAQUE);
@@ -155,15 +165,36 @@ void Game::draw() {
 	// deactivate alpha test
 	setAlphaTest(AT_NONE);
 
+	// Unbind all textures
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	resetProgram();
 
 	projectionStack.pop();
 	modelViewStack.pop();
 
+	// Draw flare
+	if (isFlareOn && cam->isInFPSMode())
+		drawFlare();
+
 	// Render the UI
 	renderHUD();
 
 	glutSwapBuffers();
+}
+
+void Game::drawFlare()
+{
+	setProgramIndex(2);
+
+	flare->draw();
 }
 
 void Game::renderHUD()
@@ -305,6 +336,7 @@ void Game::createShaderPrograms()
 {
 	createShaderProgram(0);
 	createShaderProgram(1);
+	createShaderProgram(2);
 
 	checkOpenGLError("ERROR: Could not create shaders.");
 }
@@ -350,6 +382,9 @@ void Game::createShaderProgram(int pIndex)
 		loadShader(1, VSShaderLib::VERTEX_SHADER, "fontshade.vert");
 		loadShader(1, VSShaderLib::FRAGMENT_SHADER, "fontshade.frag");
 		break;
+	case 2:
+		loadShader(2, VSShaderLib::VERTEX_SHADER, "lensshade.vert");
+		loadShader(2, VSShaderLib::FRAGMENT_SHADER, "lensshade.frag");
 	}
 
 	glBindFragDataLocation(programId[pIndex], 0, "colorOut");
@@ -619,6 +654,10 @@ void Game::keyboard(unsigned char key, int x, int y)
 		case 'F':
 			isFogOn = !isFogOn;
 			break;
+		case 'm':
+		case 'M':
+			isFlareOn = !isFlareOn;
+			break;
 		}
 	}
 }
@@ -648,6 +687,30 @@ void Game::mouseMotionFun(int x, int y)
 	const int MIDDLE_X = winX / 2;
 	const int MIDDLE_Y = winY / 2;
 
+	/*if (!warped)
+	{
+		// update flare
+		int xFlare;
+		int yFlare;
+		flare->getXYFlare(&xFlare, &yFlare);
+		xFlare -= newX - oldX;
+		yFlare += newY - oldY;
+
+		// clamp for windowed mode
+		if (xFlare >= winX)
+			xFlare = winX - 1;
+		if (xFlare < 0)
+			xFlare = 0;
+		if (yFlare >= winY)
+			yFlare = winY - 1;
+		if (yFlare < 0)
+			yFlare = 0;
+
+		flare->setXYFlare(xFlare, yFlare);
+
+	}*/
+
+	// update camera
 	int dx = newX - MIDDLE_X;
 	int dy = newY - MIDDLE_Y;
 
@@ -663,7 +726,30 @@ void Game::mouseMotionFun(int x, int y)
 	}
 
 	if (isLeftButtonDown)
+	{
 		cam->updateDirection(dx, dy);
+		// update flare position
+		float theta = cam->getTheta();
+		float phi = cam->getPhi();
+		float dTheta = theta + 30;
+		float dPhi = phi - 30;
+		// if it's facing the directional light
+		if (abs(dTheta) < 4 && abs(dPhi) < 4)
+		{
+			float origin = fabs(sin(degToRad(3.0f)));
+			float length = 2*fabs(sin(degToRad(3.0f)));
+			float sx = (-sin(degToRad(dTheta)) + origin) / length;
+			float sy = (sin(degToRad(dPhi)) + origin) / length;
+
+			int flareX = (winX - 1) - sx*(winX - 1);
+			int flareY = (winY - 1) - sy*(winY - 1);
+			//std::cout << "fX " << atest << " flareY " << btext << std::endl;
+			flare->setXYFlare(flareX, flareY);
+		}
+		else {
+			flare->setXYFlare(-100, -100);
+		}
+	}
 
 	oldX = newX;
 	oldY = newY;
@@ -756,4 +842,30 @@ void Game::clearFog()
 	float fogDensity = 0.0f;
 	GLuint loc = glGetUniformLocation(getShader(), "fogDensity");
 	glUniform1f(loc, fogDensity);
+}
+
+void Game::LoadBMPTexture(unsigned int *textureArray, const char * bitmap_file, int ID)
+{
+
+	glbmp_t bitmap;     //object to fill with data from glbmp
+
+	//try to load the specified file--if it fails, dip out
+	if (!glbmp_LoadBitmap(bitmap_file, 0, &bitmap))
+	{
+		fprintf(stderr, "Error loading bitmap file: %s\n", bitmap_file);
+		exit(1);
+	}
+
+		
+	glBindTexture(GL_TEXTURE_2D, textureArray[ID]);
+	//copy data from bitmap into texture
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bitmap.width, bitmap.height,
+		0, GL_RGB, GL_UNSIGNED_BYTE, bitmap.rgb_data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	
+	//free the bitmap
+	glbmp_FreeBitmap(&bitmap);
 }
