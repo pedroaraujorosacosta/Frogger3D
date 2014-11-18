@@ -510,63 +510,6 @@ void render(Game* game, int xFlare, int yFlare)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	/*float pos[3] = { 0.0f, 0.0f, 0.0f };
-	Quad *quad = new Quad(pos, game);
-
-	float color1[4] = { 1.0, 1.0, 1.0, 1.0 };
-	float color2[4] = { 1.0, 0.4, 0.4, 1.0 };
-	float color3[4] = { 1.0, 0.0, 0.0, 0.0 };
-	float color4[4] = { 1.0, 1.0, 1.0, 0.8 };
-
-	Stack* modelview = game->getModelViewStack();
-
-	switch (nBackground)
-	{
-	case BACK_TEXTURED:
-		//texBack
-		quad->setTexCount(1);
-		quad->setAmbient(color1);
-		quad->setDiffuse(color1);
-		quad->setSpecular(color1);
-		modelview->push();
-			quad->draw();
-		modelview->pop();
-		//drawQuad( 0, 0, SCREENwidth, SCREENheight, texBack, 0xffffffff );
-		break;
-	case BACK_COLOUR0:
-		quad->setTexCount(0);
-		quad->setAmbient(color2);
-		quad->setDiffuse(color2);
-		quad->setSpecular(color2);
-		modelview->push();
-			quad->draw();
-		modelview->pop();
-		// drawQuad( 0, 0, SCREENwidth, SCREENheight, NULL, 0xff6060ff );
-		break;
-	case BACK_COLOUR1:
-		quad->setTexCount(0);
-		quad->setAmbient(color3);
-		quad->setDiffuse(color3);
-		quad->setSpecular(color3);
-		modelview->push();
-			quad->draw();
-		modelview->pop();
-		//drawQuad( 0, 0, SCREENwidth, SCREENheight, NULL, 0xff000000 );
-		break;
-	}
-
-	Quad* quad2 = new Quad(pos, game);
-	if (bShowSun)
-		//texSun
-		quad2->setTexCount(2);
-		quad2->setAmbient(color4);
-		quad2->setDiffuse(color4);
-		quad2->setSpecular(color4);
-		modelview->push();
-			quad->draw();
-		modelview->pop();*/
-		//drawQuad(xFlare - SUNWIDTH / 2, yFlare - SUNHEIGHT / 2, SUNWIDTH, SUNHEIGHT, texSun, 0xffffffe0);
-
 	FLARE_render(&renderFlare, xFlare, yFlare, glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2, game);
 	
 	glDisable(GL_BLEND);

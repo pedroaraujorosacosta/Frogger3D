@@ -56,7 +56,13 @@ in Data {
 
 vec4 applyFog(in vec4 rgba, in float distance) {
 	float fogAmount = exp(-(distance * fogDensity));
-	return mix(rgba, fogColor, (1.0 - fogAmount));
+
+	// mix with transparent fogColor in case its a particle texture with transparency
+	vec4 fogColorTrans = vec4(fogColor.xyz, 0.0f);
+	if(rgba.w < 0.2)
+		return mix(rgba, fogColorTrans, (1.0 - fogAmount));
+	else
+		return mix(rgba, fogColor, (1.0 - fogAmount));
 }
 
 void main() {
@@ -94,12 +100,7 @@ void main() {
 	// do an early alpha test (we can cull some of the textured fragments early)
 	if(alphaTest == ALPHA_TEST_OPAQUE) 
 	{
-		if(colorOut.w < 1.0)
-			discard;
-	}
-	else if(alphaTest == ALPHA_TEST_TRANS) 
-	{
-		if(colorOut.w < 0.1)
+		if(colorOut.w < 0.2)
 			discard;
 	}
 

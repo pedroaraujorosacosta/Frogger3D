@@ -24,6 +24,7 @@ class Light;
 class VSFontLib;
 class Flare;
 class ParticleSystem;
+class Skybox;
 
 class Game : IComponent {
 
@@ -74,12 +75,13 @@ class Game : IComponent {
 	bool isFogOn;
 	bool isFlareOn;
 	char keyDown;
-	GLuint TextureArray[5];
+	GLuint TextureArray[10];
 	unsigned int uiWinID;
 	unsigned int uiLoseID;
 
 	Flare* flare;
 	ParticleSystem *ps;
+	Skybox *skybox;
 
 	void setupGLUT(int argc, char* argv[]);
 	void setupGLEW();
@@ -95,7 +97,7 @@ class Game : IComponent {
 	void resetProgram();
 	void createShaderProgram(int pIndex);
 	void loadShader(int pIndex, unsigned int ShaderType, char *filename);
-	void renderHUD();
+	void drawHUD();
 	void setAlphaTest(AlphaTest alphaTest);
 	void setFog();
 	void clearFog();
@@ -141,7 +143,7 @@ public:
 	int getStartTime();
 
 	void winGame();
-	void LoadBMPTexture(unsigned int *textureArray, const char * bitmap_file, int ID);
+	void LoadBMPTexture(unsigned int *textureArray, const char * bitmap_file, int ID, bool mipMaps);
 };
 
 #endif

@@ -23,7 +23,7 @@
 #include <cctype>
 #include "glbmp.h" 
 #include "PartycleSystem.h"
-#include <SOIL2.h>
+#include "Skybox.h"
 
 #define LIFES 5
 
@@ -31,7 +31,7 @@
 
 #define degToRad(x) ((x/180.0f) * M_PI)
 
-Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(30.0),
+Game::Game(int WinX, int WinY) : FOV(90), n(0.1), S(tan(FOV*0.5*(M_PI / 180)) * n), r(aspectRatio * S), l(-r), t(S), b(-t), f(40.0),
 	isLeftButtonDown(false), isRightButtonDown(false), frameCount(0), totalFrames(0), startTime(0.0), windowHandle(0),
 	pIndex(0), keyDown('\0'), isFogOn(true), isFlareOn(true)
 {
@@ -65,7 +65,7 @@ void Game::init(int argc, char* argv[])
 	frog = new Frog(posFrog, this, 0.0, directionFrog, LIFES);
 
 	// setup particle system
-	float pos[3] = { 0.0f, 13.0f, 0.0f };
+	float pos[3] = { 0.0f, 11.0f, -1.0f };
 	ps = new ParticleSystem(this, 50, 10, 1.0, pos);
 
 	// setup camera
@@ -75,26 +75,17 @@ void Game::init(int argc, char* argv[])
 	cam = new Camera(this, t, b, n, f, l, r, FOV, S);
 
 	//setup textures
-	glGenTextures(5, TextureArray);
+	glGenTextures(10, TextureArray);
 	TGA_Texture(TextureArray, "water.tga", 0, true);
 	TGA_Texture(TextureArray, "ground.tga", 1, true);
 	TGA_Texture(TextureArray, "grass.tga", 2, true);
 	TGA_Texture(TextureArray, "tree.tga", 3, false);
-	//TGA_Texture(TextureArray, "fire_particle2.tga", 4, false);
-	//TextureArray[4] = TexLoader::loadRGBATexture("fire_particle.tga", false, false, GL_LINEAR, GL_REPEAT);
-	TextureArray[4] = SOIL_load_OGL_texture
-		(
-		"flame.tga",
-		SOIL_LOAD_AUTO,
-		SOIL_CREATE_NEW_ID,
-		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
-		);
-
-	//LoadBMPTexture(TextureArray, "particula.bmp", 4);
-
-
-
-	
+	TGA_Texture(TextureArray, "flame.tga", 4, false);
+	LoadBMPTexture(TextureArray, "leftScaledV3.bmp", 5, true);
+	LoadBMPTexture(TextureArray, "rightScaledV3.bmp", 6, true);
+	LoadBMPTexture(TextureArray, "frontScaledV3.bmp", 7, true);
+	LoadBMPTexture(TextureArray, "backScaledV3.bmp", 8, true);
+	LoadBMPTexture(TextureArray, "topScaledV3.bmp", 9, true);
 
 	vsfl = new VSFontLib(this);
 	vsfl->load("arial");
@@ -108,6 +99,9 @@ void Game::init(int argc, char* argv[])
 
 	//Flare it all!
 	flare = new Flare(this);
+
+	float o[3] = { 0.0f, 0.0f, 0.0f };
+	skybox = new Skybox(o, this);
 }
 
 void Game::setProgramIndex(int pIndex)
@@ -141,18 +135,16 @@ void Game::draw() {
 
 	managerLight->illuminate();
 
+	// ready textures for all the scene (except the skybox)
+	// we limit ourselves to 5 samplers per shader, otherwise the code turns spaghetti.
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[0]);
-
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[1]);
-
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[2]);
-
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[3]);
-
 	glActiveTexture(GL_TEXTURE4);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[4]);
 
@@ -168,22 +160,32 @@ void Game::draw() {
 		frog->draw();
 	else
 		this->gameState = LOSE;
-
 	
-	// activate alpha test to draw translucids only
-	setAlphaTest(AT_TRANSLUCID);
+	// Unbind all textures
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
-	managerObj->draw();
+	// ready the skybox textures
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[5]);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[6]);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[7]);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[8]);
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[9]);
 
-	drawParticleSystem();
-
-	if (frog->getLife() > 0)
-		frog->draw();
-	else
-		this->gameState = LOSE;
-
-	// deactivate alpha test
-	setAlphaTest(AT_NONE);
+	skybox->draw();
 
 	// Unbind all textures
 	glActiveTexture(GL_TEXTURE4);
@@ -197,6 +199,33 @@ void Game::draw() {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	// rebind textures for the original scene
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[0]);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[1]);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[2]);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[3]);
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[4]);
+
+	// activate alpha test to draw translucids only
+	setAlphaTest(AT_TRANSLUCID);
+
+	managerObj->draw();
+
+	drawParticleSystem();
+
+	if (frog->getLife() > 0)
+		frog->draw();
+	else
+		this->gameState = LOSE;
+
+	// deactivate alpha test
+	setAlphaTest(AT_NONE);	
+
 	resetProgram();
 
 	projectionStack.pop();
@@ -207,7 +236,7 @@ void Game::draw() {
 		drawFlare();
 
 	// Render the UI
-	renderHUD();
+	drawHUD();
 
 	glutSwapBuffers();
 }
@@ -225,7 +254,7 @@ void Game::drawParticleSystem()
 		ps->draw();
 }
 
-void Game::renderHUD()
+void Game::drawHUD()
 {
 	char str[256];
 
@@ -710,6 +739,7 @@ void Game::mouseMotionFun(int x, int y)
 	const int MIDDLE_X = winX / 2;
 	const int MIDDLE_Y = winY / 2;
 
+	// Uncomment this if you want the flare to move around with the mouse pointer
 	/*if (!warped)
 	{
 		// update flare
@@ -756,11 +786,12 @@ void Game::mouseMotionFun(int x, int y)
 		float phi = cam->getPhi();
 		float dTheta = theta + 30;
 		float dPhi = phi - 30;
+		const float ANGLE = 15.0f;
 		// if it's facing the directional light
-		if (abs(dTheta) < 4 && abs(dPhi) < 4)
+		if (abs(dTheta) < ANGLE+1 && abs(dPhi) < ANGLE+1)
 		{
-			float origin = fabs(sin(degToRad(3.0f)));
-			float length = 2*fabs(sin(degToRad(3.0f)));
+			float origin = fabs(sin(degToRad(ANGLE)));
+			float length = 2 * fabs(sin(degToRad(ANGLE)));
 			float sx = (-sin(degToRad(dTheta)) + origin) / length;
 			float sy = (sin(degToRad(dPhi)) + origin) / length;
 
@@ -867,7 +898,7 @@ void Game::clearFog()
 	glUniform1f(loc, fogDensity);
 }
 
-void Game::LoadBMPTexture(unsigned int *textureArray, const char * bitmap_file, int ID)
+void Game::LoadBMPTexture(unsigned int *textureArray, const char * bitmap_file, int ID, bool mipMaps)
 {
 
 	glbmp_t bitmap;     //object to fill with data from glbmp
@@ -879,16 +910,20 @@ void Game::LoadBMPTexture(unsigned int *textureArray, const char * bitmap_file, 
 		exit(1);
 	}
 
-		
 	glBindTexture(GL_TEXTURE_2D, textureArray[ID]);
 	//copy data from bitmap into texture
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bitmap.width, bitmap.height,
 		0, GL_RGB, GL_UNSIGNED_BYTE, bitmap.rgb_data);
+	if (mipMaps)
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	else
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	if (mipMaps)
+		glGenerateMipmap(GL_TEXTURE_2D);
+
 	//free the bitmap
 	glbmp_FreeBitmap(&bitmap);
 }

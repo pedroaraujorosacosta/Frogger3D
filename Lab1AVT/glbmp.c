@@ -404,11 +404,8 @@ static void _bmp_Decode24(uint8_t * p_rgb, uint8_t * p_rgb_end,
    while(p_rgb < p_rgb_end)
    {
       *p_rgb++ = *(p_file++ + 2); /* red is two file bytes ahead */
-	  printf("%d, ", *p_rgb);
       *p_rgb++ = *(p_file++    ); /* green is right here */
-	  printf("%d, ", *p_rgb);
       *p_rgb++ = *(p_file++ - 2); /* blue is now two bytes back */
-	  printf("%d", *p_rgb);
    }
 }
 
