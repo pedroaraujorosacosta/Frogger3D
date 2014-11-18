@@ -97,6 +97,11 @@ void main() {
 		if(colorOut.w < 1.0)
 			discard;
 	}
+	else if(alphaTest == ALPHA_TEST_TRANS) 
+	{
+		if(colorOut.w < 0.1)
+			discard;
+	}
 
 	// for all lights
 	for (int light = 0; light < MaxLights; ++light) {

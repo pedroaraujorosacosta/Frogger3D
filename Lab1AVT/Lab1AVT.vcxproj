@@ -97,7 +97,6 @@
     <ClCompile Include="Road.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Stack.cpp" />
-    <ClCompile Include="TexLoader.cpp" />
     <ClCompile Include="textureLoader.cpp" />
     <ClCompile Include="TGA.cpp" />
     <ClCompile Include="Torus.cpp" />
@@ -140,7 +139,6 @@
     <ClInclude Include="Road.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Stack.h" />
-    <ClInclude Include="TexLoader.h" />
     <ClInclude Include="textureLoader.h" />
     <ClInclude Include="TGA.h" />
     <ClInclude Include="Torus.h" />

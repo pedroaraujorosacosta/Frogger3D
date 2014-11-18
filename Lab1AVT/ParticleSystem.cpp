@@ -1,14 +1,18 @@
 #include "PartycleSystem.h"
 #include "Particle.h"
+#include <algorithm>
 
 ParticleSystem::ParticleSystem(Game* game, unsigned int maxParticles, unsigned int maxPartsPerExpl,
-	unsigned int maxLife) :_MAXPARTICLES(maxParticles), _MAXPARTSPEREXPL(maxPartsPerExpl), _MAXLIFE(maxLife)
+	unsigned int maxLife, float *pos) :_MAXPARTICLES(maxParticles), _MAXPARTSPEREXPL(maxPartsPerExpl), _MAXLIFE(maxLife)
 {
-	this->game = game;
+	float faceDirection[3] = { 0.0f, -1.0f, 0.0f };
 
+	for (int i = 0; i < 3; i++)
+		position[i] = pos[i];
+	this->game = game;
+	
 	for (int i = 0; i < maxParticles; i++) {
-		float pos[3] = { 1.0*i, 1.0*i, 3.0 };
-		_liveParticles.push_back(new Particle(pos, game, 1, 1));
+		_liveParticles.push_back(new Particle(pos, faceDirection, game, 1.0f, 1.0f));
 	}
 }
 
@@ -20,9 +24,9 @@ ParticleSystem::~ParticleSystem()
 
 void ParticleSystem::draw()
 {
-	glEnable(GL_BLEND);
+	glEnable(GL_BLEND); 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	for (std::list<Particle*>::iterator it = _liveParticles.begin(); it != _liveParticles.end(); it++)
+	for (std::vector<Particle*>::reverse_iterator it = _liveParticles.rbegin(); it != _liveParticles.rend(); it++)
 		(*it)->draw();
 	glDisable(GL_BLEND);
 }
@@ -31,11 +35,16 @@ void ParticleSystem::reset()
 {
 	_liveParticles.clear();
 	_deadParticles.clear();
+	float faceDirection[3] = { 0.0f, -1.0f, 0.0f };
+
+	for (int i = 0; i < _MAXPARTICLES; i++) {
+		_liveParticles.push_back(new Particle(position, faceDirection, game, 1.0f, 1.0f));
+	}
 }
 
 void ParticleSystem::update(float dt)
 {
-	for (std::list<Particle*>::iterator it = _liveParticles.begin(); it != _liveParticles.end();)
+	for (std::vector<Particle*>::iterator it = _liveParticles.begin(); it != _liveParticles.end();)
 	{
 		(*it)->update(dt);
 		if (!(*it)->isAlive())
@@ -46,6 +55,7 @@ void ParticleSystem::update(float dt)
 		else
 			it++;
 	}
+	std::sort(_liveParticles.begin(), _liveParticles.end(), comparatorObjects);
 }
 
 void ParticleSystem::explode(float posX, float posY, float posZ)
@@ -66,7 +76,7 @@ void ParticleSystem::explode(float posX, float posY, float posZ)
 		lim = num_parts;
 
 	unsigned int i = 0;
-	std::list<Particle*>::iterator it = _deadParticles.begin();
+	std::vector<Particle*>::iterator it = _deadParticles.begin();
 	while (i < lim && it != _deadParticles.end())
 	{
 		(*it)->respawn(posX, posY, posZ);
@@ -75,11 +85,12 @@ void ParticleSystem::explode(float posX, float posY, float posZ)
 		i++;
 	}
 
+	float faceDirection[3] = { 0.0f, -1.0f, 0.0f };
 	int rest = num_parts - lim;
 	while (rest > 0)
 	{
 		float pos[3] = { posX, posY, posZ };
-		Particle *p = new Particle(pos, game, 1, 1);
+		Particle *p = new Particle(pos, faceDirection, game, 1, 1);
 		float difuse[4] = { 1.0f, 0.4f, 0.0f, 1.0f };
 		p->setDiffuse(difuse);
 		float specular[4] = { 1.0f, 0.4f, 0.0f, 1.0f };

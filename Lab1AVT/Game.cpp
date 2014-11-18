@@ -23,8 +23,7 @@
 #include <cctype>
 #include "glbmp.h" 
 #include "PartycleSystem.h"
-#include "TexLoader.h"
-#include <SOIL.h>
+#include <SOIL2.h>
 
 #define LIFES 5
 
@@ -66,7 +65,8 @@ void Game::init(int argc, char* argv[])
 	frog = new Frog(posFrog, this, 0.0, directionFrog, LIFES);
 
 	// setup particle system
-	ps = new ParticleSystem(this, 50, 10, 1.0);
+	float pos[3] = { 0.0f, 13.0f, 0.0f };
+	ps = new ParticleSystem(this, 50, 10, 1.0, pos);
 
 	// setup camera
 	S = tan(FOV*0.5*(M_PI / 180)) * n;
@@ -82,23 +82,13 @@ void Game::init(int argc, char* argv[])
 	TGA_Texture(TextureArray, "tree.tga", 3, false);
 	//TGA_Texture(TextureArray, "fire_particle2.tga", 4, false);
 	//TextureArray[4] = TexLoader::loadRGBATexture("fire_particle.tga", false, false, GL_LINEAR, GL_REPEAT);
-	/*TextureArray[4] = SOIL_load_OGL_texture
+	TextureArray[4] = SOIL_load_OGL_texture
 		(
-		"fire_particle2.png",
+		"flame.tga",
 		SOIL_LOAD_AUTO,
 		SOIL_CREATE_NEW_ID,
-		SOIL_FLAG_POWER_OF_TWO | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
-		);*/
-
-	/*Texture texture;
-	LoadTGA(&texture, "fire_particle.tga");
-	glBindTexture(GL_TEXTURE_2D, TextureArray[4]);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.width, texture.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture.imageData);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);*/
-
+		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+		);
 
 	//LoadBMPTexture(TextureArray, "particula.bmp", 4);
 
@@ -174,8 +164,6 @@ void Game::draw() {
 
 	managerObj->draw();
 
-	drawParticleSystem();
-
 	if (frog->getLife() > 0)
 		frog->draw();
 	else
@@ -233,7 +221,7 @@ void Game::drawFlare()
 
 void Game::drawParticleSystem()
 {
-	//if (gameState == LOSE) 
+	//if (gameState == WIN) 
 		ps->draw();
 }
 
@@ -288,6 +276,7 @@ void Game::reset()
 
 	//velocidades dos objetos
 	managerObj->reset();
+	ps->reset();
 
 	startTime = glutGet(GLUT_ELAPSED_TIME);
 	//modelViewStack.cleanGarbage();
@@ -303,19 +292,9 @@ void Game::update(float dt)
 		frog->update(dt);
 		//se houver um crash o frog vai fazer update para o inicio
 	}
-	//else if (gameState == LOSE) {
-		//ps->explode(0.0f, 0.0f, 0.0f);
-		ps->update(50);
-	//}
-
-	// clean the stacks every minute
-	/*time += dt;
-	if ( time > 60.0f ) 
-	{
-		time = 0;
-		modelViewStack.cleanGarbage();
-		projectionStack.cleanGarbage();
-	}*/
+	else if (gameState == WIN) {
+		ps->update(dt);
+	}
 }
 
 void Game::reshape(int w, int h)

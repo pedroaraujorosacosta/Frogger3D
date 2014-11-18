@@ -9,16 +9,13 @@
 #define M_PI 3.14159265
 #endif
 
-Particle::Particle(float* pos , Game* game, int width, int height) 
-: BillboardObj(pos, game, pos, width, height) //corrigir direção
+Particle::Particle(float* pos, float *faceDirection, Game* game, int width, int height) 
+	: BillboardObj(pos, game, faceDirection, width, height) //corrigir direção
 {
 	this->game = game;
-	/*glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glDisable(GL_DEPTH_TEST); 
-	glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);	
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);*/
+	for (int i = 0; i < 3; i++)
+		position[i] = pos[i];
+
 	init();
 }
 
@@ -30,32 +27,27 @@ void Particle::init()
 	v = 0.8*frand() + 0.2;
 	phi = frand()*M_PI;
 	theta = 2.0*frand()*M_PI;
-	position[0] = 0.0f;
-	position[1] = 15.0f;
-	position[2] = 0.0f;
 	this->v[0] = v * cos(theta) * sin(phi);
 	this->v[1] = v * cos(phi);
 	this->v[2] = v * sin(theta) * sin(phi);
 	a[0] = 0.1f; /* simular um pouco de vento */
-	a[1] = -0.15f; /* simular a aceleração da gravidade */
-	a[2] = 0.0f;
+	a[1] = -0.15f; 
+	a[2] = -0.8f; /* simular a aceleração da gravidade */
 
 	/* tom amarelado que vai ser multiplicado pela textura que varia entre branco e preto */
-	rgba[0] = 1.0f /*0.882f*/;
-	rgba[1] = 1.0f /*0.552f*/;
-	rgba[2] = 1.0f /*0.211f*/;
-	rgba[3] = 1.0f;
+	rgba[0] = 0.882f;
+	rgba[1] = 0.552f;
+	rgba[2] = 0.211f;
+	rgba[3] = 0.01f;
 
 	life = MAXLIFE;		/* vida inicial */
 	fade = 0.005f;	    /* step de decréscimo da vida para cada iteração */
 
-	float pos[3] = { 0.0, 0.0, 0.0 };
-	quad = new Quad(pos, game);
 	quad->setAmbient(rgba);
 	quad->setDiffuse(rgba);
 	quad->setSpecular(rgba);
-	quad->setScale(4.0f, 4.0f, 4.0f);
 	quad->setTexCount(5);
+	setTexCount(5);
 }
 
 void Particle::draw() {
@@ -64,7 +56,8 @@ void Particle::draw() {
 
 		modelview->push();
 		modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);
-		quad->draw();
+		modelview->scaleMatrix(0.2f, 0.2f, 0.2f);
+		BillboardObj::draw();
 		modelview->pop();
 	}
 
@@ -76,19 +69,14 @@ void Particle::reset(){
 
 void Particle::update(float dt)
 {
-	float delta;
-	delta = dt * 0.00378;
-	position[0] += v[0] * delta;
-	position[1] += v[1] * delta;
-	position[2] += v[2] * delta;
-	v[0] += a[0] * delta;
-	v[1] += a[1] * delta;
-	v[2] += a[2] * delta;
+	position[0] += v[0] * dt;
+	position[1] += v[1] * dt;
+	position[2] += v[2] * dt;
+	v[0] += a[0] * dt;
+	v[1] += a[1] * dt;
+	v[2] += a[2] * dt;
 	life -= fade;
 	rgba[3] = life;
-	//std::cout << position[0] << " " << position[1] << " " << position[2] << std::endl;
-	//glutPostRedisplay();
-	//glutTimerFunc(33, update, 1);
 }
 
 

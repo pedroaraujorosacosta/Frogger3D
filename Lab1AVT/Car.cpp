@@ -46,11 +46,14 @@ void Car::draw(){
 	modelview->pop();
 
 	// cabin draw
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	modelview->push();
 	//modelview->translateMatrix(0.0f, 0.0f, -0.35f);
 	modelview->scaleMatrix(1.0f, 1.0f, 1.0f);
 	cabin->draw();
 	modelview->pop();
+	glDisable(GL_BLEND);
 
 	// Wheels draw
 	modelview->push();
@@ -78,7 +81,7 @@ void Car::draw(){
 	modelview->pop();
 
 	sendDataToShader();
-	modelview->pop();
+	modelview->pop();	
 }
 
 void Car::init() {
@@ -116,10 +119,10 @@ void Car::init() {
 	wheels->setShininess(shininessWheels);
 	wheels->setTexCount(texcountWheels);
 
-	float ambCabin[] = { 0.1f, 0.1f, 0.1f, 1.0f };
-	float diffCabin[] = { 0.2f, 0.2f, 0.8f, 1.0f };
-	float specCabin[] = { 0.2f, 0.2f, 0.9f, 1.0f };
-	float emissiveCabin[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float ambCabin[] = { 0.1f, 0.1f, 0.1f, 0.07f };
+	float diffCabin[] = { 0.2f, 0.2f, 0.8f, 0.1f };
+	float specCabin[] = { 0.2f, 0.2f, 0.9f, 0.05f };
+	float emissiveCabin[] = { 0.0f, 0.0f, 0.0f, 0.1f };
 	float shininessCabin = 100.0f;
 	int texcountCabin = 0;
 
