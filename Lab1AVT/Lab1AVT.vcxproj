@@ -166,11 +166,16 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="arial.tga" />
+    <Image Include="backScaledV3.bmp" />
     <Image Include="flame.tga" />
+    <Image Include="frontScaledV3.bmp" />
     <Image Include="grass.tga" />
     <Image Include="ground.tga" />
+    <Image Include="leftScaledV3.bmp" />
     <Image Include="particle.tga" />
     <Image Include="particula.bmp" />
+    <Image Include="rightScaledV3.bmp" />
+    <Image Include="topScaledV3.bmp" />
     <Image Include="tree.tga" />
     <Image Include="water.tga" />
   </ItemGroup>

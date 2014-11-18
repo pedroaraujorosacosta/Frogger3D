@@ -322,6 +322,21 @@
     <Image Include="flame.tga">
       <Filter>Textures</Filter>
     </Image>
+    <Image Include="backScaledV3.bmp">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="frontScaledV3.bmp">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="leftScaledV3.bmp">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="rightScaledV3.bmp">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="topScaledV3.bmp">
+      <Filter>Textures</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="arial.xml">
