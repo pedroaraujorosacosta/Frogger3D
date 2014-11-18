@@ -35,7 +35,6 @@ ManagerObj::ManagerObj(Game *game) : Manager(game) {
 	frogHeigth = 1.0;
 	frogWeigth = 1.4; 
 
-
 	float posRiver[] = { 0.0, 7, -3.0 };
 	objects.push_back(new River(posRiver, game));
 	float posroad[] = { 0.0, -7, -3.0 };
