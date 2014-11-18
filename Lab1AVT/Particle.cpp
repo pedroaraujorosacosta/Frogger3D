@@ -37,8 +37,8 @@ void Particle::init()
 	this->v[1] = v * cos(phi);
 	this->v[2] = v * sin(theta) * sin(phi);
 	a[0] = 0.1f; /* simular um pouco de vento */
-	a[1] = -0.15f; /* simular a aceleração da gravidade */
-	a[2] = 0.0f;
+	a[1] = 0.0f;// -0.15f; /* simular a aceleração da gravidade */
+	a[2] = -0.15f;// 0.0f;
 
 	/* tom amarelado que vai ser multiplicado pela textura que varia entre branco e preto */
 	rgba[0] = 0.882f;

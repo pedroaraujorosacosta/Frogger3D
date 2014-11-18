@@ -275,17 +275,29 @@
     <None Include="pointlight.vert">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="back.raw" />
-    <None Include="crcl.raw" />
-    <None Include="flar.raw" />
-    <None Include="hxgn.raw" />
-    <None Include="ring.raw" />
-    <None Include="sun.raw" />
     <None Include="lensshade.frag">
       <Filter>Shaders</Filter>
     </None>
     <None Include="lensshade.vert">
       <Filter>Shaders</Filter>
+    </None>
+    <None Include="back.raw">
+      <Filter>Textures</Filter>
+    </None>
+    <None Include="crcl.raw">
+      <Filter>Textures</Filter>
+    </None>
+    <None Include="flar.raw">
+      <Filter>Textures</Filter>
+    </None>
+    <None Include="hxgn.raw">
+      <Filter>Textures</Filter>
+    </None>
+    <None Include="ring.raw">
+      <Filter>Textures</Filter>
+    </None>
+    <None Include="sun.raw">
+      <Filter>Textures</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
