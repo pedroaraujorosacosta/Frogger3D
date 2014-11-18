@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "Particle.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 #include "Game.h"
 
 #define frand()	((float) rand() /RAND_MAX)
@@ -52,7 +52,7 @@ void Particle::init()
 
 void Particle::draw() {
 	if (isAlive()) {
-		Stack* modelview = game->getModelViewStack();
+		MatrixStack* modelview = game->getModelViewStack();
 
 		modelview->push();
 		modelview->translateMatrix(this->position[0], this->position[1], this->position[2]);

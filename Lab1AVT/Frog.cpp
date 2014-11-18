@@ -1,5 +1,5 @@
 #include "Frog.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 #include "Game.h"
 #include <iostream>
 #include "Light.h"
@@ -159,7 +159,7 @@ void Frog::stop()
 
 void Frog::draw(){
 
-	Stack* modelview = game->getModelViewStack();
+	MatrixStack* modelview = game->getModelViewStack();
 
 	modelview->push();
 	//puts the frog on the right position

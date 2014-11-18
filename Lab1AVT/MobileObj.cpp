@@ -1,5 +1,5 @@
 #include "MobileObj.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 #include "Game.h"
 
 MobileObj::MobileObj(float *position, Game *game, float velocity, float *direction, float width, float height) : Object(position, game)
@@ -17,7 +17,7 @@ MobileObj::MobileObj(float *position, Game *game, float velocity, float *directi
 
 void MobileObj::draw(){
 
-	Stack* modelview = game->getModelViewStack();
+	MatrixStack* modelview = game->getModelViewStack();
 
 	modelview->push();
 	//then, puts the unitary cube in the right position

@@ -1,5 +1,5 @@
 #include "Torus.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 #include "Game.h"
 
 Torus::Torus(float* position, Game *game, float innerRadius, float outerRadius, int rings, int sides) : Object(position, game) 
@@ -13,7 +13,7 @@ Torus::Torus(float* position, Game *game, float innerRadius, float outerRadius, 
 
 void Torus::draw()
 {
-	Stack* modelview = game->getModelViewStack();
+	MatrixStack* modelview = game->getModelViewStack();
 
 	sendMaterials();
 

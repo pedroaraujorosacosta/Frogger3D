@@ -1,5 +1,5 @@
 #include "Car.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 #include "Game.h"
 #include "Torus.h"
 #include "Sphere.h"
@@ -27,7 +27,7 @@ void Car::update(float dt){
 
 void Car::draw(){
 
-	Stack* modelview = game->getModelViewStack();
+	MatrixStack* modelview = game->getModelViewStack();
 
 	modelview->push();
 	//puts the car on the right position

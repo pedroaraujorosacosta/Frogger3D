@@ -308,8 +308,6 @@ void Game::reset()
 	ps->reset();
 
 	startTime = glutGet(GLUT_ELAPSED_TIME);
-	//modelViewStack.cleanGarbage();
-	//projectionStack.cleanGarbage();
 }
 
 void Game::update(float dt) 
@@ -814,12 +812,12 @@ void Game::passiveMouseFunc(int x, int y)
 	
 }
 
-Stack* Game::getModelViewStack() 
+MatrixStack* Game::getModelViewStack()
 {
 	return &modelViewStack;
 }
 
-Stack* Game::getProjectionStack()
+MatrixStack* Game::getProjectionStack()
 {
 	return &projectionStack;
 }

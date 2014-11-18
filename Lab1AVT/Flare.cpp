@@ -411,7 +411,7 @@ void drawQuad(Game *game, int index, float normOriginX, float normOriginY, float
 {
 	GLint loc;
 	GLuint progID = game->getShader();
-	Stack* modelview = game->getModelViewStack();
+	MatrixStack* modelview = game->getModelViewStack();
 	GLuint texID = quads[index].texID;
 	int tUnit = quads[index].tUnit;
 
@@ -477,7 +477,7 @@ void    FLARE_render(FLARE_DEF *flare, int lx, int ly, int cx, int cy, Game *gam
 		height = HEIGHTFROMWIDTH(width);
 		alpha = (flaredist*((element->argb >> 24)/255.0f)) / maxflaredist;
 
-		Stack* modelview = game->getModelViewStack();
+		MatrixStack* modelview = game->getModelViewStack();
 
 		if (width > 1)
 		{

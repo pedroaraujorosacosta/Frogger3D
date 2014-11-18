@@ -1,9 +1,8 @@
 #include "BillboardObj.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 #include "Game.h"
 #include "Camera.h"
 #include "Vector.h"
-#include "Stack.h"
 
 #define M_PI 3.1415
 #define radToDeg(x) ((x/M_PI)*180)
@@ -27,7 +26,7 @@ BillboardObj::~BillboardObj()
 
 void BillboardObj::draw(){
 
-	Stack* modelview = game->getModelViewStack();
+	MatrixStack* modelview = game->getModelViewStack();
 
 	modelview->push();
 
@@ -37,21 +36,21 @@ void BillboardObj::draw(){
 	Vector objToEye = eyePos - objPos;
 	float objToEyeProj[3] = { objToEye.v[0], objToEye.v[1], 0.0f };
 	float projDir[3] = { direction[0], direction[1], 0.0f };
-	Stack::normalize(objToEyeProj, 3);
-	Stack::normalize(projDir, 3);
-	float cosineAlpha = Stack::dotProduct(projDir, objToEyeProj, 3);
+	MatrixStack::normalize(objToEyeProj, 3);
+	MatrixStack::normalize(projDir, 3);
+	float cosineAlpha = MatrixStack::dotProduct(projDir, objToEyeProj, 3);
 	float alpha = acos(cosineAlpha);
 	float cross[3];
 
 	if (objToEyeProj[0] > 0)
-		Stack::crossProduct(projDir, objToEyeProj, cross);
+		MatrixStack::crossProduct(projDir, objToEyeProj, cross);
 	else {
-		Stack::crossProduct(objToEyeProj, projDir, cross);
+		MatrixStack::crossProduct(objToEyeProj, projDir, cross);
 		cross[0] = -cross[0];
 		cross[1] = -cross[1];
 		cross[2] = -cross[2];
 	}
-	Stack::normalize(cross, 3);
+	MatrixStack::normalize(cross, 3);
 
 	if (abs(cross[0]) < 0.01f && abs(cross[1]) < 0.01f)
 	{

@@ -1,5 +1,5 @@
 #include "Sphere.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 #include "Game.h"
 
 
@@ -14,7 +14,7 @@ Sphere::Sphere(float* position, Game *game, float radius, int divisions): Object
 
 void Sphere::draw(){
 
-	Stack* modelview = game->getModelViewStack();
+	MatrixStack* modelview = game->getModelViewStack();
 	
 	sendMaterials();
 

@@ -1,7 +1,7 @@
 #include "Skybox.h"
 #include "Quad.h"
 #include "Game.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 
 Skybox::Skybox(float* position, Game *game) : Object(position, game)
 {
@@ -31,7 +31,7 @@ void Skybox::draw()
 	float posTop[3] = { 0.0f, 0.0f, 10.0f };
 	float posBottom[3] = { 0.0f, 0.0f, -10.0f };
 
-	Stack *modelView = game->getModelViewStack();
+	MatrixStack *modelView = game->getModelViewStack();
 
 	modelView->push();
 

@@ -1,6 +1,6 @@
 #include "Cube.h"
 #include "River.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 #include "Game.h"
 #include <algorithm>
 
@@ -19,7 +19,7 @@ River::~River()
 
 void River::draw(){
 
-	Stack* modelview = game->getModelViewStack();
+	MatrixStack* modelview = game->getModelViewStack();
 
 	modelview->push();
 

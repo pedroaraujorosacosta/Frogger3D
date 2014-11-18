@@ -2,7 +2,7 @@
 #define __GAME_H__
 
 #include "IComponent.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 
 #include <iostream>
 #include <sstream>
@@ -35,8 +35,8 @@ class Game : IComponent {
 	int winX;
 	int winY;
 	double aspectRatio;
-	Stack modelViewStack;
-	Stack projectionStack;
+	MatrixStack modelViewStack;
+	MatrixStack projectionStack;
 	double time;
 	double startTime;
 	int windowHandle;
@@ -129,8 +129,8 @@ public:
 	Matrix getVM();
 	GLuint getVMid();
 	GLuint getIVMid();
-	Stack* getModelViewStack();
-	Stack* getProjectionStack();
+	MatrixStack* getModelViewStack();
+	MatrixStack* getProjectionStack();
 	Frog* getFrog();
 	GLuint getShader();
 	GLuint getLPosID();
