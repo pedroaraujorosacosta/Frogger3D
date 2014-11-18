@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 #include "Game.h"
 #include "Frog.h"
 
@@ -158,6 +158,8 @@ void Camera::updateDirection(int dx, int dy)
 		theta -= dx / 10;
 		theta = fmod(theta, 360);
 
+		//std::cout << "theta " << theta << " " << "phi " << phi << std::endl;
+
 		phi += dy / 10;
 		if (phi > 90 || phi < -90)
 			phi -= dy / 10;
@@ -191,4 +193,14 @@ bool Camera::isFacingBack()
 Vector Camera::getEye()
 {
 	return Vector(eye, 3);
+}
+
+float Camera::getTheta()
+{
+	return theta;
+}
+
+float Camera::getPhi()
+{
+	return phi;
 }

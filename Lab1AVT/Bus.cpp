@@ -1,5 +1,5 @@
 #include "Bus.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 #include "Game.h"
 #include "Torus.h"
 #include <iostream>
@@ -25,7 +25,7 @@ void Bus::update(float dt){
 
 void Bus::draw(){
 
-	Stack* modelview = game->getModelViewStack();
+	MatrixStack* modelview = game->getModelViewStack();
 
 	modelview->push();
 	//puts the car on the right position

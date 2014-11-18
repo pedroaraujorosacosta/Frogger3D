@@ -171,7 +171,7 @@ tImageTGA *Load_TGA(char *strfilename)
 					pImgData->data[colorsRead + 2] = pColors[0];
 					
 					if(bits == 32)	pImgData->data[colorsRead + 3] = pColors[3];
-					
+
 					i++;
 					rleID--;
 					colorsRead += channels;
@@ -191,7 +191,7 @@ tImageTGA *Load_TGA(char *strfilename)
 					pImgData->data[colorsRead + 2] = pColors[0];
 					
 					if(bits == 32)	pImgData->data[colorsRead + 3] = pColors[3];
-					
+
 					i++;
 					rleID--;
 					colorsRead += channels;

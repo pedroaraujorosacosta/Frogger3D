@@ -1,8 +1,8 @@
 #include "Cube.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 #include "Game.h"
 
-Cube::Cube(float *position, Game *game, bool isRepeatTexture, float factorX) : Object(position, game)
+Cube::Cube(float *position, Game *game, bool isRepeatTexture, float factorX ) : Object(position, game)
 {
 	this->isRepeatTexture = isRepeatTexture;
 	repeatFactorX = factorX;
@@ -12,7 +12,7 @@ Cube::Cube(float *position, Game *game, bool isRepeatTexture, float factorX) : O
 
 void Cube::draw(){
 
-	Stack* modelview = game->getModelViewStack();
+	MatrixStack* modelview = game->getModelViewStack();
 
 	sendMaterials();
 

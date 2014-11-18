@@ -56,7 +56,13 @@ in Data {
 
 vec4 applyFog(in vec4 rgba, in float distance) {
 	float fogAmount = exp(-(distance * fogDensity));
-	return mix(rgba, fogColor, (1.0 - fogAmount));
+
+	// mix with transparent fogColor in case its a particle texture with transparency
+	vec4 fogColorTrans = vec4(fogColor.xyz, 0.0f);
+	if(rgba.w < 0.2)
+		return mix(rgba, fogColorTrans, (1.0 - fogAmount));
+	else
+		return mix(rgba, fogColor, (1.0 - fogAmount));
 }
 
 void main() {
@@ -87,14 +93,14 @@ void main() {
 		colorOut = texel;
 	} else 	if(texMode == 5) // modulate Phong color with texel color
 	{
-		texel = texture(texmap4, DataIn.tex_coord);  // particula.bmp
+		texel = texture(texmap4, DataIn.tex_coord);  // particula.tga
 		colorOut = texel;
 	}
 
 	// do an early alpha test (we can cull some of the textured fragments early)
 	if(alphaTest == ALPHA_TEST_OPAQUE) 
 	{
-		if(colorOut.w < 1.0)
+		if(colorOut.w < 0.2)
 			discard;
 	}
 

@@ -1,5 +1,5 @@
 #include "Cylinder.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 #include "Game.h"
 
 Cylinder::Cylinder(float* position, Game *game, float height, float radius, int sides) : Object(position, game) 
@@ -19,7 +19,7 @@ Cylinder::Cylinder(float* position, Game *game, float height, float radius, int 
 
 void Cylinder::draw()
 {
-	Stack* modelview = game->getModelViewStack();
+	MatrixStack* modelview = game->getModelViewStack();
 
 	sendMaterials();
 

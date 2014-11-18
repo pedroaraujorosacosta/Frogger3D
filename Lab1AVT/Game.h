@@ -2,7 +2,7 @@
 #define __GAME_H__
 
 #include "IComponent.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 
 #include <iostream>
 #include <sstream>
@@ -14,7 +14,6 @@
 #define MY_VERTEX_COORD_ATTRIB 0
 #define MY_NORMAL_ATTRIB 1
 #define MY_TEXTURE_COORD_ATTRIB 2
-//#define M_PI atan(1)*4
 
 class ManagerObj;
 class Camera;
@@ -24,6 +23,8 @@ class ManagerLight;
 class Light;
 class VSFontLib;
 class Flare;
+class ParticleSystem;
+class Skybox;
 
 class Game : IComponent {
 
@@ -34,8 +35,8 @@ class Game : IComponent {
 	int winX;
 	int winY;
 	double aspectRatio;
-	Stack modelViewStack;
-	Stack projectionStack;
+	MatrixStack modelViewStack;
+	MatrixStack projectionStack;
 	double time;
 	double startTime;
 	int windowHandle;
@@ -74,11 +75,13 @@ class Game : IComponent {
 	bool isFogOn;
 	bool isFlareOn;
 	char keyDown;
-	GLuint TextureArray[5];
+	GLuint TextureArray[10];
 	unsigned int uiWinID;
 	unsigned int uiLoseID;
 
 	Flare* flare;
+	ParticleSystem *ps;
+	Skybox *skybox;
 
 	void setupGLUT(int argc, char* argv[]);
 	void setupGLEW();
@@ -94,11 +97,12 @@ class Game : IComponent {
 	void resetProgram();
 	void createShaderProgram(int pIndex);
 	void loadShader(int pIndex, unsigned int ShaderType, char *filename);
-	void renderHUD();
+	void drawHUD();
 	void setAlphaTest(AlphaTest alphaTest);
 	void setFog();
 	void clearFog();
 	void drawFlare();
+	void drawParticleSystem();
 
 public:
 	Game(int WinX, int WinY);
@@ -125,8 +129,8 @@ public:
 	Matrix getVM();
 	GLuint getVMid();
 	GLuint getIVMid();
-	Stack* getModelViewStack();
-	Stack* getProjectionStack();
+	MatrixStack* getModelViewStack();
+	MatrixStack* getProjectionStack();
 	Frog* getFrog();
 	GLuint getShader();
 	GLuint getLPosID();
@@ -139,7 +143,7 @@ public:
 	int getStartTime();
 
 	void winGame();
-	void LoadBMPTexture(unsigned int *textureArray, const char * bitmap_file, int ID);
+	void LoadBMPTexture(unsigned int *textureArray, const char * bitmap_file, int ID, bool mipMaps);
 };
 
 #endif

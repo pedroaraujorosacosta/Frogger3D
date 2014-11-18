@@ -95,8 +95,9 @@
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="River.cpp" />
     <ClCompile Include="Road.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Sphere.cpp" />
-    <ClCompile Include="Stack.cpp" />
+    <ClCompile Include="MatrixStack.cpp" />
     <ClCompile Include="textureLoader.cpp" />
     <ClCompile Include="TGA.cpp" />
     <ClCompile Include="Torus.cpp" />
@@ -137,7 +138,9 @@
     <ClInclude Include="Quad.h" />
     <ClInclude Include="River.h" />
     <ClInclude Include="Road.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="MatrixStack.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="textureLoader.h" />
     <ClInclude Include="TGA.h" />
@@ -163,8 +166,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="arial.tga" />
+    <Image Include="flame.tga" />
     <Image Include="grass.tga" />
     <Image Include="ground.tga" />
+    <Image Include="particle.tga" />
     <Image Include="particula.bmp" />
     <Image Include="tree.tga" />
     <Image Include="water.tga" />

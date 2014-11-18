@@ -114,9 +114,6 @@
     <ClCompile Include="FontLib.cpp">
       <Filter>Source Files\Libraries</Filter>
     </ClCompile>
-    <ClCompile Include="Stack.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
     <ClCompile Include="BillboardObj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -147,6 +144,12 @@
     <ClCompile Include="glbmp.c">
       <Filter>Source Files\Libraries</Filter>
     </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MatrixStack.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -154,9 +157,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Stack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Matrix.h">
@@ -261,6 +261,15 @@
     <ClInclude Include="glbmp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixStack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Stack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="fontshade.frag">
@@ -317,6 +326,12 @@
       <Filter>Fonts</Filter>
     </Image>
     <Image Include="particula.bmp">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="particle.tga">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="flame.tga">
       <Filter>Textures</Filter>
     </Image>
   </ItemGroup>

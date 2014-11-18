@@ -10,7 +10,7 @@ http://www.lighthouse3d.com/very-simple-libs
 
 #include "FontLib.h"
 #include "Game.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 #include "Matrix.h"
 
 #define MY_VERTEX_COORD_ATTRIB 0
@@ -296,13 +296,13 @@ VSFontLib::prepareRender(float x, float y)
 
 	// prepare projection matrix so that there is a 1:1 mapping
 	// between window and vertex coordinates
-	Stack *proj = game->getProjectionStack();
+	MatrixStack *proj = game->getProjectionStack();
 	proj->push();
 	proj->loadIdentity();
 	proj->orthogonal((float)vp[0], (float)vp[0] + (float)vp[2], (float)vp[1] + (float)vp[3], (float)vp[1], -1.0f, 1.0f);
 	
 	// set model and view = identity matrix
-	Stack *mView = game->getModelViewStack();
+	MatrixStack *mView = game->getModelViewStack();
 	mView->push();
 	mView->loadIdentity();
 
@@ -325,12 +325,12 @@ VSFontLib::restoreRender()
 
 	glBlendFunc(mPrevBlendSrc, mPrevBlendDst);
 
-	Stack *proj = game->getProjectionStack();
+	MatrixStack *proj = game->getProjectionStack();
 	// restore previous projection matrix
 	proj->pop();//LoadIdentity
 	proj->pop();
 
-	Stack *mView = game->getModelViewStack();
+	MatrixStack *mView = game->getModelViewStack();
 	// restore previous model and view matrices
 	mView->pop();//LoadIdentity
 	mView->pop();

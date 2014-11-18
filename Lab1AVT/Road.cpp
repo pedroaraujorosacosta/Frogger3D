@@ -1,5 +1,5 @@
 #include "Road.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 #include "Game.h"
 
 Road::Road(float *position, Game *game) : Object(position, game)
@@ -19,7 +19,7 @@ Road::~Road()
 
 void Road::draw(){
 
-	Stack* modelview = game->getModelViewStack();
+	MatrixStack* modelview = game->getModelViewStack();
 
 	modelview->push();
 	//modelview->rotateMatrix(0.0, 1.0, 0.0, 45.0);

@@ -1,5 +1,5 @@
 #include "FloatingLog.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 #include "Game.h"
 #include <iostream>
 
@@ -24,7 +24,7 @@ void FloatingLog::update(float dt){
 
 void FloatingLog::draw(){
 
-	Stack* modelview = game->getModelViewStack();
+	MatrixStack* modelview = game->getModelViewStack();
 
 	modelview->push();
 	//puts the car on the right position

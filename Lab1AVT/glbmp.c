@@ -380,6 +380,7 @@ static int _bmp_ReadInfo(_bmp_read_context * p_ctx, int flags)
  */
 static int _bmp_InitDecode(_bmp_read_context * p_ctx)
 {
+	int wid = p_ctx->rgb_line_len / 3;
               /* alloc a line of file data */
    return (   (p_ctx->file_data = (uint8_t *)malloc(p_ctx->file_line_len))
               /* alloc the entire output buffer */

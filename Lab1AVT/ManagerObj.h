@@ -3,22 +3,25 @@
 
 #include "Manager.h"
 #include "Vector.h"
+#include "Cube.h"
 
 #include <iostream>
 #include <sstream>
 #include <fstream>
 #include <vector>
 
+
+
 class Object;
 class MobileObj;
-class Particle;
-class ParticleSystem;
 
 class ManagerObj : public Manager
 {
 	float dificuldade;
 	float lateralEsquerda;
 	float lateralDireita;
+
+	Cube* stencilMaskCube;
 
 	std::vector<Object*> objects;
 	std::vector<MobileObj*> objectsMobileLane1;
@@ -66,9 +69,6 @@ class ManagerObj : public Manager
 	//Checking the river
 	bool onSurface;
 
-	Particle* p;
-	ParticleSystem *ps;
-
 protected:
 
 	void init();
@@ -108,6 +108,8 @@ public:
 
 	bool laneCollision(std::vector<MobileObj*> lane, MobileObj* obj);
 	float getRiverLaneVelocity(Vector &laneDir);
+
+	void applyStencil();
 };
 
 #endif

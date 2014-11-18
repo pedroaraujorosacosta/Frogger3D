@@ -1,5 +1,5 @@
 #include "Monkey.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 #include "Game.h"
 
 Monkey::Monkey(float *position, Game *game, bool isRepeatTexture, float factorX) : Object(position, game)
@@ -10,7 +10,7 @@ Monkey::Monkey(float *position, Game *game, bool isRepeatTexture, float factorX)
 
 void Monkey::draw(){
 
-	Stack* modelview = game->getModelViewStack();
+	MatrixStack* modelview = game->getModelViewStack();
 
 	sendMaterials();
 

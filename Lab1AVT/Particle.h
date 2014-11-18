@@ -17,11 +17,9 @@ class Particle : public BillboardObj {
 	const float MAXLIFE = 1.0;
 	GLuint texname;
 	Game* game;
-	Quad* quad;
-
 
 public:
-	Particle(float* pos, Game* game, int width, int height);
+	Particle(float* pos, float *faceDirection, Game* game, int width, int height);
 	void reset();
 	void update(float dt);
 	bool isAlive();

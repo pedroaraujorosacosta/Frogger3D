@@ -1,5 +1,5 @@
 #include "Quad.h"
-#include "Stack.h"
+#include "MatrixStack.h"
 #include "Game.h"
 
 Quad::Quad(float *position, Game *game) : Object(position, game)
@@ -16,7 +16,7 @@ Quad::Quad(float *position, float originX, float originY, float width, float hei
 
 void Quad::draw(){
 
-	Stack* modelview = game->getModelViewStack();
+	MatrixStack* modelview = game->getModelViewStack();
 
 	sendMaterials();
 
@@ -37,7 +37,7 @@ void Quad::drawCustomQuad(float originX, float originY, float width, float heigh
 	initCustomQuad(originX, originY, width, height);
 	createBufferObjects();
 
-	Stack* modelview = game->getModelViewStack();
+	MatrixStack* modelview = game->getModelViewStack();
 
 	sendMaterials();
 

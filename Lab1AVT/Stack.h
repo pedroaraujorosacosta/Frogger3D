@@ -1,42 +1,57 @@
 #ifndef __STACK_H__
 #define __STACK_H__
 
-#include <stack>
-#include <vector>
+#define MAX_STACK_SIZE 1000
 
-class Matrix;
-
-class Stack 
+template <class T>
+class Stack
 {
-	std::stack<Matrix*> s;
-	std::vector<Matrix*> garbage;
-
-	static float dotProduct(float *u, float *v, int size);
-	float norm(float *vector, int size);
-	void normalize(float *vector, int size);
-	void crossProduct(float *a, float*b, float* r);
+	T elements[MAX_STACK_SIZE];
+	int topo;
 public:
 	Stack();
 	~Stack();
-	void loadIdentity();
-	void loadMatrix(Matrix* matrix);
-	void cleanStack();
-	void cleanGarbage();
-	void push();
+
+	void push(T element);
 	void pop();
-	void printStack();
-	void translateMatrix(float tx, float ty, float tz);
-	void scaleMatrix(float sx, float sy, float sz);
-	void rotateMatrix(float x, float y, float z, float alpha);
-	void perspective(float left, float right, float bottom, float top,
-		float nearPlane, float farPlane);
-	void orthogonal(float left, float right, float bottom, float top,
-		float nearPlane, float farPlane);
-	void lookAt(float eyex, float eyey, float eyez,
-		float atx, float aty, float atz,
-		float upx, float upy, float upz);
-	void lookAt(float *right, float *up, float *eye, float *lookPoint);
-	Matrix* getTop();
+	T top();
+	bool empty();
 };
 
+template <class T>
+Stack<T>::Stack() : topo(-1)
+{
+
+}
+
+template <class T>
+Stack<T>::~Stack()
+{
+
+}
+
+template <class T>
+void Stack<T>::push(T element)
+{
+	if (topo < MAX_STACK_SIZE - 1)
+		elements[++topo] = element;
+}
+
+template <class T>
+void Stack<T>::pop()
+{
+	if (topo > -1) topo--;
+}
+
+template <class T>
+T Stack<T>::top()
+{
+	return elements[topo];
+}
+
+template <class T>
+bool Stack<T>::empty()
+{
+	return (topo == -1);
+}
 #endif
