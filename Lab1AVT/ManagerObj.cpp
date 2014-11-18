@@ -413,7 +413,8 @@ void ManagerObj::update(float dt, Frog* frog) {
 
 		}
 
-		o->multiplyVelocity(dificuldade);
+		if(dificuldade != 15)
+			o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() > (lateralDireita + 4)){
 			do {
 				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
@@ -427,7 +428,8 @@ void ManagerObj::update(float dt, Frog* frog) {
 				onSurface = true;
 		}
 
-		o->multiplyVelocity(dificuldade);
+		if (dificuldade != 15)
+			o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() < (lateralEsquerda - 4)){
 			do {
 				o->setPositionXXs(lateralDireita + 4 + (rand() % 10));
@@ -442,7 +444,8 @@ void ManagerObj::update(float dt, Frog* frog) {
 				onSurface = true;
 		}
 
-		o->multiplyVelocity(dificuldade);
+		if (dificuldade != 15)
+			o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() > (lateralDireita + 4)){
 			do {
 				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
@@ -457,7 +460,8 @@ void ManagerObj::update(float dt, Frog* frog) {
 				onSurface = true;
 		}
 
-		o->multiplyVelocity(dificuldade);
+		if (dificuldade != 15)
+			o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() > (lateralDireita + 4)){
 			do {
 				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
@@ -472,7 +476,8 @@ void ManagerObj::update(float dt, Frog* frog) {
 				onSurface = true;
 		}
 
-		o->multiplyVelocity(dificuldade);
+		if (dificuldade != 15)
+			o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() > (lateralDireita + 4)){
 			do {
 				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
@@ -488,7 +493,8 @@ void ManagerObj::update(float dt, Frog* frog) {
 				frog->killed();
 		}
 
-		o->multiplyVelocity(dificuldade);
+		if (dificuldade != 15)
+			o->multiplyVelocity(dificuldade);
 		if (o->getPositionXXs() > (lateralDireita + 4)){
 			do {
 				o->setPositionXXs(lateralEsquerda - 4 - (rand() % 10));
@@ -504,7 +510,8 @@ void ManagerObj::update(float dt, Frog* frog) {
 				frog->killed();
 		}
 
-		o->multiplyVelocity(dificuldade);
+		if (dificuldade != 15)
+			o->multiplyVelocity(dificuldade);
 
 		if (o->getPositionXXs() < (lateralEsquerda - 4)){
 			do {
@@ -522,7 +529,8 @@ void ManagerObj::update(float dt, Frog* frog) {
 				frog->killed();
 		}
 
-		o->multiplyVelocity(dificuldade);
+		if (dificuldade != 15)
+			o->multiplyVelocity(dificuldade);
 
 		if (o->getPositionXXs() > (lateralDireita + 4)){
 			do {

@@ -18,6 +18,11 @@ ParticleSystem::ParticleSystem(Game* game, unsigned int maxParticles, unsigned i
 
 ParticleSystem::~ParticleSystem()
 {
+	for (Particle *p : _liveParticles)
+		delete p;
+
+	for (Particle *p : _deadParticles)
+		delete p;
 	_liveParticles.clear();
 	_deadParticles.clear();
 }
@@ -33,6 +38,11 @@ void ParticleSystem::draw()
 
 void ParticleSystem::reset()
 {
+	for (Particle *p : _liveParticles)
+		delete p;
+
+	for (Particle *p : _deadParticles)
+		delete p;
 	_liveParticles.clear();
 	_deadParticles.clear();
 	float faceDirection[3] = { 0.0f, -1.0f, 0.0f };
