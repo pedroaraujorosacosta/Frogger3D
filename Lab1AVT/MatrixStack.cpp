@@ -78,6 +78,7 @@ void MatrixStack::translateMatrix(float tx, float ty, float tz) {
 	
 	Matrix* nova = new Matrix(4);
 	(*nova) = *s.top() * *tMatrix;
+	delete tMatrix;
 	Matrix* topo = s.top();
 	s.pop();
 	delete topo;
@@ -98,6 +99,7 @@ void MatrixStack::scaleMatrix(float sx, float sy, float sz) {
 
 	Matrix* nova = new Matrix(4);
 	(*nova)= *s.top() * *sMatrix;
+	delete sMatrix;
 	Matrix* topo = s.top();
 	s.pop();
 	delete topo;
@@ -127,6 +129,7 @@ void MatrixStack::rotateMatrix(float x, float y, float z, float alpha) {
 
 	Matrix* nova = new Matrix(4);
 	(*nova) = *s.top() * *rMatrix;
+	delete rMatrix;
 	Matrix* topo = s.top();
 	s.pop();
 	delete topo;
@@ -155,6 +158,7 @@ void MatrixStack::perspective(float left, float right, float bottom, float top, 
 
 	Matrix* nova = new Matrix(4);
 	(*nova) = *s.top() * *sMatrix;
+	delete sMatrix;
 	Matrix* topo = s.top();
 	s.pop();
 	delete topo;
@@ -246,6 +250,7 @@ void MatrixStack::lookAt(float eyex, float eyey, float eyez,
 
 	Matrix* nova = new Matrix(4);
 	(*nova) = *s.top() * *vMatrix;
+	delete vMatrix;
 	Matrix* topo = s.top();
 	s.pop();
 	delete topo;
@@ -284,6 +289,7 @@ void MatrixStack::lookAt(float *right, float *up, float *eye, float *lookPoint)
 
 	Matrix* nova = new Matrix(4);
 	(*nova)= *s.top() * *vMatrix;
+	delete vMatrix;
 	Matrix* topo = s.top();
 	s.pop();
 	delete topo;
@@ -313,6 +319,7 @@ void MatrixStack::orthogonal(float left, float right, float bottom, float top, f
 
 	Matrix* nova = new Matrix(4);
 	(*nova) = *s.top() * *sMatrix;
+	delete sMatrix;
 	Matrix* topo = s.top();
 	s.pop();
 	delete topo;

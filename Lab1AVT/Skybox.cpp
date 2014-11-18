@@ -8,6 +8,11 @@ Skybox::Skybox(float* position, Game *game) : Object(position, game)
 	init();
 }
 
+Skybox::~Skybox()
+{
+	delete quad;
+}
+
 void Skybox::init()
 {
 	float o[3] = { 0.0f, 0.0f, 0.0f };

@@ -343,7 +343,7 @@ void ManagerObj::update(float dt, Frog* frog) {
 
 	int currentTime = glutGet(GLUT_ELAPSED_TIME);
 	dificuldade = (currentTime - game->getStartTime()) / 5000 + 1;
-
+	if (dificuldade > 15) dificuldade = 15;
 
 	//frog collision variables
 	frogXXs = frog->getPositionXXs();

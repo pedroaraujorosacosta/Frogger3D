@@ -783,7 +783,7 @@ void Game::mouseMotionFun(int x, int y)
 		float theta = cam->getTheta();
 		float phi = cam->getPhi();
 		float dTheta = theta + 30;
-		float dPhi = phi - 30;
+		float dPhi = phi - 20;
 		const float ANGLE = 15.0f;
 		// if it's facing the directional light
 		if (abs(dTheta) < ANGLE+1 && abs(dPhi) < ANGLE+1)

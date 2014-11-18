@@ -12,6 +12,7 @@ protected:
 	void init();
 public:
 	Skybox(float* position, Game *game);
+	~Skybox();
 
 	void draw();
 };
