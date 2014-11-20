@@ -38,7 +38,7 @@ void Particle::init()
 	rgba[0] = 0.882f;
 	rgba[1] = 0.552f;
 	rgba[2] = 0.211f;
-	rgba[3] = 0.01f;
+	rgba[3] = 0.04f;
 
 	life = MAXLIFE;		/* vida inicial */
 	fade = 0.005f;	    /* step de decréscimo da vida para cada iteração */
@@ -76,7 +76,12 @@ void Particle::update(float dt)
 	v[1] += a[1] * dt;
 	v[2] += a[2] * dt;
 	life -= fade;
-	rgba[3] = life;
+	if (life < 0.0f)
+		life = 0.0f;
+	rgba[3] = life*0.2f;
+	//quad->setAmbient(rgba);
+	quad->setDiffuse(rgba);
+	//quad->setSpecular(rgba);
 }
 
 

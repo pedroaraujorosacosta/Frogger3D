@@ -113,6 +113,7 @@ Matrix Matrix::invertMatrix()
 
 	delete[] m;
 	m = new float[9];
+	size = 3;
 
 	det = mMat3x3[0] * (mMat3x3[4] * mMat3x3[8] - mMat3x3[5] * mMat3x3[7]) +
 		mMat3x3[1] * (mMat3x3[5] * mMat3x3[6] - mMat3x3[8] * mMat3x3[3]) +
