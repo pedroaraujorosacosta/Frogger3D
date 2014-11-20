@@ -23,7 +23,7 @@ void Car::update(float dt){
 
 	for (int i = 0; i < 3; i++)
 		position[i] += direction[i] * velocity * dt;
-	std::cout << velocity << std::endl;
+	//std::cout << velocity << std::endl;
 }
 
 void Car::draw(){
