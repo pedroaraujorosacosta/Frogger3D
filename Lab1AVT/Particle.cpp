@@ -79,9 +79,8 @@ void Particle::update(float dt)
 	if (life < 0.0f)
 		life = 0.0f;
 	rgba[3] = life*0.2f;
-	//quad->setAmbient(rgba);
+	
 	quad->setDiffuse(rgba);
-	//quad->setSpecular(rgba);
 }
 
 
