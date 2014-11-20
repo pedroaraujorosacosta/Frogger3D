@@ -636,8 +636,6 @@ Vector ManagerObj::getLane5Direction()
 void ManagerObj::applyStencil(){
 
 
-	
-	glEnable(GL_STENCIL_TEST);
 	glClearStencil(0x0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	glStencilFunc(GL_ALWAYS, 0x1, 0x1);

@@ -78,7 +78,7 @@ void Particle::update(float dt)
 	life -= fade;
 	if (life < 0.0f)
 		life = 0.0f;
-	rgba[3] = life*0.2f;
+	rgba[3] = life*0.02f;
 	
 	quad->setDiffuse(rgba);
 }
