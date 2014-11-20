@@ -129,8 +129,8 @@ void Game::draw() {
 
 	setProgramIndex(0);
 
-	
-	managerObj->applyStencil();
+	if (isStencilOn)
+		managerObj->applyStencil();
 
 
 	managerLight->illuminate();
@@ -707,6 +707,10 @@ void Game::keyboard(unsigned char key, int x, int y)
 		case 'm':
 		case 'M':
 			isFlareOn = !isFlareOn;
+			break;
+		case 's':
+		case 'S':
+			isStencilOn = !isStencilOn;
 			break;
 		}
 	}

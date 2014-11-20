@@ -74,6 +74,7 @@ class Game : IComponent {
 	bool isRightButtonDown;
 	bool isFogOn;
 	bool isFlareOn;
+	bool isStencilOn;
 	char keyDown;
 	GLuint TextureArray[10];
 	unsigned int uiWinID;
