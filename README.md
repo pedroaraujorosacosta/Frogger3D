@@ -1,4 +1,4 @@
-gluefluxklan
-============
+Frogger3D
+==========
 
-The glue must flow.
+A 3D implementation of Frogger.
